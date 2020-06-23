@@ -432,7 +432,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = RunningOrder/RunningOrder.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Development: Benoit Caron (2ET5BQCEQ6)";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"RunningOrder/Preview Content\"";
 				DEVELOPMENT_TEAM = 5GARSM38JL;
@@ -446,6 +447,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = com.worldline.RunningOrder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Running Order Dev";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -455,7 +457,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = RunningOrder/RunningOrder.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Development: Benoit Caron (2ET5BQCEQ6)";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"RunningOrder/Preview Content\"";
 				DEVELOPMENT_TEAM = 5GARSM38JL;
@@ -469,6 +472,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = com.worldline.RunningOrder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Running Order Dev";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
