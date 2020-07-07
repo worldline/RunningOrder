@@ -11,7 +11,7 @@ import Foundation
 struct Sprint {
     let name: String
 
-    let stories: [Story]
+    var stories: [Story]
 }
 
 extension Sprint: Equatable { }

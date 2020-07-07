@@ -33,13 +33,15 @@ struct SprintsView: View {
     @State private var sprints: [Sprint] = []
     @State private var showNewSprintModal = false
 
-    @State private var selectedSprint: Sprint?
+    @Binding var selectedSprint: Sprint?
+
 
     var body: some View {
         List(selection: $selectedSprint) {
             Section(header: Text("Active Sprints")) {
                 ForEach(sprints) { sprint in
                     Text(sprint.name)
+                        .tag(sprint)
                 }
 
                 Button(action: { self.showNewSprintModal.toggle() }) {
@@ -60,7 +62,7 @@ struct SprintsView: View {
 
 struct SprintsView_Previews: PreviewProvider {
     static var previews: some View {
-        SprintsView()
+        SprintsView(selectedSprint: .constant(nil))
             .listStyle(SidebarListStyle())
         .frame(width: 250)
     }

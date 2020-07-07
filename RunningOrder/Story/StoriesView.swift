@@ -8,11 +8,23 @@
 
 import SwiftUI
 
+extension Story: Identifiable {
+    var id: String { ticketReference }
+}
+
 struct StoriesView: View {
+    @Binding var stories: [Story]
+
     var body: some View {
         List {
             Section(header: Text("Stories")) {
-                Text("HB- GMT - Initier un vir inter 1/3 (Ecran devise)")
+                ForEach(stories) { story in
+                    VStack(alignment: .leading) {
+                        Text(story.ticketReference)
+                        Text(story.name)
+                    }
+
+                }
             }
         }
     }
@@ -20,6 +32,6 @@ struct StoriesView: View {
 
 struct StoriesView_Previews: PreviewProvider {
     static var previews: some View {
-        StoriesView()
+        StoriesView(stories: .constant([]))
     }
 }

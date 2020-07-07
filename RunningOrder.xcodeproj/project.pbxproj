@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1858275C24B4BD68008BE248 /* CustomWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1858275B24B4BD68008BE248 /* CustomWindow.swift */; };
 		1862423924B4859300A4A6CB /* SprintsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862423824B4859300A4A6CB /* SprintsView.swift */; };
 		1862423B24B485BA00A4A6CB /* StoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862423A24B485BA00A4A6CB /* StoriesView.swift */; };
 		1862423D24B485E400A4A6CB /* StoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862423C24B485E400A4A6CB /* StoryDetailView.swift */; };
@@ -41,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1858275B24B4BD68008BE248 /* CustomWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWindow.swift; sourceTree = "<group>"; };
 		1862423824B4859300A4A6CB /* SprintsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintsView.swift; sourceTree = "<group>"; };
 		1862423A24B485BA00A4A6CB /* StoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesView.swift; sourceTree = "<group>"; };
 		1862423C24B485E400A4A6CB /* StoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryDetailView.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				1862423A24B485BA00A4A6CB /* StoriesView.swift */,
+				1862423C24B485E400A4A6CB /* StoryDetailView.swift */,
 				1862424224B48A8600A4A6CB /* Story.swift */,
 			);
 			path = Story;
@@ -134,6 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				18FE758D24A23E670003C76E /* AppDelegate.swift */,
+				1858275B24B4BD68008BE248 /* CustomWindow.swift */,
 				18FE758F24A23E670003C76E /* MainView.swift */,
 				1862423E24B489A800A4A6CB /* Sprint */,
 				1862424124B48A7C00A4A6CB /* Story */,
@@ -313,6 +317,7 @@
 				18FE759024A23E670003C76E /* MainView.swift in Sources */,
 				1862423924B4859300A4A6CB /* SprintsView.swift in Sources */,
 				18FE758E24A23E670003C76E /* AppDelegate.swift in Sources */,
+				1858275C24B4BD68008BE248 /* CustomWindow.swift in Sources */,
 				1862424024B489BB00A4A6CB /* Sprint.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
