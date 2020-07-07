@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1862423924B4859300A4A6CB /* SprintsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862423824B4859300A4A6CB /* SprintsView.swift */; };
+		1862423B24B485BA00A4A6CB /* StoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862423A24B485BA00A4A6CB /* StoriesView.swift */; };
+		1862423D24B485E400A4A6CB /* StoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862423C24B485E400A4A6CB /* StoryDetailView.swift */; };
 		18FE758E24A23E670003C76E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FE758D24A23E670003C76E /* AppDelegate.swift */; };
-		18FE759024A23E670003C76E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FE758F24A23E670003C76E /* ContentView.swift */; };
+		18FE759024A23E670003C76E /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FE758F24A23E670003C76E /* MainView.swift */; };
 		18FE759224A23E680003C76E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18FE759124A23E680003C76E /* Assets.xcassets */; };
 		18FE759524A23E680003C76E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18FE759424A23E680003C76E /* Preview Assets.xcassets */; };
 		18FE759824A23E680003C76E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18FE759624A23E680003C76E /* Main.storyboard */; };
@@ -34,9 +37,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1862423824B4859300A4A6CB /* SprintsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintsView.swift; sourceTree = "<group>"; };
+		1862423A24B485BA00A4A6CB /* StoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesView.swift; sourceTree = "<group>"; };
+		1862423C24B485E400A4A6CB /* StoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryDetailView.swift; sourceTree = "<group>"; };
 		18FE758A24A23E670003C76E /* RunningOrder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RunningOrder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18FE758D24A23E670003C76E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		18FE758F24A23E670003C76E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		18FE758F24A23E670003C76E /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		18FE759124A23E680003C76E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		18FE759424A23E680003C76E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		18FE759724A23E680003C76E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -99,7 +105,10 @@
 			isa = PBXGroup;
 			children = (
 				18FE758D24A23E670003C76E /* AppDelegate.swift */,
-				18FE758F24A23E670003C76E /* ContentView.swift */,
+				18FE758F24A23E670003C76E /* MainView.swift */,
+				1862423824B4859300A4A6CB /* SprintsView.swift */,
+				1862423A24B485BA00A4A6CB /* StoriesView.swift */,
+				1862423C24B485E400A4A6CB /* StoryDetailView.swift */,
 				18FE759124A23E680003C76E /* Assets.xcassets */,
 				18FE759624A23E680003C76E /* Main.storyboard */,
 				18FE759924A23E680003C76E /* Info.plist */,
@@ -266,7 +275,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18FE759024A23E670003C76E /* ContentView.swift in Sources */,
+				1862423D24B485E400A4A6CB /* StoryDetailView.swift in Sources */,
+				1862423B24B485BA00A4A6CB /* StoriesView.swift in Sources */,
+				18FE759024A23E670003C76E /* MainView.swift in Sources */,
+				1862423924B4859300A4A6CB /* SprintsView.swift in Sources */,
 				18FE758E24A23E670003C76E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

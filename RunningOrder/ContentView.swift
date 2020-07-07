@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  MainView.swift
 //  RunningOrder
 //
 //  Created by Clément Nonn on 23/06/2020.
@@ -8,16 +8,36 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct MainView: View {
     var body: some View {
-        Text("Hello, World!")
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        NavigationView {
+            List {
+                Section(header: Text("Active Sprints")) {
+                    Text("Hello, World!")
+                }
+
+                Section(header: Text("Old Sprints")) {
+                    Text("Hello, World!")
+                }
+            }.listStyle(SidebarListStyle())
+
+            HStack {
+                List {
+                    Section(header: Text("Stories")) {
+                        Text("Hello, World!")
+                    }
+                }.frame(minWidth: 100,  maxWidth: 200)
+
+                Text("toto")
+            }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+        }
+        .frame(maxWidth: .infinity, idealHeight: 100, maxHeight: .infinity, alignment: .leading)
     }
 }
 
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        MainView()
     }
 }
