@@ -33,7 +33,7 @@ struct NewSprintView: View {
     private func createSprint() {
         let sprint = Sprint(name: name, stories: [])
         self.createdSprint = sprint
-        presentationMode.wrappedValue.dismiss()
+        dismiss()
     }
 }
 

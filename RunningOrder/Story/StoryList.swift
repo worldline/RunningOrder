@@ -1,5 +1,5 @@
 //
-//  StoriesView.swift
+//  StoryList.swift
 //  RunningOrder
 //
 //  Created by Clément Nonn on 07/07/2020.
@@ -12,7 +12,7 @@ extension Story: Identifiable {
     var id: String { ticketReference }
 }
 
-struct StoriesView: View {
+struct StoryList: View {
     @Binding var stories: [Story]
 
     var body: some View {
@@ -23,15 +23,14 @@ struct StoriesView: View {
                         Text(story.ticketReference)
                         Text(story.name)
                     }
-
                 }
             }
         }
     }
 }
 
-struct StoriesView_Previews: PreviewProvider {
+struct StoryList_Previews: PreviewProvider {
     static var previews: some View {
-        StoriesView(stories: .constant([]))
+        StoryList(stories: .constant(Story.Previews.stories))
     }
 }

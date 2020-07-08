@@ -21,16 +21,16 @@ struct MainView: View {
 
     var body: some View {
         NavigationView {
-            SprintsView(selectedSprint: $selectedSprint)
+            SprintList(selectedSprint: $selectedSprint)
                 .listStyle(SidebarListStyle())
 
             if selectedSprint != nil {
                 HSplitView {
-                    StoriesView(stories: storiesBinding)
+                    StoryList(stories: storiesBinding)
                         .listStyle(PlainListStyle())
                         .frame(minWidth: 100, maxWidth: 400, maxHeight: .infinity)
 
-                    StoryDetailView().frame(
+                    StoryDetail().frame(
                         maxWidth: .infinity,
                         maxHeight: .infinity,
                         alignment: .center
@@ -47,7 +47,7 @@ struct MainView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct MainView_Previews: PreviewProvider {
     static var previews: some View {
         MainView()
     }

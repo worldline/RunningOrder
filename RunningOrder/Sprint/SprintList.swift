@@ -1,5 +1,5 @@
 //
-//  SprintsView.swift
+//  SprintList.swift
 //  RunningOrder
 //
 //  Created by Clément Nonn on 07/07/2020.
@@ -12,7 +12,7 @@ extension Sprint: Identifiable {
     var id: String { self.name }
 }
 
-struct SprintsView: View {
+struct SprintList: View {
     @State private var sprints: [Sprint] = []
     @State private var showNewSprintModal = false
 
@@ -27,9 +27,7 @@ struct SprintsView: View {
                 }
 
                 Button(action: { self.showNewSprintModal.toggle() }) {
-                    HStack {
-                        Text("New Sprint")
-                    }
+                    Text("New Sprint")
                 }
             }
 
@@ -42,10 +40,10 @@ struct SprintsView: View {
     }
 }
 
-struct SprintsView_Previews: PreviewProvider {
+struct SprintList_Previews: PreviewProvider {
     static var previews: some View {
-        SprintsView(selectedSprint: .constant(nil))
+        SprintList(selectedSprint: .constant(nil))
             .listStyle(SidebarListStyle())
-        .frame(width: 250)
+            .frame(width: 250)
     }
 }
