@@ -18,7 +18,7 @@ struct MainView: View {
             selectedSprint?.stories = newStories
         }
     }
-    
+
     var body: some View {
         NavigationView {
             SprintsView(selectedSprint: $selectedSprint)
@@ -46,7 +46,6 @@ struct MainView: View {
         )
     }
 }
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

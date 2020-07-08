@@ -13,6 +13,5 @@ struct Story {
     let ticketReference: String
 }
 
-
 extension Story: Equatable { }
 extension Story: Hashable { }

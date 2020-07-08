@@ -26,7 +26,7 @@ struct MainView: View {
                     Section(header: Text("Stories")) {
                         Text("Hello, World!")
                     }
-                }.frame(minWidth: 100,  maxWidth: 200)
+                }.frame(minWidth: 100, maxWidth: 200)
 
                 Text("toto")
             }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
@@ -34,7 +34,6 @@ struct MainView: View {
         .frame(maxWidth: .infinity, idealHeight: 100, maxHeight: .infinity, alignment: .leading)
     }
 }
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

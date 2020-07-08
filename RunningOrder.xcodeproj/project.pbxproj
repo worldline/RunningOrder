@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1858275C24B4BD68008BE248 /* CustomWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1858275B24B4BD68008BE248 /* CustomWindow.swift */; };
+		1858275E24B4C38B008BE248 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1858275D24B4C38B008BE248 /* Array+Extensions.swift */; };
 		1862423924B4859300A4A6CB /* SprintsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862423824B4859300A4A6CB /* SprintsView.swift */; };
 		1862423B24B485BA00A4A6CB /* StoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862423A24B485BA00A4A6CB /* StoriesView.swift */; };
 		1862423D24B485E400A4A6CB /* StoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862423C24B485E400A4A6CB /* StoryDetailView.swift */; };
@@ -43,6 +44,7 @@
 
 /* Begin PBXFileReference section */
 		1858275B24B4BD68008BE248 /* CustomWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWindow.swift; sourceTree = "<group>"; };
+		1858275D24B4C38B008BE248 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		1862423824B4859300A4A6CB /* SprintsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintsView.swift; sourceTree = "<group>"; };
 		1862423A24B485BA00A4A6CB /* StoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesView.swift; sourceTree = "<group>"; };
 		1862423C24B485E400A4A6CB /* StoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryDetailView.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				18FE758D24A23E670003C76E /* AppDelegate.swift */,
 				1858275B24B4BD68008BE248 /* CustomWindow.swift */,
 				18FE758F24A23E670003C76E /* MainView.swift */,
+				1858275D24B4C38B008BE248 /* Array+Extensions.swift */,
 				1862423E24B489A800A4A6CB /* Sprint */,
 				1862424124B48A7C00A4A6CB /* Story */,
 				18FE759124A23E680003C76E /* Assets.xcassets */,
@@ -187,6 +190,7 @@
 				18FE758624A23E670003C76E /* Sources */,
 				18FE758724A23E670003C76E /* Frameworks */,
 				18FE758824A23E670003C76E /* Resources */,
+				1858275F24B4C3DA008BE248 /* Swiftlint */,
 			);
 			buildRules = (
 			);
@@ -305,12 +309,34 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1858275F24B4C3DA008BE248 /* Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Swiftlint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		18FE758624A23E670003C76E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				1862424324B48A8600A4A6CB /* Story.swift in Sources */,
+				1858275E24B4C38B008BE248 /* Array+Extensions.swift in Sources */,
 				1862423D24B485E400A4A6CB /* StoryDetailView.swift in Sources */,
 				1862423B24B485BA00A4A6CB /* StoriesView.swift in Sources */,
 				1862424724B48E9900A4A6CB /* NewSprintView.swift in Sources */,

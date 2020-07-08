@@ -1,0 +1,5 @@
+disabled_rules: # rule identifiers to exclude from running
+  - identifier_name
+  - line_length
+  - no_space_in_method_call
+  - multiple_closures_with_trailing_closure
