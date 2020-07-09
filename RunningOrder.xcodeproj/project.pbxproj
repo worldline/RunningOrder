@@ -7,13 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1858275C24B4BD68008BE248 /* CustomWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1858275B24B4BD68008BE248 /* CustomWindow.swift */; };
+		1858275E24B4C38B008BE248 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1858275D24B4C38B008BE248 /* Array+Extensions.swift */; };
+		1862423924B4859300A4A6CB /* SprintList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862423824B4859300A4A6CB /* SprintList.swift */; };
+		1862423B24B485BA00A4A6CB /* StoryList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862423A24B485BA00A4A6CB /* StoryList.swift */; };
+		1862423D24B485E400A4A6CB /* StoryDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862423C24B485E400A4A6CB /* StoryDetail.swift */; };
+		1862424024B489BB00A4A6CB /* Sprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862423F24B489BB00A4A6CB /* Sprint.swift */; };
+		1862424324B48A8600A4A6CB /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862424224B48A8600A4A6CB /* Story.swift */; };
+		1862424724B48E9900A4A6CB /* NewSprintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862424624B48E9900A4A6CB /* NewSprintView.swift */; };
+		18CDCDD624B4A49200043E1D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 18CDCDD824B4A49200043E1D /* Localizable.strings */; };
+		18F7918224B619B600FDCBEF /* Sprints_Previews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F7918124B619B600FDCBEF /* Sprints_Previews.swift */; };
+		18F7918424B61A5900FDCBEF /* Stories_Previews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F7918324B61A5900FDCBEF /* Stories_Previews.swift */; };
 		18FE758E24A23E670003C76E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FE758D24A23E670003C76E /* AppDelegate.swift */; };
-		18FE759024A23E670003C76E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FE758F24A23E670003C76E /* ContentView.swift */; };
+		18FE759024A23E670003C76E /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FE758F24A23E670003C76E /* MainView.swift */; };
 		18FE759224A23E680003C76E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18FE759124A23E680003C76E /* Assets.xcassets */; };
 		18FE759524A23E680003C76E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18FE759424A23E680003C76E /* Preview Assets.xcassets */; };
 		18FE759824A23E680003C76E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18FE759624A23E680003C76E /* Main.storyboard */; };
 		18FE75A424A23E680003C76E /* RunningOrderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FE75A324A23E680003C76E /* RunningOrderTests.swift */; };
-		18FE75AF24A23E680003C76E /* RunningOrderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FE75AE24A23E680003C76E /* RunningOrderUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,9 +44,22 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1858275B24B4BD68008BE248 /* CustomWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWindow.swift; sourceTree = "<group>"; };
+		1858275D24B4C38B008BE248 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+		1862423824B4859300A4A6CB /* SprintList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintList.swift; sourceTree = "<group>"; };
+		1862423A24B485BA00A4A6CB /* StoryList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryList.swift; sourceTree = "<group>"; };
+		1862423C24B485E400A4A6CB /* StoryDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryDetail.swift; sourceTree = "<group>"; };
+		1862423F24B489BB00A4A6CB /* Sprint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sprint.swift; sourceTree = "<group>"; };
+		1862424224B48A8600A4A6CB /* Story.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Story.swift; sourceTree = "<group>"; };
+		1862424624B48E9900A4A6CB /* NewSprintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSprintView.swift; sourceTree = "<group>"; };
+		18CDCDD724B4A49200043E1D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		18CDCDD924B4A4A500043E1D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
+		18CDCDDA24B4A4A500043E1D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		18F7918124B619B600FDCBEF /* Sprints_Previews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sprints_Previews.swift; sourceTree = "<group>"; };
+		18F7918324B61A5900FDCBEF /* Stories_Previews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stories_Previews.swift; sourceTree = "<group>"; };
 		18FE758A24A23E670003C76E /* RunningOrder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RunningOrder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18FE758D24A23E670003C76E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		18FE758F24A23E670003C76E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		18FE758F24A23E670003C76E /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		18FE759124A23E680003C76E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		18FE759424A23E680003C76E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		18FE759724A23E680003C76E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -75,6 +98,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1862423E24B489A800A4A6CB /* Sprint */ = {
+			isa = PBXGroup;
+			children = (
+				1862423824B4859300A4A6CB /* SprintList.swift */,
+				1862423F24B489BB00A4A6CB /* Sprint.swift */,
+				1862424624B48E9900A4A6CB /* NewSprintView.swift */,
+			);
+			path = Sprint;
+			sourceTree = "<group>";
+		};
+		1862424124B48A7C00A4A6CB /* Story */ = {
+			isa = PBXGroup;
+			children = (
+				1862423A24B485BA00A4A6CB /* StoryList.swift */,
+				1862423C24B485E400A4A6CB /* StoryDetail.swift */,
+				1862424224B48A8600A4A6CB /* Story.swift */,
+			);
+			path = Story;
+			sourceTree = "<group>";
+		};
 		18FE758124A23E670003C76E = {
 			isa = PBXGroup;
 			children = (
@@ -99,8 +142,13 @@
 			isa = PBXGroup;
 			children = (
 				18FE758D24A23E670003C76E /* AppDelegate.swift */,
-				18FE758F24A23E670003C76E /* ContentView.swift */,
+				1858275B24B4BD68008BE248 /* CustomWindow.swift */,
+				18FE758F24A23E670003C76E /* MainView.swift */,
+				1858275D24B4C38B008BE248 /* Array+Extensions.swift */,
+				1862423E24B489A800A4A6CB /* Sprint */,
+				1862424124B48A7C00A4A6CB /* Story */,
 				18FE759124A23E680003C76E /* Assets.xcassets */,
+				18CDCDD824B4A49200043E1D /* Localizable.strings */,
 				18FE759624A23E680003C76E /* Main.storyboard */,
 				18FE759924A23E680003C76E /* Info.plist */,
 				18FE759A24A23E680003C76E /* RunningOrder.entitlements */,
@@ -113,6 +161,8 @@
 			isa = PBXGroup;
 			children = (
 				18FE759424A23E680003C76E /* Preview Assets.xcassets */,
+				18F7918124B619B600FDCBEF /* Sprints_Previews.swift */,
+				18F7918324B61A5900FDCBEF /* Stories_Previews.swift */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -145,6 +195,7 @@
 				18FE758624A23E670003C76E /* Sources */,
 				18FE758724A23E670003C76E /* Frameworks */,
 				18FE758824A23E670003C76E /* Resources */,
+				1858275F24B4C3DA008BE248 /* Swiftlint */,
 			);
 			buildRules = (
 			);
@@ -221,6 +272,7 @@
 			knownRegions = (
 				en,
 				Base,
+				fr,
 			);
 			mainGroup = 18FE758124A23E670003C76E;
 			productRefGroup = 18FE758B24A23E670003C76E /* Products */;
@@ -240,6 +292,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				18FE759824A23E680003C76E /* Main.storyboard in Resources */,
+				18CDCDD624B4A49200043E1D /* Localizable.strings in Resources */,
 				18FE759524A23E680003C76E /* Preview Assets.xcassets in Resources */,
 				18FE759224A23E680003C76E /* Assets.xcassets in Resources */,
 			);
@@ -261,13 +314,44 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1858275F24B4C3DA008BE248 /* Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Swiftlint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		18FE758624A23E670003C76E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18FE759024A23E670003C76E /* ContentView.swift in Sources */,
+				1862424324B48A8600A4A6CB /* Story.swift in Sources */,
+				1858275E24B4C38B008BE248 /* Array+Extensions.swift in Sources */,
+				1862423D24B485E400A4A6CB /* StoryDetail.swift in Sources */,
+				1862423B24B485BA00A4A6CB /* StoryList.swift in Sources */,
+				1862424724B48E9900A4A6CB /* NewSprintView.swift in Sources */,
+				18FE759024A23E670003C76E /* MainView.swift in Sources */,
+				1862423924B4859300A4A6CB /* SprintList.swift in Sources */,
 				18FE758E24A23E670003C76E /* AppDelegate.swift in Sources */,
+				1858275C24B4BD68008BE248 /* CustomWindow.swift in Sources */,
+				1862424024B489BB00A4A6CB /* Sprint.swift in Sources */,
+				18F7918424B61A5900FDCBEF /* Stories_Previews.swift in Sources */,
+				18F7918224B619B600FDCBEF /* Sprints_Previews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,10 +387,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		18CDCDD824B4A49200043E1D /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				18CDCDD724B4A49200043E1D /* en */,
+				18CDCDDA24B4A4A500043E1D /* fr */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		18FE759624A23E680003C76E /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				18FE759724A23E680003C76E /* Base */,
+				18CDCDD924B4A4A500043E1D /* fr */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -318,6 +412,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -378,6 +473,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -432,7 +528,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = RunningOrder/RunningOrder.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"RunningOrder/Preview Content\"";
@@ -447,7 +543,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = com.worldline.RunningOrder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Running Order Dev";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -457,11 +553,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = RunningOrder/RunningOrder.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"RunningOrder/Preview Content\"";
-				DEVELOPMENT_TEAM = 5GARSM38JL;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = RunningOrder/Info.plist;
@@ -472,7 +568,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = com.worldline.RunningOrder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Running Order Dev";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -483,7 +579,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 5GARSM38JL;
 				INFOPLIST_FILE = RunningOrderTests/Info.plist;
@@ -495,6 +591,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = com.worldline.RunningOrderTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RunningOrder.app/Contents/MacOS/RunningOrder";
 			};
@@ -505,10 +602,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 5GARSM38JL;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = RunningOrderTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -518,6 +615,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = com.worldline.RunningOrderTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RunningOrder.app/Contents/MacOS/RunningOrder";
 			};
@@ -527,10 +625,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 5GARSM38JL;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = RunningOrderUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -539,6 +637,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.worldline.RunningOrderUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = RunningOrder;
 			};
@@ -548,10 +647,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 5GARSM38JL;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = RunningOrderUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -560,6 +659,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.worldline.RunningOrderUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = RunningOrder;
 			};

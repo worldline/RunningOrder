@@ -1,0 +1,24 @@
+/* 
+  Localizable.strings
+  RunningOrder
+
+  Created by Clément Nonn on 07/07/2020.
+  Copyright © 2020 Worldline. All rights reserved.
+*/
+
+// SprintsView - Section Header
+"Active Sprints" = "Active Sprints";
+// SprintsView - Button
+"New Sprint" = "New Sprint";
+// SprintsView - Section Header
+"Old Sprints" = "Old Sprints";
+
+// NewSprintView - Textfield Name
+"Sprint Name" = "Sprint Name";
+
+// StoriesView - Section Header
+"Stories" = "Stories";
+
+// Common
+"Cancel" = "Cancel";
+"Create" = "Create";
