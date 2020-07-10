@@ -5,7 +5,8 @@
   Created by Clément Nonn on 07/07/2020.
   Copyright © 2020 Worldline. All rights reserved.
 */
-
+// CustomWindow - ToolBar Button
+"Add a story" = "Add a story";
 // SprintsView - Section Header
 "Active Sprints" = "Active Sprints";
 // SprintsView - Button
