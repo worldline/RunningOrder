@@ -31,26 +31,25 @@ final class AppWindowController: NSWindowController, NSToolbarDelegate {
 
     func toolbar(_ toolbar: NSToolbar, itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier, willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
 
-        var toolbarItem: NSToolbarItem = NSToolbarItem()
+        var toolbarItem = NSToolbarItem()
 
-        if itemIdentifier == NSToolbarItem.Identifier.addStory {
-            toolbarItem = customToolbarButtonItem(itemForItemIdentifier: itemIdentifier.rawValue,
+        if itemIdentifier == .addStory {
+            toolbarItem = customToolbarButtonItem(itemIdentifier: itemIdentifier.rawValue,
                                                   label: NSLocalizedString("Add a story", comment: ""),
                                                   paletteLabel: NSLocalizedString("Add a story", comment: ""),
                                                   toolTip: NSLocalizedString("Add a story", comment: ""),
                                                   iconImageName: NSImage.addTemplateName,
-                                                  action: #selector(addStoryActionPlaceHolder))!
+                                                  action: #selector(addStoryActionPlaceHolder))
         }
 
         return toolbarItem
     }
 
     func toolbarWillAddItem(_ notification: Notification) {
-        let item = notification.userInfo!["item"] as? NSToolbarItem
-        if let item = item {
-            if item.itemIdentifier == NSToolbarItem.Identifier.toggleSidebar {
-                item.action = #selector(toggleSidebar)
-            }
+        guard let userInfo = notification.userInfo else { return }
+        let item = userInfo["item"] as? NSToolbarItem
+        if let item = item, item.itemIdentifier == .toggleSidebar {
+            item.action = #selector(toggleSidebar)
         }
     }
 
@@ -61,12 +60,12 @@ final class AppWindowController: NSWindowController, NSToolbarDelegate {
     }
 
     func customToolbarButtonItem(
-        itemForItemIdentifier itemIdentifier: String,
+        itemIdentifier: String,
         label: String,
         paletteLabel: String,
         toolTip: String,
         iconImageName: String,
-        action: Selector) -> NSToolbarItem? {
+        action: Selector) -> NSToolbarItem {
 
         let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier(rawValue: itemIdentifier))
 
@@ -98,5 +97,5 @@ final class AppWindowController: NSWindowController, NSToolbarDelegate {
 }
 
 private extension NSToolbarItem.Identifier {
-    static let addStory: NSToolbarItem.Identifier = NSToolbarItem.Identifier(rawValue: "AddStory")
+    static let addStory = NSToolbarItem.Identifier(rawValue: "AddStory")
 }
