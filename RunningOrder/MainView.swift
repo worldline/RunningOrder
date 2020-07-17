@@ -9,38 +9,19 @@
 import SwiftUI
 
 struct MainView: View {
-    @State private var selectedSprint: Sprint?
-
-    var storiesBinding: Binding<[Story]> {
-        Binding {
-            selectedSprint?.stories ?? []
-        } set: { newStories in
-            selectedSprint?.stories = newStories
-        }
-    }
 
     var body: some View {
         NavigationView {
-            SprintList(selectedSprint: $selectedSprint)
+            SprintList()
                 .listStyle(SidebarListStyle())
 
-            if selectedSprint != nil {
-                HSplitView {
-                    StoryList(stories: storiesBinding)
-                        .listStyle(PlainListStyle())
-                        .frame(minWidth: 100, maxWidth: 400, maxHeight: .infinity)
-
-                    StoryDetail().frame(
-                        maxWidth: .infinity,
-                        maxHeight: .infinity,
-                        alignment: .center
-                    )
-                }
-            }
+            Text("Select a Sprint")
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .frame(
+            minWidth: 800,
             maxWidth: .infinity,
-            idealHeight: 100,
+            minHeight: 400,
             maxHeight: .infinity,
             alignment: .leading
         )

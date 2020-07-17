@@ -9,16 +9,20 @@
 "Add a story" = "Ajouter une story";
 // SprintsView - Section Header
 "Active Sprints" = "Sprints actifs";
-// SprintsView - Button
+// SprintList - Button
 "New Sprint" = "Nouveau Sprint";
-// SprintsView - Section Header
+// SprintList - Section Header
 "Old Sprints" = "Anciens Sprints";
+// SprintList - Placer holder
+"Select a Sprint" = "Sélectionner un Sprint";
 
 // NewSprintView - Textfield Name
 "Sprint Name" = "Nom du Sprint";
 
-// StoriesView - Section Header
+// StoryList - Section Header
 "Stories" = "Stories";
+// SprintList - Placer holder
+"Select a Story" = "Sélectionner une Story";
 
 // Common
 "Cancel" = "Annuler";

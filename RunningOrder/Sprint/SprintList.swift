@@ -16,24 +16,26 @@ struct SprintList: View {
     @State private var sprints: [Sprint] = []
     @State private var showNewSprintModal = false
 
-    @Binding var selectedSprint: Sprint?
-
     var body: some View {
-        List(selection: $selectedSprint) {
+        List {
             Section(header: Text("Active Sprints")) {
                 ForEach(sprints) { sprint in
-                    Text(sprint.name)
-                        .tag(sprint)
-                }
-
-                Button(action: { self.showNewSprintModal.toggle() }) {
-                    Text("New Sprint")
+                    NavigationLink(
+                        destination: StoryList(stories: sprint.stories)
+                            .listStyle(PlainListStyle()),
+                        label: {
+                            Text(sprint.name)
+                        })
                 }
             }
 
+            Button(action: { self.showNewSprintModal.toggle() }) {
+                Text("New Sprint")
+            }
             Section(header: Text("Old Sprints")) {
                 EmptyView()
             }
+
         }.sheet(isPresented: $showNewSprintModal) {
             NewSprintView(createdSprint: self.$sprints.appendedElement)
         }
@@ -42,7 +44,7 @@ struct SprintList: View {
 
 struct SprintList_Previews: PreviewProvider {
     static var previews: some View {
-        SprintList(selectedSprint: .constant(nil))
+        SprintList()
             .listStyle(SidebarListStyle())
             .frame(width: 250)
     }

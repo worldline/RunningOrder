@@ -9,16 +9,20 @@
 "Add a story" = "Add a story";
 // SprintsView - Section Header
 "Active Sprints" = "Active Sprints";
-// SprintsView - Button
+// SprintList - Button
 "New Sprint" = "New Sprint";
-// SprintsView - Section Header
+// SprintList - Section Header
 "Old Sprints" = "Old Sprints";
+// SprintList - Placer holder
+"Select a Sprint" = "Select a Sprint";
 
 // NewSprintView - Textfield Name
 "Sprint Name" = "Sprint Name";
 
-// StoriesView - Section Header
+// StoryList - Section Header
 "Stories" = "Stories";
+// SprintList - Placer holder
+"Select a Story" = "Select a Story";
 
 // Common
 "Cancel" = "Cancel";
