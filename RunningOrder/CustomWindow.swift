@@ -115,8 +115,8 @@ private extension NSToolbarItem.Identifier {
 class CustomToolbarItem: NSToolbarItem {
 
     override func validate() {
-        if let control = self.view as? NSControl, let action = self.action,
-           let validator = NSApp.target(forAction: action, to: self.target, from: self) {
+        if let control = view as? NSControl, let action = action,
+           let validator = NSApp.target(forAction: action, to: target, from: self) {
             switch validator {
             case let validator as NSUserInterfaceValidations:
                 control.isEnabled = validator.validateUserInterfaceItem(self)
