@@ -9,13 +9,19 @@
 import SwiftUI
 
 struct StoryDetail: View {
+    let story: Story
+
     var body: some View {
-        Text("Hello World!").padding()
+        VStack {
+            Text(story.ticketReference)
+            Text(story.name)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
 struct StoryDetail_Previews: PreviewProvider {
     static var previews: some View {
-        StoryDetail()
+        StoryDetail(story: Story.Previews.stories[0])
     }
 }
