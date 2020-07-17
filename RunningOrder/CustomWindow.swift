@@ -10,7 +10,16 @@ import Cocoa
 import SwiftUI
 
 // toolbar guidance : https://developer.apple.com/documentation/appkit/touch_bar/integrating_a_toolbar_and_touch_bar_into_your_app
-final class AppWindowController: NSWindowController, NSToolbarDelegate {
+final class AppWindowController: NSWindowController {
+
+    override func windowDidLoad() {
+        super.windowDidLoad()
+
+        window?.contentViewController = NSHostingController(rootView: MainView())
+    }
+}
+
+extension AppWindowController: NSToolbarDelegate, NSToolbarItemValidation {
     func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
         [
             .toggleSidebar,
@@ -53,10 +62,13 @@ final class AppWindowController: NSWindowController, NSToolbarDelegate {
         }
     }
 
-    override func windowDidLoad() {
-        super.windowDidLoad()
-
-        window?.contentViewController = NSHostingController(rootView: MainView())
+    func validateToolbarItem(_ item: NSToolbarItem) -> Bool {
+        switch item.itemIdentifier {
+        case .addStory:
+            return false // Implement addStory button validation
+        default:
+            return true
+        }
     }
 
     func customToolbarButtonItem(
@@ -67,7 +79,7 @@ final class AppWindowController: NSWindowController, NSToolbarDelegate {
         iconImageName: String,
         action: Selector) -> NSToolbarItem {
 
-        let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier(rawValue: itemIdentifier))
+        let toolbarItem = CustomToolbarItem(itemIdentifier: NSToolbarItem.Identifier(rawValue: itemIdentifier))
 
         let iconImage = NSImage(named: iconImageName)
 
@@ -98,4 +110,23 @@ final class AppWindowController: NSWindowController, NSToolbarDelegate {
 
 private extension NSToolbarItem.Identifier {
     static let addStory = NSToolbarItem.Identifier(rawValue: "AddStory")
+}
+
+class CustomToolbarItem: NSToolbarItem {
+
+    override func validate() {
+        if let control = self.view as? NSControl, let action = self.action,
+           let validator = NSApp.target(forAction: action, to: self.target, from: self) {
+            switch validator {
+            case let validator as NSUserInterfaceValidations:
+                control.isEnabled = validator.validateUserInterfaceItem(self)
+            case let validator as NSToolbarItemValidation:
+                control.isEnabled = validator.validateToolbarItem(self)
+            default:
+                super.validate()
+            }
+        } else {
+            super.validate()
+        }
+    }
 }
