@@ -13,24 +13,31 @@ extension Story: Identifiable {
 }
 
 struct StoryList: View {
-    @Binding var stories: [Story]
+     let stories: [Story]
 
     var body: some View {
-        List {
-            Section(header: Text("Stories")) {
-                ForEach(stories) { story in
-                    VStack(alignment: .leading) {
-                        Text(story.ticketReference)
-                        Text(story.name)
+        NavigationView {
+            List {
+                Section(header: Text("Stories")) {
+                    ForEach(stories) { story in
+                        NavigationLink(
+                            destination: StoryDetail(story: story),
+                            label: {
+                                Text(story.name)
+                            })
                     }
                 }
             }
+            .frame(minWidth: 100, maxWidth: 200, maxHeight: .infinity)
+
+            Text("Select a Story")
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 }
 
 struct StoryList_Previews: PreviewProvider {
     static var previews: some View {
-        StoryList(stories: .constant(Story.Previews.stories))
+        StoryList(stories: Story.Previews.stories)
     }
 }
