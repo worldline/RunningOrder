@@ -13,31 +13,45 @@ extension Sprint: Identifiable {
 }
 
 struct SprintList: View {
-    @State private var sprints: [Sprint] = []
+    @State private var sprints: [Sprint] = [Sprint.Previews.sprints[0]]
     @State private var showNewSprintModal = false
 
     var body: some View {
-        List {
-            Section(header: Text("Active Sprints")) {
-                ForEach(sprints) { sprint in
-                    NavigationLink(
-                        destination: StoryList(stories: sprint.stories)
-                            .listStyle(PlainListStyle()),
-                        label: {
-                            Text(sprint.name)
-                        })
+        VStack(alignment: .leading) {
+            List {
+                Section(header: Text("Active Sprints")) {
+                    ForEach(sprints) { sprint in
+                        NavigationLink(
+                            destination: StoryList(stories: sprint.stories)
+                                .listStyle(PlainListStyle()),
+                            label: {
+                                HStack {
+                                    SprintNumber(number: sprint.number, color: sprint.color)
+                                    Text(sprint.name)
+                                }
+                            })
+                    }
                 }
+                Section(header: Text("Old Sprints")) {
+                    EmptyView()
+                }
+            }.sheet(isPresented: $showNewSprintModal) {
+                NewSprintView(createdSprint: self.$sprints.appendedElement)
             }
 
             Button(action: { self.showNewSprintModal.toggle() }) {
-                Text("New Sprint")
+                HStack {
+                    Image(nsImage: NSImage(named: NSImage.addTemplateName)!)
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(.white)
+                        .background(Color(0x1A7AFF))
+                        .clipShape(Circle())
+                    Text("New Sprint")
+                        .foregroundColor(Color(0x1A7AFF))
+                }
             }
-            Section(header: Text("Old Sprints")) {
-                EmptyView()
-            }
-
-        }.sheet(isPresented: $showNewSprintModal) {
-            NewSprintView(createdSprint: self.$sprints.appendedElement)
+            .padding([.leading, .bottom], 5.0)
+            .buttonStyle(PlainButtonStyle())
         }
     }
 }
