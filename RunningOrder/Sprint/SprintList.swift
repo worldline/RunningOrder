@@ -13,7 +13,7 @@ extension Sprint: Identifiable {
 }
 
 struct SprintList: View {
-    @State private var sprints: [Sprint] = [Sprint.Previews.sprints[0]]
+    @State private var sprints: [Sprint] = []
     @State private var showNewSprintModal = false
 
     var body: some View {
@@ -26,7 +26,7 @@ struct SprintList: View {
                                 .listStyle(PlainListStyle()),
                             label: {
                                 HStack {
-                                    SprintNumber(number: sprint.number, color: sprint.color)
+                                    SprintNumber(number: sprint.number, colorIdentifier: sprint.colorIdentifier)
                                     Text(sprint.name)
                                 }
                             })
@@ -35,8 +35,6 @@ struct SprintList: View {
                 Section(header: Text("Old Sprints")) {
                     EmptyView()
                 }
-            }.sheet(isPresented: $showNewSprintModal) {
-                NewSprintView(createdSprint: self.$sprints.appendedElement)
             }
 
             Button(action: { self.showNewSprintModal.toggle() }) {
@@ -44,14 +42,16 @@ struct SprintList: View {
                     Image(nsImage: NSImage(named: NSImage.addTemplateName)!)
                         .frame(width: 20, height: 20)
                         .foregroundColor(.white)
-                        .background(Color(0x1A7AFF))
+                        .background(Color.accentColor)
                         .clipShape(Circle())
                     Text("New Sprint")
-                        .foregroundColor(Color(0x1A7AFF))
+                        .foregroundColor(Color.accentColor)
                 }
             }
-            .padding([.leading, .bottom], 5.0)
+            .padding(.all, 8.0)
             .buttonStyle(PlainButtonStyle())
+        }.sheet(isPresented: $showNewSprintModal) {
+            NewSprintView(createdSprint: self.$sprints.appendedElement)
         }
     }
 }

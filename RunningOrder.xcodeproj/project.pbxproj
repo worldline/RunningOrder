@@ -25,7 +25,6 @@
 		18FE759824A23E680003C76E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18FE759624A23E680003C76E /* Main.storyboard */; };
 		18FE75A424A23E680003C76E /* RunningOrderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FE75A324A23E680003C76E /* RunningOrderTests.swift */; };
 		E8EB954524C5CA0D00BC76E4 /* SprintNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EB954424C5CA0D00BC76E4 /* SprintNumber.swift */; };
-		E8EB954724C5CF2A00BC76E4 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EB954624C5CF2900BC76E4 /* Color+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,7 +73,6 @@
 		18FE75AE24A23E680003C76E /* RunningOrderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningOrderUITests.swift; sourceTree = "<group>"; };
 		18FE75B024A23E680003C76E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E8EB954424C5CA0D00BC76E4 /* SprintNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintNumber.swift; sourceTree = "<group>"; };
-		E8EB954624C5CF2900BC76E4 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,7 +148,6 @@
 				1858275B24B4BD68008BE248 /* CustomWindow.swift */,
 				18FE758F24A23E670003C76E /* MainView.swift */,
 				1858275D24B4C38B008BE248 /* Array+Extensions.swift */,
-				E8EB954624C5CF2900BC76E4 /* Color+Extensions.swift */,
 				1862423E24B489A800A4A6CB /* Sprint */,
 				1862424124B48A7C00A4A6CB /* Story */,
 				18FE759124A23E680003C76E /* Assets.xcassets */,
@@ -351,7 +348,6 @@
 				1862423D24B485E400A4A6CB /* StoryDetail.swift in Sources */,
 				1862423B24B485BA00A4A6CB /* StoryList.swift in Sources */,
 				1862424724B48E9900A4A6CB /* NewSprintView.swift in Sources */,
-				E8EB954724C5CF2A00BC76E4 /* Color+Extensions.swift in Sources */,
 				18FE759024A23E670003C76E /* MainView.swift in Sources */,
 				1862423924B4859300A4A6CB /* SprintList.swift in Sources */,
 				18FE758E24A23E670003C76E /* AppDelegate.swift in Sources */,
@@ -536,6 +532,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = RunningOrder/RunningOrder.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
@@ -561,6 +558,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = RunningOrder/RunningOrder.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;

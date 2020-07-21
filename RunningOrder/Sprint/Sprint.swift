@@ -12,7 +12,7 @@ import SwiftUI
 struct Sprint {
     let number: Int
     let name: String
-    let color: Color
+    let colorIdentifier: String
 
     var stories: [Story]
 }

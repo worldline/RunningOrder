@@ -12,6 +12,10 @@ struct NewSprintView: View {
     @State private var name: String = ""
     @State private var number: Int?
 
+    private var areAllFieldsFilled: Bool {
+        return number != nil && !name.isEmpty
+    }
+
     @Binding var createdSprint: Sprint?
     @Environment(\.presentationMode) var presentationMode
 
@@ -24,7 +28,7 @@ struct NewSprintView: View {
                 Button(action: dismiss) { Text("Cancel") }
                 Spacer()
                 Button(action: createSprint) { Text("Create") }
-                    .disabled(number == nil || name == "")
+                    .disabled(!areAllFieldsFilled)
             }
         }.padding()
     }
@@ -34,11 +38,9 @@ struct NewSprintView: View {
     }
 
     private func createSprint() {
-        if number != nil && name != "" {
-            let sprint = Sprint(number: number!, name: name, color: .init(0x2FBAD5), stories: [])
-            self.createdSprint = sprint
-            dismiss()
-        }
+        guard areAllFieldsFilled else { return }
+        self.createdSprint = Sprint(number: number!, name: name, colorIdentifier: "blue1", stories: [])
+        dismiss()
     }
 }
 
