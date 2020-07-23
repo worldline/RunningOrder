@@ -10,18 +10,25 @@ import SwiftUI
 
 struct NewSprintView: View {
     @State private var name: String = ""
+    @State private var number: Int?
+
+    private var areAllFieldsFilled: Bool {
+        return number != nil && !name.isEmpty
+    }
 
     @Binding var createdSprint: Sprint?
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         VStack {
+            TextField("Sprint Number", value: $number, formatter: NumberFormatter())
             TextField("Sprint Name", text: $name, onEditingChanged: { _ in }, onCommit: createSprint)
 
             HStack {
                 Button(action: dismiss) { Text("Cancel") }
                 Spacer()
                 Button(action: createSprint) { Text("Create") }
+                    .disabled(!areAllFieldsFilled)
             }
         }.padding()
     }
@@ -31,8 +38,8 @@ struct NewSprintView: View {
     }
 
     private func createSprint() {
-        let sprint = Sprint(name: name, stories: [])
-        self.createdSprint = sprint
+        guard areAllFieldsFilled else { return }
+        self.createdSprint = Sprint(number: number!, name: name, colorIdentifier: "blue1", stories: [])
         dismiss()
     }
 }

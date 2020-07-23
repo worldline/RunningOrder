@@ -18,6 +18,7 @@
 
 // NewSprintView - Textfield Name
 "Sprint Name" = "Sprint Name";
+"Sprint Number" = "Sprint Number";
 
 // StoryList - Section Header
 "Stories" = "Stories";

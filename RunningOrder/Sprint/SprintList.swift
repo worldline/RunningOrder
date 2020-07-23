@@ -17,25 +17,39 @@ struct SprintList: View {
     @State private var showNewSprintModal = false
 
     var body: some View {
-        List {
-            Section(header: Text("Active Sprints")) {
-                ForEach(sprints) { sprint in
-                    NavigationLink(
-                        destination: StoryList(stories: sprint.stories)
-                            .listStyle(PlainListStyle()),
-                        label: {
-                            Text(sprint.name)
-                        })
+        VStack(alignment: .leading) {
+            List {
+                Section(header: Text("Active Sprints")) {
+                    ForEach(sprints) { sprint in
+                        NavigationLink(
+                            destination: StoryList(stories: sprint.stories)
+                                .listStyle(PlainListStyle()),
+                            label: {
+                                HStack {
+                                    SprintNumber(number: sprint.number, colorIdentifier: sprint.colorIdentifier)
+                                    Text(sprint.name)
+                                }
+                            })
+                    }
+                }
+                Section(header: Text("Old Sprints")) {
+                    EmptyView()
                 }
             }
 
             Button(action: { self.showNewSprintModal.toggle() }) {
-                Text("New Sprint")
+                HStack {
+                    Image(nsImage: NSImage(named: NSImage.addTemplateName)!)
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(.white)
+                        .background(Color.accentColor)
+                        .clipShape(Circle())
+                    Text("New Sprint")
+                        .foregroundColor(Color.accentColor)
+                }
             }
-            Section(header: Text("Old Sprints")) {
-                EmptyView()
-            }
-
+            .padding(.all, 8.0)
+            .buttonStyle(PlainButtonStyle())
         }.sheet(isPresented: $showNewSprintModal) {
             NewSprintView(createdSprint: self.$sprints.appendedElement)
         }

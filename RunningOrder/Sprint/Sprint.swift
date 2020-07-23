@@ -7,9 +7,12 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct Sprint {
+    let number: Int
     let name: String
+    let colorIdentifier: String
 
     var stories: [Story]
 }
