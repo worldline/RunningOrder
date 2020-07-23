@@ -22,12 +22,14 @@ struct InlineEditableList: View { // Change name ???
     var body: some View {
         VStack {
 
-            HStack(alignment: .top) {
-                Text(title).foregroundColor(.gray)
+            HStack {
+                Text(title).foregroundColor(.gray).padding(.all, 6)
                 Spacer()
-                AddButton(action: addTextfieldValue)
+                if hovered {
+                    AddButton(action: addTextfieldValue)
+                        .padding(.horizontal, 10)
+                }
             }
-            .padding(.horizontal, 10)
 
             ForEach(values.indices, id: \.self) { index in
                 ZStack(alignment: .trailing) {
@@ -41,9 +43,11 @@ struct InlineEditableList: View { // Change name ???
                             values.remove(at: index)
                         }
                     })
-                    DeleteButton(action: {
-                        values.remove(at: index)
-                    }).padding(.horizontal, 10)
+                    if hovered {
+                        DeleteButton(action: {
+                            values.remove(at: index)
+                        }).padding(.horizontal, 10)
+                    }
                 }
             }
         }
@@ -64,7 +68,7 @@ struct InlineEditableList: View { // Change name ???
 
 struct InlineTexField_Previews: PreviewProvider {
     static var previews: some View {
-        InlineEditableList(title: "A Title", placeholder: "A Placeholder for all my fields", values: .constant(["value1", "value2"]))
+        InlineEditableList(title: "A Title", placeholder: "A Placeholder for all my fields", values: .constant(["value1", "value2", ""]))
     }
 }
 
@@ -85,11 +89,11 @@ struct FocusableTextField: View {
 
     var body: some View {
         FocusableNSTextFieldRepresentable(placeholder: placeholder, value: $value, isFocused: $isFocused, onCommit: onCommit)
-            .padding(.all, 10)
+            .padding(.all, 5)
             // on focus background
-            .background(Capsule().foregroundColor(Color.white.opacity(isFocused ? 1 : 0)))
+            .background(RoundedRectangle(cornerRadius: 10).foregroundColor(Color.white.opacity(isFocused ? 1 : 0)))
             // on focus border
-            .overlay(Capsule().strokeBorder(Color.blue, lineWidth: 1.0, antialiased: true).opacity(isFocused ? 1 : 0))
+            .overlay(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.blue, lineWidth: 1.0, antialiased: true).opacity(isFocused ? 1 : 0))
             .animation(.easeIn)
             .focusable()
     }
