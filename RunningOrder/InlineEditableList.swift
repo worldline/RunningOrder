@@ -25,10 +25,9 @@ struct InlineEditableList: View { // Change name ???
             HStack {
                 Text(title).foregroundColor(.gray).padding(.all, 6)
                 Spacer()
-                if hovered {
-                    AddButton(action: addTextfieldValue)
-                        .padding(.horizontal, 10)
-                }
+                RoundButton(imageName: NSImage.addTemplateName, color: Color.blue, action: addTextfieldValue)
+                    .frame(width: 20, height: 20)
+                    .padding(.horizontal, 10)
             }
 
             ForEach(values.indices, id: \.self) { index in
@@ -43,16 +42,16 @@ struct InlineEditableList: View { // Change name ???
                             values.remove(at: index)
                         }
                     })
-                    if hovered {
-                        DeleteButton(action: {
+                        RoundButton(imageName: NSImage.removeTemplateName, color: Color.red, action: {
                             values.remove(at: index)
-                        }).padding(.horizontal, 10)
-                    }
+                        })
+                        .frame(width: 20, height: 20)
+                        .padding(.horizontal, 10)
                 }
             }
         }
         .padding()
-        .background(hovered ? Color("gray1") : Color.white)
+        .background(hovered ? Color("gray1") : Color.clear)
         .cornerRadius(5)
         .onHover { isHovered in
             withAnimation(.easeInOut) {
@@ -69,32 +68,5 @@ struct InlineEditableList: View { // Change name ???
 struct InlineTexField_Previews: PreviewProvider {
     static var previews: some View {
         InlineEditableList(title: "A Title", placeholder: "A Placeholder for all my fields", values: .constant(["value1", "value2", ""]))
-    }
-}
-
-struct FocusableTextField: View {
-
-    let placeholder: String
-
-    @State private var isFocused = false
-    @Binding var value: String
-
-    let onCommit: () -> Void
-
-    init(_ placeholder: String, value: Binding<String>, onCommit: @escaping () -> Void) {
-        self.placeholder = placeholder
-        self._value = value
-        self.onCommit = onCommit
-    }
-
-    var body: some View {
-        FocusableNSTextFieldRepresentable(placeholder: placeholder, value: $value, isFocused: $isFocused, onCommit: onCommit)
-            .padding(.all, 5)
-            // on focus background
-            .background(RoundedRectangle(cornerRadius: 10).foregroundColor(Color.white.opacity(isFocused ? 1 : 0)))
-            // on focus border
-            .overlay(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.blue, lineWidth: 1.0, antialiased: true).opacity(isFocused ? 1 : 0))
-            .animation(.easeIn)
-            .focusable()
     }
 }
