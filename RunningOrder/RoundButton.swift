@@ -21,7 +21,7 @@ struct RoundButton: View {
                 .padding(5)
                 .foregroundColor(.white)
         }
-        .background(color) // TODO Replace with accent color
+        .background(color)
         .buttonStyle(PlainButtonStyle())
         .clipShape(Circle())
     }

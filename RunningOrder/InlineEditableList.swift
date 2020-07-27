@@ -25,7 +25,7 @@ struct InlineEditableList: View { // Change name ???
             HStack {
                 Text(title).foregroundColor(.gray).padding(.all, 6)
                 Spacer()
-                RoundButton(imageName: NSImage.addTemplateName, color: Color.blue, action: addTextfieldValue)
+                RoundButton(imageName: NSImage.addTemplateName, color: Color.accentColor, action: addTextfieldValue)
                     .frame(width: 20, height: 20)
                     .padding(.horizontal, 10)
             }

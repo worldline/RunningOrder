@@ -29,7 +29,7 @@ struct FocusableTextField: View {
             // on focus background
             .background(RoundedRectangle(cornerRadius: 10).foregroundColor(Color.white.opacity(isFocused ? 1 : 0)))
             // on focus border
-            .overlay(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.blue, lineWidth: 1.0, antialiased: true).opacity(isFocused ? 1 : 0))
+            .overlay(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.accentColor, lineWidth: 1.0, antialiased: true).opacity(isFocused ? 1 : 0))
             .animation(.easeIn)
             .focusable()
     }
