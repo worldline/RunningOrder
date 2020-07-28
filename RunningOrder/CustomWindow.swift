@@ -12,10 +12,12 @@ import SwiftUI
 // toolbar guidance : https://developer.apple.com/documentation/appkit/touch_bar/integrating_a_toolbar_and_touch_bar_into_your_app
 final class AppWindowController: NSWindowController {
 
+    let toolbarManager = ToolbarManager()
+
     override func windowDidLoad() {
         super.windowDidLoad()
 
-        window?.contentViewController = NSHostingController(rootView: MainView())
+        window?.contentViewController = NSHostingController(rootView: MainView().environmentObject(toolbarManager))
     }
 }
 
@@ -48,7 +50,7 @@ extension AppWindowController: NSToolbarDelegate, NSToolbarItemValidation {
                                                   paletteLabel: NSLocalizedString("Add a story", comment: ""),
                                                   toolTip: NSLocalizedString("Add a story", comment: ""),
                                                   iconImageName: NSImage.addTemplateName,
-                                                  action: #selector(addStoryActionPlaceHolder))
+                                                  action: #selector(addStoryAction))
         }
 
         return toolbarItem
@@ -63,12 +65,7 @@ extension AppWindowController: NSToolbarDelegate, NSToolbarItemValidation {
     }
 
     func validateToolbarItem(_ item: NSToolbarItem) -> Bool {
-        switch item.itemIdentifier {
-        case .addStory:
-            return false // Implement addStory button validation
-        default:
-            return true
-        }
+        toolbarManager.validateToolbarItem(item)
     }
 
     func customToolbarButtonItem(
@@ -103,12 +100,12 @@ extension AppWindowController: NSToolbarDelegate, NSToolbarItemValidation {
         ((window?.contentView?.subviews.first?.subviews.first?.subviews.first as? NSSplitView)?.delegate as? NSSplitViewController)?.toggleSidebar(self)
     }
 
-    @objc func addStoryActionPlaceHolder() {
-        print("addStory toolbarbutton clicked")
+    @objc func addStoryAction() {
+        toolbarManager.addStory()
     }
 }
 
-private extension NSToolbarItem.Identifier {
+extension NSToolbarItem.Identifier {
     static let addStory = NSToolbarItem.Identifier(rawValue: "AddStory")
 }
 

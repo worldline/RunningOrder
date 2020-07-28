@@ -15,6 +15,7 @@ extension Sprint: Identifiable {
 struct SprintList: View {
     @State private var sprints: [Sprint] = []
     @State private var showNewSprintModal = false
+    @EnvironmentObject var toolbarManager: ToolbarManager
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -22,7 +23,7 @@ struct SprintList: View {
                 Section(header: Text("Active Sprints")) {
                     ForEach(sprints) { sprint in
                         NavigationLink(
-                            destination: StoryList(stories: sprint.stories)
+                            destination: StoryList(header: "Sprint \(sprint.number) - \(sprint.name)", stories: sprint.stories)
                                 .listStyle(PlainListStyle()),
                             label: {
                                 HStack {
