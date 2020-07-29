@@ -24,10 +24,10 @@
 		18FE759524A23E680003C76E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18FE759424A23E680003C76E /* Preview Assets.xcassets */; };
 		18FE759824A23E680003C76E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18FE759624A23E680003C76E /* Main.storyboard */; };
 		18FE75A424A23E680003C76E /* RunningOrderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FE75A324A23E680003C76E /* RunningOrderTests.swift */; };
-		E8EB954524C5CA0D00BC76E4 /* SprintNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EB954424C5CA0D00BC76E4 /* SprintNumber.swift */; };
 		E81BBFE624CAD21100DB289A /* FocusableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81BBFE524CAD21100DB289A /* FocusableTextField.swift */; };
 		E81BBFE824CB194B00DB289A /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81BBFE724CB194B00DB289A /* RoundButton.swift */; };
 		E8C7384924C98C2B0018AAEA /* FocusableNSTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C7384824C98C2B0018AAEA /* FocusableNSTextField.swift */; };
+		E8EB954524C5CA0D00BC76E4 /* SprintNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EB954424C5CA0D00BC76E4 /* SprintNumber.swift */; };
 		E8EB954924C5E23C00BC76E4 /* InlineEditableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EB954824C5E23C00BC76E4 /* InlineEditableList.swift */; };
 /* End PBXBuildFile section */
 
@@ -76,10 +76,10 @@
 		18FE75AA24A23E680003C76E /* RunningOrderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunningOrderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		18FE75AE24A23E680003C76E /* RunningOrderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningOrderUITests.swift; sourceTree = "<group>"; };
 		18FE75B024A23E680003C76E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E8EB954424C5CA0D00BC76E4 /* SprintNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintNumber.swift; sourceTree = "<group>"; };
 		E81BBFE524CAD21100DB289A /* FocusableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusableTextField.swift; sourceTree = "<group>"; };
 		E81BBFE724CB194B00DB289A /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		E8C7384824C98C2B0018AAEA /* FocusableNSTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusableNSTextField.swift; sourceTree = "<group>"; };
+		E8EB954424C5CA0D00BC76E4 /* SprintNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintNumber.swift; sourceTree = "<group>"; };
 		E8EB954824C5E23C00BC76E4 /* InlineEditableList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineEditableList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -159,6 +159,7 @@
 				1858275B24B4BD68008BE248 /* CustomWindow.swift */,
 				18FE758F24A23E670003C76E /* MainView.swift */,
 				1858275D24B4C38B008BE248 /* Array+Extensions.swift */,
+				E81BBFE724CB194B00DB289A /* RoundButton.swift */,
 				1862423E24B489A800A4A6CB /* Sprint */,
 				1862424124B48A7C00A4A6CB /* Story */,
 				18FE759124A23E680003C76E /* Assets.xcassets */,
@@ -167,7 +168,6 @@
 				18FE759924A23E680003C76E /* Info.plist */,
 				18FE759A24A23E680003C76E /* RunningOrder.entitlements */,
 				18FE759324A23E680003C76E /* Preview Content */,
-				E81BBFE724CB194B00DB289A /* RoundButton.swift */,
 			);
 			path = RunningOrder;
 			sourceTree = "<group>";

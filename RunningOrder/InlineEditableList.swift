@@ -37,31 +37,41 @@ struct InlineEditableList: View { // Change name ???
                         set: { newValue in return self.values[index] = newValue}
                     ),
                     onCommit: {
-                        //sanity check to prevent some out of bounds exception
-                        if index < values.count && values[index].isEmpty {
-                            values.remove(at: index)
+                        if values[index].isEmpty {
+                            deleteTextfieldValue(at: index)
                         }
                     })
-                        RoundButton(imageName: NSImage.removeTemplateName, color: Color.red, action: {
-                            values.remove(at: index)
-                        })
-                        .frame(width: 20, height: 20)
-                        .padding(.horizontal, 10)
+                    RoundButton(imageName: NSImage.removeTemplateName, color: Color.red, action: {
+                        deleteTextfieldValue(at: index)
+                    })
+                    .frame(width: 20, height: 20)
+                    .padding(.horizontal, 10)
                 }
             }
         }
         .padding()
-        .background(hovered ? Color("gray1") : Color.clear)
+        .background(hovered ? Color("gray1") : Color("gray1").opacity(0))
         .cornerRadius(5)
         .onHover { isHovered in
-            withAnimation(.easeInOut) {
+            withAnimation(.easeIn) {
                 self.hovered = isHovered
             }
         }
     }
 
     private func addTextfieldValue() {
-        values.append("")
+        withAnimation {
+            values.append("")
+        }
+    }
+
+    private func deleteTextfieldValue(at index: Int) {
+        guard index < values.count else { return }
+
+        withAnimation {
+        //sanity check to prevent some out of bounds exception
+            _ = values.remove(at: index)
+        }
     }
 }
 
