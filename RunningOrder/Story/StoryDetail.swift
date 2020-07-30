@@ -12,11 +12,25 @@ struct StoryDetail: View {
     @Binding var story: Story
 
     var body: some View {
-        VStack {
-            Text(story.ticketReference)
-            Text(story.name)
+        HStack {
+            VStack(alignment: .leading) {
+                Text(story.name).font(.headline)
+                    .padding()
+                HStack {
+                    Tag(story.ticketReference, color: Color.gray)
+                    Tag(story.epic, color: Color("holiday blue"))
+                }
+                .padding(.horizontal)
+                Divider()
+
+                Text("Configuration").font(.headline)
+
+                Spacer()
+            }
+            Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+
     }
 }
 

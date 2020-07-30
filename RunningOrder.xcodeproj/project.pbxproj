@@ -32,6 +32,7 @@
 		E882F03424CF030F002D1591 /* NewStoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E882F03324CF030F002D1591 /* NewStoryView.swift */; };
 		E88CC8E424D0119C00E9F2DD /* StoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CC8E324D0119C00E9F2DD /* StoryRow.swift */; };
 		E8C7384924C98C2B0018AAEA /* FocusableNSTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C7384824C98C2B0018AAEA /* FocusableNSTextField.swift */; };
+		E8A9567C24D2B0E7009E0C28 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A9567B24D2B0E7009E0C28 /* Tag.swift */; };
 		E8EB954524C5CA0D00BC76E4 /* SprintNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EB954424C5CA0D00BC76E4 /* SprintNumber.swift */; };
 		E8EB954924C5E23C00BC76E4 /* InlineEditableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EB954824C5E23C00BC76E4 /* InlineEditableList.swift */; };
 /* End PBXBuildFile section */
@@ -89,6 +90,7 @@
 		E882F03324CF030F002D1591 /* NewStoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewStoryView.swift; sourceTree = "<group>"; };
 		E88CC8E324D0119C00E9F2DD /* StoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryRow.swift; sourceTree = "<group>"; };
 		E8C7384824C98C2B0018AAEA /* FocusableNSTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusableNSTextField.swift; sourceTree = "<group>"; };
+		E8A9567B24D2B0E7009E0C28 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		E8EB954424C5CA0D00BC76E4 /* SprintNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintNumber.swift; sourceTree = "<group>"; };
 		E8EB954824C5E23C00BC76E4 /* InlineEditableList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineEditableList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -137,6 +139,7 @@
 				1862424224B48A8600A4A6CB /* Story.swift */,
 				E882F03324CF030F002D1591 /* NewStoryView.swift */,
 				E88CC8E324D0119C00E9F2DD /* StoryRow.swift */,
+				E8A9567B24D2B0E7009E0C28 /* Tag.swift */,
 			);
 			path = Story;
 			sourceTree = "<group>";
@@ -371,6 +374,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E8C7384924C98C2B0018AAEA /* FocusableNSTextField.swift in Sources */,
+				E8A9567C24D2B0E7009E0C28 /* Tag.swift in Sources */,
 				1862424324B48A8600A4A6CB /* Story.swift in Sources */,
 				1858275E24B4C38B008BE248 /* Array+Extensions.swift in Sources */,
 				E88CC8E424D0119C00E9F2DD /* StoryRow.swift in Sources */,

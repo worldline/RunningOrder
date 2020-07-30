@@ -13,19 +13,13 @@ struct StoryRow: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            HStack {
-                Text(story.epic)
-                    .foregroundColor(Color.white)
-                    .font(.system(size: 10))
-                    .padding(.horizontal, 4)
-                    .background(Color("holiday blue"))
-                    .clipShape(RoundedRectangle(cornerRadius: 2))
-                Spacer()
-                Text(story.ticketReference)
-                    .foregroundColor(.gray)
-                    .font(.system(size: 10))
-            }
-            Text(story.name)
+        HStack {
+            Tag(story.epic, color: Color("holiday blue"))
+                .font(.system(size: 10))
+            Spacer()
+            Text(story.ticketReference)
+                .foregroundColor(.gray)
+                .font(.system(size: 10))
         }
         .padding(.all, 5)
     }
