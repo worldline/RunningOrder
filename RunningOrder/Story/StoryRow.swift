@@ -18,7 +18,7 @@ struct StoryRow: View {
                 .foregroundColor(Color.white)
                 .font(.system(size: 10))
                 .padding(.horizontal, 4)
-                .background(Color("blue1"))
+                .background(Color("holiday blue"))
                 .clipShape(RoundedRectangle(cornerRadius: 2))
             Spacer()
             Text(story.ticketReference)

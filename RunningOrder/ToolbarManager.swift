@@ -13,18 +13,19 @@ import SwiftUI
 class ToolbarManager: NSObject, ObservableObject {
 
     var isASprintSelected = false
-    @Published var showStoryModal = false
+
+    @Published var isAddStoryButtonClicked = false
 
     func validateToolbarItem(_ item: NSToolbarItem) -> Bool {
         switch item.itemIdentifier {
         case .addStory:
-            return isASprintSelected // Implement addStory button validation
+            return isASprintSelected
         default:
             return true
         }
     }
 
     func addStory() {
-        self.showStoryModal = true
+        isAddStoryButtonClicked.toggle()
     }
 }

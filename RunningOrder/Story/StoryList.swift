@@ -14,7 +14,7 @@ extension Story: Identifiable {
 
 struct StoryList: View {
     let header: String
-    @State var stories: [Story] = []
+    @Binding var stories: [Story]
     @EnvironmentObject var toolbarManager: ToolbarManager
 
     var body: some View {
@@ -35,7 +35,7 @@ struct StoryList: View {
             Text("Select a Story")
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .sheet(isPresented: $toolbarManager.showStoryModal) {
+        .sheet(isPresented: $toolbarManager.isAddStoryButtonClicked) {
             NewStoryView(createdStory: self.$stories.appendedElement)
         }
         .onAppear {
@@ -43,7 +43,7 @@ struct StoryList: View {
             toolbarManager.isASprintSelected = true
         }
         .onDisappear {
-            // desabling toolbar add story button
+            // disabling toolbar add story button
             toolbarManager.isASprintSelected = false
         }
     }
@@ -51,6 +51,6 @@ struct StoryList: View {
 
 struct StoryList_Previews: PreviewProvider {
     static var previews: some View {
-        StoryList(header: "Sprint 66 - HelloBank", stories: Story.Previews.stories)
+        StoryList(header: "Sprint 66 - HelloBank", stories: .constant(Story.Previews.stories))
     }
 }

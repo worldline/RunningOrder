@@ -18,12 +18,12 @@ struct SprintNumber: View {
             .frame(width: 25, height: 12)
             .padding(.all, 2)
             .background(Color(colorIdentifier))
-            .clipShape(RoundedRectangle(cornerRadius: 7))
+            .clipShape(RoundedRectangle(cornerRadius: 4))
     }
 }
 
 struct SwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
-        SprintNumber(number: 454, colorIdentifier: "green1")
+        SprintNumber(number: 454, colorIdentifier: "elf green")
     }
 }

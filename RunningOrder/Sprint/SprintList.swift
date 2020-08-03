@@ -21,9 +21,9 @@ struct SprintList: View {
         VStack(alignment: .leading) {
             List {
                 Section(header: Text("Active Sprints")) {
-                    ForEach(sprints) { sprint in
+                    ForEach(sprints, id: \.self) { sprint in
                         NavigationLink(
-                            destination: StoryList(header: "Sprint \(sprint.number) - \(sprint.name)", stories: sprint.stories)
+                            destination: StoryList(header: "Sprint \(sprint.number) - \(sprint.name)", stories: $sprints[sprints.firstIndex(of: sprint)!].stories) // Not proud of this line
                                 .listStyle(PlainListStyle()),
                             label: {
                                 HStack {
