@@ -13,7 +13,7 @@ class FocusableNSTextField: NSTextField {
 
     override func becomeFirstResponder() -> Bool {
         let textView = window?.fieldEditor(true, for: nil) as? NSTextView
-        textView?.insertionPointColor = NSColor(named: "AccentColor")!
+        textView?.insertionPointColor = NSColor.controlAccentColor
         onFocusChange(true)
         return super.becomeFirstResponder()
     }

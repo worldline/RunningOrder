@@ -21,13 +21,18 @@ struct InlineEditableList: View { // Change name ???
 
     var body: some View {
         VStack {
-
             HStack {
-                Text(title).foregroundColor(.gray).padding(.all, 6)
+                Text(title)
+                    .foregroundColor(.gray)
+                    .padding(.all, 6)
                 Spacer()
-                RoundButton(imageName: NSImage.addTemplateName, color: Color.accentColor, action: addTextfieldValue)
-                    .frame(width: 20, height: 20)
-                    .padding(.horizontal, 10)
+                if hovered {
+                    RoundButton(image: Image(nsImage: NSImage(named: NSImage.addTemplateName)!),
+                                color: Color.accentColor,
+                                action: addTextfieldValue)
+                        .frame(width: 20, height: 20)
+                        .padding(.horizontal, 10)
+                }
             }
 
             ForEach(values.indices, id: \.self) { index in
@@ -41,16 +46,17 @@ struct InlineEditableList: View { // Change name ???
                             deleteTextfieldValue(at: index)
                         }
                     })
-                    RoundButton(imageName: NSImage.removeTemplateName, color: Color.red, action: {
-                        deleteTextfieldValue(at: index)
-                    })
-                    .frame(width: 20, height: 20)
-                    .padding(.horizontal, 10)
+                    if hovered {
+                        RoundButton(image: Image(nsImage: NSImage(named: NSImage.removeTemplateName)!),
+                                    color: Color.red,
+                                    action: { deleteTextfieldValue(at: index) })
+                            .frame(width: 20, height: 20)
+                            .padding(.horizontal, 10)
+                    }
                 }
             }
         }
-        .padding()
-        .background(hovered ? Color("snowbank") : Color("snowbank").opacity(0))
+        .background(Color("snowbank").opacity(hovered ? 1 : 0))
         .cornerRadius(5)
         .onHover { isHovered in
             withAnimation(.easeIn) {

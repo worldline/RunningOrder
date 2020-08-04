@@ -10,13 +10,13 @@ import SwiftUI
 
 struct RoundButton: View {
 
-    let imageName: String
+    let image: Image
     let color: Color
     let action: () -> Void
 
     var body: some View {
         Button(action: self.action) {
-            Image(nsImage: NSImage(named: imageName)!)
+            image
                 .resizable()
                 .padding(5)
                 .foregroundColor(.white)
@@ -29,7 +29,7 @@ struct RoundButton: View {
 
 struct RoundButton_Previews: PreviewProvider {
     static var previews: some View {
-        RoundButton(imageName: NSImage.shareTemplateName, color: Color.green, action: {})
+        RoundButton(image: Image(nsImage: NSImage(named: NSImage.refreshTemplateName)!), color: Color.green, action: {})
             .frame(width: 40, height: 40)
     }
 }
