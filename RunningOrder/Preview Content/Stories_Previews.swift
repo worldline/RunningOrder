@@ -13,8 +13,8 @@ extension Story {
         static let stories = [
             Story(name: "Liste des sprints", ticketReference: "TICKET-1", epic: "Epic 1"),
             Story(name: "Créer un sprint", ticketReference: "TICKET-2", epic: "Epic 2"),
-            Story(name: "Créer une story", ticketReference: "TICKET-3", epic: "Epic 3"),
-            Story(name: "modifier une story", ticketReference: "TICKET-4", epic: "Epic 4")
+            Story(name: "Créer une story", ticketReference: "TICKET-3", epic: "Epic 2"),
+            Story(name: "modifier une story", ticketReference: "TICKET-4", epic: "Epic 3")
         ]
     }
 }

@@ -9,9 +9,9 @@
 import SwiftUI
 
 struct NewStoryView: View {
-    @State var name = ""
-    @State var ticketID = ""
-    @State var epic = ""
+    @State private var name = ""
+    @State private var ticketID = ""
+    @State private var epic = ""
 
     private var areAllFieldsFilled: Bool {
         return !ticketID.isEmpty && !name.isEmpty && !epic.isEmpty

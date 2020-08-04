@@ -19,15 +19,18 @@ struct StoryList: View {
 
     var body: some View {
         NavigationView {
-            List {
-                Section(header: Text(header).font(.headline )) {
-                    ForEach(stories) { story in
-                        NavigationLink(
-                            destination: StoryDetail(story: story),
-                            label: {
-                                StoryRow(story: story)
-                            })
-                    }
+            VStack(alignment: .leading, spacing: 0) {
+                Text(header)
+                    .font(.headline)
+                    .padding(5)
+                List {
+                        ForEach(stories) { story in
+                            NavigationLink(
+                                destination: StoryDetail(story: story),
+                                label: {
+                                    StoryRow(story: story)
+                                })
+                        }
                 }
             }
             .frame(minWidth: 100, maxWidth: 200, maxHeight: .infinity)
