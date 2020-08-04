@@ -50,7 +50,7 @@ struct InlineEditableList: View { // Change name ???
             }
         }
         .padding()
-        .background(hovered ? Color("gray1") : Color("gray1").opacity(0))
+        .background(hovered ? Color("snowbank") : Color("snowbank").opacity(0))
         .cornerRadius(5)
         .onHover { isHovered in
             withAnimation(.easeIn) {
@@ -66,10 +66,10 @@ struct InlineEditableList: View { // Change name ???
     }
 
     private func deleteTextfieldValue(at index: Int) {
+        //sanity check to prevent some out of bounds exception
         guard index < values.count else { return }
 
         withAnimation {
-        //sanity check to prevent some out of bounds exception
             _ = values.remove(at: index)
         }
     }

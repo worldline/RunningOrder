@@ -13,7 +13,7 @@ class FocusableNSTextField: NSTextField {
 
     override func becomeFirstResponder() -> Bool {
         let textView = window?.fieldEditor(true, for: nil) as? NSTextView
-        textView?.insertionPointColor = NSColor(named: "AccentColor")! // TODO Replace with accent color
+        textView?.insertionPointColor = NSColor(named: "AccentColor")!
         onFocusChange(true)
         return super.becomeFirstResponder()
     }
@@ -65,11 +65,5 @@ struct FocusableNSTextFieldRepresentable: NSViewRepresentable {
             self.parent.isFocused = false
             self.parent.onCommit()
         }
-    }
-}
-
-struct FocusableNSTextField_Previews: PreviewProvider {
-    static var previews: some View {
-        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
     }
 }
