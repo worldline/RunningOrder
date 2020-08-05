@@ -39,7 +39,9 @@ struct NewSprintView: View {
 
     private func createSprint() {
         guard areAllFieldsFilled else { return }
-        self.createdSprint = Sprint(number: number!, name: name, colorIdentifier: "holiday blue", stories: [])
+        let newSprint = Sprint(number: number!, name: name, colorIdentifier: "holiday blue")
+        createdSprint = newSprint
+        Store.data[newSprint] = []
         dismiss()
     }
 }

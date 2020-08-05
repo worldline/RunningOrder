@@ -13,7 +13,6 @@ struct MainView: View {
     var body: some View {
         NavigationView {
             SprintList()
-                .listStyle(SidebarListStyle())
 
             Text("Select a Sprint")
                 .frame(maxWidth: .infinity, maxHeight: .infinity)

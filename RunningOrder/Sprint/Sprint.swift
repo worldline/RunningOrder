@@ -13,8 +13,6 @@ struct Sprint {
     let number: Int
     let name: String
     let colorIdentifier: String
-
-    var stories: [Story]
 }
 
 extension Sprint: Equatable { }

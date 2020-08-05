@@ -13,6 +13,8 @@ struct NewStoryView: View {
     @State private var ticketID = ""
     @State private var epic = ""
 
+    let sprint: Sprint
+
     private var areAllFieldsFilled: Bool {
         return !ticketID.isEmpty && !name.isEmpty && !epic.isEmpty
     }
@@ -41,13 +43,18 @@ struct NewStoryView: View {
 
     private func createStory() {
         guard areAllFieldsFilled else { return }
-        self.createdStory = Story(name: name, ticketReference: ticketID, epic: epic)
+        let newStory = Story(name: name, ticketReference: ticketID, epic: epic)
+        self.createdStory = newStory
+        if var sprintStories = Store.data[sprint] {
+            sprintStories.append(newStory)
+            Store.data[sprint] = sprintStories
+        }
         dismiss()
     }
 }
 
 struct NewStoryView_Previews: PreviewProvider {
     static var previews: some View {
-        NewStoryView(createdStory: .constant(nil))
+        NewStoryView(sprint: Sprint.Previews.sprints[0], createdStory: .constant(nil))
     }
 }
