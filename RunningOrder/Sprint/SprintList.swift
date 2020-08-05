@@ -39,7 +39,7 @@ struct SprintList: View {
 
             Button(action: { self.showNewSprintModal.toggle() }) {
                 HStack {
-                    Image(nsImage: NSImage(named: NSImage.addTemplateName)!)
+                    Image(nsImageName: NSImage.addTemplateName)
                         .frame(width: 20, height: 20)
                         .foregroundColor(.white)
                         .background(Color.accentColor)

@@ -11,7 +11,7 @@ import SwiftUI
 struct SprintNumber: View {
     let number: Int
     let colorIdentifier: String
-    
+
     var body: some View {
         Text("\(number)")
             .foregroundColor(Color.white)
