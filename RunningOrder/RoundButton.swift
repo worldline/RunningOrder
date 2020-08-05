@@ -29,7 +29,7 @@ struct RoundButton: View {
 
 struct RoundButton_Previews: PreviewProvider {
     static var previews: some View {
-        RoundButton(image: Image(nsImage: NSImage(named: NSImage.refreshTemplateName)!), color: Color.green, action: {})
+        RoundButton(image: Image(nsImageName: NSImage.refreshTemplateName), color: Color.green, action: {})
             .frame(width: 40, height: 40)
     }
 }

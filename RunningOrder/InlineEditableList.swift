@@ -27,7 +27,7 @@ struct InlineEditableList: View { // Change name ???
                     .padding(.all, 6)
                 Spacer()
                 if hovered {
-                    RoundButton(image: Image(nsImage: NSImage(named: NSImage.addTemplateName)!),
+                    RoundButton(image: Image(nsImageName: NSImage.addTemplateName),
                                 color: Color.accentColor,
                                 action: addTextfieldValue)
                         .frame(width: 20, height: 20)
@@ -47,7 +47,7 @@ struct InlineEditableList: View { // Change name ???
                         }
                     })
                     if hovered {
-                        RoundButton(image: Image(nsImage: NSImage(named: NSImage.removeTemplateName)!),
+                        RoundButton(image: Image(nsImageName: NSImage.removeTemplateName),
                                     color: Color.red,
                                     action: { deleteTextfieldValue(at: index) })
                             .frame(width: 20, height: 20)
