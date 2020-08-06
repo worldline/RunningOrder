@@ -27,6 +27,10 @@
 		E81BBFE624CAD21100DB289A /* FocusableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81BBFE524CAD21100DB289A /* FocusableTextField.swift */; };
 		E81BBFE824CB194B00DB289A /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81BBFE724CB194B00DB289A /* RoundButton.swift */; };
 		E8760DCF24DADFD8003A2766 /* Image+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8760DCE24DADFD8003A2766 /* Image+Extensions.swift */; };
+		E882F03224CEBE49002D1591 /* ToolbarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E882F03124CEBE49002D1591 /* ToolbarManager.swift */; };
+		E882F03424CF030F002D1591 /* NewStoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E882F03324CF030F002D1591 /* NewStoryView.swift */; };
+		E88CC8E424D0119C00E9F2DD /* StoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CC8E324D0119C00E9F2DD /* StoryRow.swift */; };
+		E89435B524DAFC3B0035A427 /* SplitViewControllerOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = E89435B424DAFC3B0035A427 /* SplitViewControllerOwner.swift */; };
 		E8C7384924C98C2B0018AAEA /* FocusableNSTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C7384824C98C2B0018AAEA /* FocusableNSTextField.swift */; };
 		E8EB954524C5CA0D00BC76E4 /* SprintNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EB954424C5CA0D00BC76E4 /* SprintNumber.swift */; };
 		E8EB954924C5E23C00BC76E4 /* InlineEditableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EB954824C5E23C00BC76E4 /* InlineEditableList.swift */; };
@@ -80,6 +84,10 @@
 		E81BBFE524CAD21100DB289A /* FocusableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusableTextField.swift; sourceTree = "<group>"; };
 		E81BBFE724CB194B00DB289A /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		E8760DCE24DADFD8003A2766 /* Image+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Extensions.swift"; sourceTree = "<group>"; };
+		E882F03124CEBE49002D1591 /* ToolbarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarManager.swift; sourceTree = "<group>"; };
+		E882F03324CF030F002D1591 /* NewStoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewStoryView.swift; sourceTree = "<group>"; };
+		E88CC8E324D0119C00E9F2DD /* StoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryRow.swift; sourceTree = "<group>"; };
+		E89435B424DAFC3B0035A427 /* SplitViewControllerOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewControllerOwner.swift; sourceTree = "<group>"; };
 		E8C7384824C98C2B0018AAEA /* FocusableNSTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusableNSTextField.swift; sourceTree = "<group>"; };
 		E8EB954424C5CA0D00BC76E4 /* SprintNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintNumber.swift; sourceTree = "<group>"; };
 		E8EB954824C5E23C00BC76E4 /* InlineEditableList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineEditableList.swift; sourceTree = "<group>"; };
@@ -127,6 +135,8 @@
 				1862423A24B485BA00A4A6CB /* StoryList.swift */,
 				1862423C24B485E400A4A6CB /* StoryDetail.swift */,
 				1862424224B48A8600A4A6CB /* Story.swift */,
+				E882F03324CF030F002D1591 /* NewStoryView.swift */,
+				E88CC8E324D0119C00E9F2DD /* StoryRow.swift */,
 			);
 			path = Story;
 			sourceTree = "<group>";
@@ -154,6 +164,7 @@
 		18FE758C24A23E670003C76E /* RunningOrder */ = {
 			isa = PBXGroup;
 			children = (
+				E89435B324DAFC0E0035A427 /* Protocol */,
 				E8EB954824C5E23C00BC76E4 /* InlineEditableList.swift */,
 				18FE758D24A23E670003C76E /* AppDelegate.swift */,
 				E8C7384824C98C2B0018AAEA /* FocusableNSTextField.swift */,
@@ -162,6 +173,7 @@
 				18FE758F24A23E670003C76E /* MainView.swift */,
 				1858275D24B4C38B008BE248 /* Array+Extensions.swift */,
 				E81BBFE724CB194B00DB289A /* RoundButton.swift */,
+				E882F03124CEBE49002D1591 /* ToolbarManager.swift */,
 				1862423E24B489A800A4A6CB /* Sprint */,
 				1862424124B48A7C00A4A6CB /* Story */,
 				18FE759124A23E680003C76E /* Assets.xcassets */,
@@ -201,6 +213,14 @@
 				18FE75B024A23E680003C76E /* Info.plist */,
 			);
 			path = RunningOrderUITests;
+			sourceTree = "<group>";
+		};
+		E89435B324DAFC0E0035A427 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				E89435B424DAFC3B0035A427 /* SplitViewControllerOwner.swift */,
+			);
+			path = Protocol;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -359,13 +379,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				E8C7384924C98C2B0018AAEA /* FocusableNSTextField.swift in Sources */,
+				E89435B524DAFC3B0035A427 /* SplitViewControllerOwner.swift in Sources */,
 				1862424324B48A8600A4A6CB /* Story.swift in Sources */,
 				1858275E24B4C38B008BE248 /* Array+Extensions.swift in Sources */,
+				E88CC8E424D0119C00E9F2DD /* StoryRow.swift in Sources */,
 				1862423D24B485E400A4A6CB /* StoryDetail.swift in Sources */,
 				E81BBFE824CB194B00DB289A /* RoundButton.swift in Sources */,
 				1862423B24B485BA00A4A6CB /* StoryList.swift in Sources */,
 				1862424724B48E9900A4A6CB /* NewSprintView.swift in Sources */,
 				E8EB954924C5E23C00BC76E4 /* InlineEditableList.swift in Sources */,
+				E882F03224CEBE49002D1591 /* ToolbarManager.swift in Sources */,
 				18FE759024A23E670003C76E /* MainView.swift in Sources */,
 				E8760DCF24DADFD8003A2766 /* Image+Extensions.swift in Sources */,
 				1862423924B4859300A4A6CB /* SprintList.swift in Sources */,
@@ -375,6 +398,7 @@
 				1862424024B489BB00A4A6CB /* Sprint.swift in Sources */,
 				E81BBFE624CAD21100DB289A /* FocusableTextField.swift in Sources */,
 				18F7918424B61A5900FDCBEF /* Stories_Previews.swift in Sources */,
+				E882F03424CF030F002D1591 /* NewStoryView.swift in Sources */,
 				18F7918224B619B600FDCBEF /* Sprints_Previews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

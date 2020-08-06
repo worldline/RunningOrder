@@ -7,6 +7,8 @@
 */
 // CustomWindow - ToolBar Button
 "Add a story" = "Ajouter une story";
+"Sidebar" = "Barre latérale";
+"Show the Sidebar" = "Afficher la Barre latérale";
 // SprintsView - Section Header
 "Active Sprints" = "Sprints en cours";
 // SprintList - Button
@@ -24,6 +26,11 @@
 "Stories" = "Stories";
 // SprintList - Placer holder
 "Select a Story" = "Sélectionner une Story";
+
+// NewStoryView - Textfield Name
+"Story Name" = "Nom de la Story";
+"Ticket ID" = "ID du Ticket";
+"Story EPIC" = "EPIC de la Story";
 
 // Common
 "Cancel" = "Annuler";

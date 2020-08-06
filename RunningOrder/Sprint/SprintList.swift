@@ -15,14 +15,15 @@ extension Sprint: Identifiable {
 struct SprintList: View {
     @State private var sprints: [Sprint] = []
     @State private var showNewSprintModal = false
+    @EnvironmentObject var toolbarManager: ToolbarManager
 
     var body: some View {
         VStack(alignment: .leading) {
             List {
                 Section(header: Text("Active Sprints")) {
-                    ForEach(sprints) { sprint in
-                        NavigationLink(
-                            destination: StoryList(stories: sprint.stories)
+                    ForEach(sprints, id: \.self) { sprint in
+                        NavigationLink( // TODO construct/ pass the header in a different way ?
+                            destination: StoryList(header: "Sprint \(sprint.number) - \(sprint.name)", stories: $sprints[sprints.firstIndex(of: sprint)!].stories) // Not proud of this line
                                 .listStyle(PlainListStyle()),
                             label: {
                                 HStack {

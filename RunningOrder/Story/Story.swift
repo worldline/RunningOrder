@@ -11,6 +11,7 @@ import Foundation
 struct Story {
     let name: String
     let ticketReference: String
+    let epic: String
 }
 
 extension Story: Equatable { }

@@ -7,6 +7,8 @@
 */
 // CustomWindow - ToolBar Button
 "Add a story" = "Add a story";
+"Sidebar" = "Sidebar";
+"Show the Sidebar" = "Show the Sidebar";
 // SprintsView - Section Header
 "Active Sprints" = "Active Sprints";
 // SprintList - Button
@@ -24,6 +26,11 @@
 "Stories" = "Stories";
 // SprintList - Placer holder
 "Select a Story" = "Select a Story";
+
+// NewStoryView - Textfield Name
+"Story Name" = "Story Name";
+"Ticket ID" = "Ticket ID";
+"Story EPIC" = "Story EPIC";
 
 // Common
 "Cancel" = "Cancel";

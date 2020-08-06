@@ -13,19 +13,24 @@ extension Story: Identifiable {
 }
 
 struct StoryList: View {
-     let stories: [Story]
+    let header: String
+    @Binding var stories: [Story]
+    @EnvironmentObject var toolbarManager: ToolbarManager
 
     var body: some View {
         NavigationView {
-            List {
-                Section(header: Text("Stories")) {
-                    ForEach(stories) { story in
-                        NavigationLink(
-                            destination: StoryDetail(story: story),
-                            label: {
-                                Text(story.name)
-                            })
-                    }
+            VStack(alignment: .leading, spacing: 0) {
+                Text(header)
+                    .font(.headline)
+                    .padding(5)
+                List {
+                        ForEach(stories) { story in
+                            NavigationLink(
+                                destination: StoryDetail(story: story),
+                                label: {
+                                    StoryRow(story: story)
+                                })
+                        }
                 }
             }
             .frame(minWidth: 100, maxWidth: 200, maxHeight: .infinity)
@@ -33,11 +38,22 @@ struct StoryList: View {
             Text("Select a Story")
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .sheet(isPresented: $toolbarManager.isAddStoryButtonClicked) {
+            NewStoryView(createdStory: self.$stories.appendedElement)
+        }
+        .onAppear {
+            // enabling toolbar add story button
+            toolbarManager.isASprintSelected = true
+        }
+        .onDisappear {
+            // disabling toolbar add story button
+            toolbarManager.isASprintSelected = false
+        }
     }
 }
 
 struct StoryList_Previews: PreviewProvider {
     static var previews: some View {
-        StoryList(stories: Story.Previews.stories)
+        StoryList(header: "Sprint 66 - HelloBank", stories: .constant(Story.Previews.stories))
     }
 }
