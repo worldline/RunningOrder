@@ -13,24 +13,22 @@ extension Story: Identifiable {
 }
 
 struct StoryList: View {
-    let header: String
-    @Binding var stories: [Story]
+    @Binding var sprint: Sprint
     @EnvironmentObject var toolbarManager: ToolbarManager
 
     var body: some View {
         NavigationView {
             VStack(alignment: .leading, spacing: 0) {
-                Text(header)
+                Text("Sprint \(sprint.number) - \(sprint.name)")
                     .font(.headline)
                     .padding(5)
                 List {
-                        ForEach(stories) { story in
-                            NavigationLink(
-                                destination: StoryDetail(story: story),
-                                label: {
-                                    StoryRow(story: story)
-                                })
-                        }
+                    ForEach(sprint.stories.indices, id: \.self) { index in
+                        NavigationLink(
+                            destination: StoryDetail(story: $sprint.stories[index]),
+                            label: { StoryRow(story: sprint.stories[index]) }
+                        )
+                    }
                 }
             }
             .frame(minWidth: 100, maxWidth: 200, maxHeight: .infinity)
@@ -39,7 +37,7 @@ struct StoryList: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .sheet(isPresented: $toolbarManager.isAddStoryButtonClicked) {
-            NewStoryView(createdStory: self.$stories.appendedElement)
+            NewStoryView(createdStory: self.$sprint.stories.appendedElement)
         }
         .onAppear {
             // enabling toolbar add story button
@@ -54,6 +52,6 @@ struct StoryList: View {
 
 struct StoryList_Previews: PreviewProvider {
     static var previews: some View {
-        StoryList(header: "Sprint 66 - HelloBank", stories: .constant(Story.Previews.stories))
+        StoryList(sprint: .constant(Sprint.Previews.sprints.first!))
     }
 }

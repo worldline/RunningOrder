@@ -13,24 +13,25 @@ extension Sprint: Identifiable {
 }
 
 struct SprintList: View {
-    @State private var sprints: [Sprint] = []
     @State private var showNewSprintModal = false
     @EnvironmentObject var toolbarManager: ToolbarManager
+    @EnvironmentObject var sprintManager: SprintManager
 
     var body: some View {
         VStack(alignment: .leading) {
             List {
                 Section(header: Text("Active Sprints")) {
-                    ForEach(sprints, id: \.self) { sprint in
-                        NavigationLink( // TODO construct/ pass the header in a different way ?
-                            destination: StoryList(header: "Sprint \(sprint.number) - \(sprint.name)", stories: $sprints[sprints.firstIndex(of: sprint)!].stories) // Not proud of this line
-                                .listStyle(PlainListStyle()),
+                    ForEach(sprintManager.sprints, id: \.self) { sprint in
+                        NavigationLink(
+                            destination: StoryList(sprint: sprintManager.mutableSprint(sprint))
+                                .environmentObject(toolbarManager),
                             label: {
                                 HStack {
                                     SprintNumber(number: sprint.number, colorIdentifier: sprint.colorIdentifier)
                                     Text(sprint.name)
                                 }
-                            })
+                            }
+                        )
                     }
                 }
                 Section(header: Text("Old Sprints")) {
@@ -52,7 +53,7 @@ struct SprintList: View {
             .padding(.all, 8.0)
             .buttonStyle(PlainButtonStyle())
         }.sheet(isPresented: $showNewSprintModal) {
-            NewSprintView(createdSprint: self.$sprints.appendedElement)
+            NewSprintView(createdSprint: self.$sprintManager.sprints.appendedElement)
         }
     }
 }

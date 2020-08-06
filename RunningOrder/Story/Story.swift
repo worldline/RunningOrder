@@ -12,6 +12,7 @@ struct Story {
     let name: String
     let ticketReference: String
     let epic: String
+    var environment: String
 }
 
 extension Story: Equatable { }

@@ -10,6 +10,10 @@ import Foundation
 import Cocoa
 import SwiftUI
 
+protocol SplitViewControllerOwner {
+    var splitViewController: NSSplitViewController? { get }
+}
+
 class ToolbarManager: NSObject, ObservableObject, NSToolbarDelegate, NSToolbarItemValidation {
 
     let splitViewControllerOwner: SplitViewControllerOwner
