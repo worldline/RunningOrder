@@ -26,6 +26,10 @@ final class AppWindowController: NSWindowController, SplitViewControllerOwner {
 
         window?.toolbar = toolbar
 
-        window?.contentViewController = NSHostingController(rootView: MainView().environmentObject(toolbarManager))
+        let view = MainView()
+            .environmentObject(toolbarManager)
+            .environmentObject(SprintManager())
+
+        window?.contentViewController = NSHostingController(rootView: view)
     }
 }
