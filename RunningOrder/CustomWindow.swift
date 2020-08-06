@@ -10,12 +10,16 @@ import Cocoa
 import SwiftUI
 
 // toolbar guidance : https://developer.apple.com/documentation/appkit/touch_bar/integrating_a_toolbar_and_touch_bar_into_your_app
-final class AppWindowController: NSWindowController {
+final class AppWindowController: NSWindowController, SplitViewControllerOwner {
+
+    var splitViewController: NSSplitViewController? {
+            (window?.contentView?.subviews.first?.subviews.first?.subviews.first as? NSSplitView)?.delegate as? NSSplitViewController
+        }
 
     override func windowDidLoad() {
         super.windowDidLoad()
 
-        let toolbarManager = ToolbarManager(splitViewController: SplitViewControllerAccessor(windowController: self))
+        let toolbarManager = ToolbarManager(splitViewControllerOwner: self)
 
         let toolbar = NSToolbar()
         toolbar.delegate = toolbarManager

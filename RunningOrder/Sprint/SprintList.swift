@@ -22,7 +22,7 @@ struct SprintList: View {
             List {
                 Section(header: Text("Active Sprints")) {
                     ForEach(sprints, id: \.self) { sprint in
-                        NavigationLink(
+                        NavigationLink( // TODO construct/ pass the header in a different way ?
                             destination: StoryList(header: "Sprint \(sprint.number) - \(sprint.name)", stories: $sprints[sprints.firstIndex(of: sprint)!].stories) // Not proud of this line
                                 .listStyle(PlainListStyle()),
                             label: {

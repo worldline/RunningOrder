@@ -12,13 +12,13 @@ import SwiftUI
 
 class ToolbarManager: NSObject, ObservableObject, NSToolbarDelegate, NSToolbarItemValidation {
 
-    let sidebarController: SplitViewControllerAccessor
+    let splitViewControllerOwner: SplitViewControllerOwner
     var isASprintSelected = false
 
     @Published var isAddStoryButtonClicked = false
 
-    init(splitViewController: SplitViewControllerAccessor) {
-        sidebarController = splitViewController
+    init(splitViewControllerOwner: SplitViewControllerOwner) {
+        self.splitViewControllerOwner = splitViewControllerOwner
     }
 
     func toolbar(_ toolbar: NSToolbar, itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier, willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
@@ -86,7 +86,7 @@ class ToolbarManager: NSObject, ObservableObject, NSToolbarDelegate, NSToolbarIt
     }
 
     @objc func toggleSidebar(_ sender: Any) {
-        sidebarController.splitViewController?.toggleSidebar(sender)
+        splitViewControllerOwner.splitViewController?.toggleSidebar(sender)
     }
 
     @objc func addStory() {

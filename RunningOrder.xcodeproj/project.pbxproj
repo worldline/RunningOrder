@@ -27,12 +27,11 @@
 		E81BBFE624CAD21100DB289A /* FocusableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81BBFE524CAD21100DB289A /* FocusableTextField.swift */; };
 		E81BBFE824CB194B00DB289A /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81BBFE724CB194B00DB289A /* RoundButton.swift */; };
 		E8760DCF24DADFD8003A2766 /* Image+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8760DCE24DADFD8003A2766 /* Image+Extensions.swift */; };
-		E8C7384924C98C2B0018AAEA /* FocusableNSTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C7384824C98C2B0018AAEA /* FocusableNSTextField.swift */; };
 		E882F03224CEBE49002D1591 /* ToolbarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E882F03124CEBE49002D1591 /* ToolbarManager.swift */; };
 		E882F03424CF030F002D1591 /* NewStoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E882F03324CF030F002D1591 /* NewStoryView.swift */; };
 		E88CC8E424D0119C00E9F2DD /* StoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CC8E324D0119C00E9F2DD /* StoryRow.swift */; };
-		E89435B524DAFC3B0035A427 /* SplitViewControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E89435B424DAFC3B0035A427 /* SplitViewControllerProtocol.swift */; };
-		E89435B724DAFED20035A427 /* SplitViewControllerAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E89435B624DAFED20035A427 /* SplitViewControllerAccessor.swift */; };
+		E89435B524DAFC3B0035A427 /* SplitViewControllerOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = E89435B424DAFC3B0035A427 /* SplitViewControllerOwner.swift */; };
+		E8C7384924C98C2B0018AAEA /* FocusableNSTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C7384824C98C2B0018AAEA /* FocusableNSTextField.swift */; };
 		E8EB954524C5CA0D00BC76E4 /* SprintNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EB954424C5CA0D00BC76E4 /* SprintNumber.swift */; };
 		E8EB954924C5E23C00BC76E4 /* InlineEditableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EB954824C5E23C00BC76E4 /* InlineEditableList.swift */; };
 /* End PBXBuildFile section */
@@ -85,12 +84,11 @@
 		E81BBFE524CAD21100DB289A /* FocusableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusableTextField.swift; sourceTree = "<group>"; };
 		E81BBFE724CB194B00DB289A /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		E8760DCE24DADFD8003A2766 /* Image+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Extensions.swift"; sourceTree = "<group>"; };
-		E8C7384824C98C2B0018AAEA /* FocusableNSTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusableNSTextField.swift; sourceTree = "<group>"; };
 		E882F03124CEBE49002D1591 /* ToolbarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarManager.swift; sourceTree = "<group>"; };
 		E882F03324CF030F002D1591 /* NewStoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewStoryView.swift; sourceTree = "<group>"; };
 		E88CC8E324D0119C00E9F2DD /* StoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryRow.swift; sourceTree = "<group>"; };
-		E89435B424DAFC3B0035A427 /* SplitViewControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewControllerProtocol.swift; sourceTree = "<group>"; };
-		E89435B624DAFED20035A427 /* SplitViewControllerAccessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewControllerAccessor.swift; sourceTree = "<group>"; };
+		E89435B424DAFC3B0035A427 /* SplitViewControllerOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewControllerOwner.swift; sourceTree = "<group>"; };
+		E8C7384824C98C2B0018AAEA /* FocusableNSTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusableNSTextField.swift; sourceTree = "<group>"; };
 		E8EB954424C5CA0D00BC76E4 /* SprintNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintNumber.swift; sourceTree = "<group>"; };
 		E8EB954824C5E23C00BC76E4 /* InlineEditableList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineEditableList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -185,7 +183,6 @@
 				18FE759A24A23E680003C76E /* RunningOrder.entitlements */,
 				18FE759324A23E680003C76E /* Preview Content */,
 				E8760DCE24DADFD8003A2766 /* Image+Extensions.swift */,
-				E89435B624DAFED20035A427 /* SplitViewControllerAccessor.swift */,
 			);
 			path = RunningOrder;
 			sourceTree = "<group>";
@@ -221,7 +218,7 @@
 		E89435B324DAFC0E0035A427 /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
-				E89435B424DAFC3B0035A427 /* SplitViewControllerProtocol.swift */,
+				E89435B424DAFC3B0035A427 /* SplitViewControllerOwner.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -382,7 +379,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E8C7384924C98C2B0018AAEA /* FocusableNSTextField.swift in Sources */,
-				E89435B524DAFC3B0035A427 /* SplitViewControllerProtocol.swift in Sources */,
+				E89435B524DAFC3B0035A427 /* SplitViewControllerOwner.swift in Sources */,
 				1862424324B48A8600A4A6CB /* Story.swift in Sources */,
 				1858275E24B4C38B008BE248 /* Array+Extensions.swift in Sources */,
 				E88CC8E424D0119C00E9F2DD /* StoryRow.swift in Sources */,
@@ -390,7 +387,6 @@
 				E81BBFE824CB194B00DB289A /* RoundButton.swift in Sources */,
 				1862423B24B485BA00A4A6CB /* StoryList.swift in Sources */,
 				1862424724B48E9900A4A6CB /* NewSprintView.swift in Sources */,
-				E89435B724DAFED20035A427 /* SplitViewControllerAccessor.swift in Sources */,
 				E8EB954924C5E23C00BC76E4 /* InlineEditableList.swift in Sources */,
 				E882F03224CEBE49002D1591 /* ToolbarManager.swift in Sources */,
 				18FE759024A23E670003C76E /* MainView.swift in Sources */,

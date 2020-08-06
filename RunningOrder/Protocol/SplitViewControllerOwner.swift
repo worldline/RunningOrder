@@ -8,6 +8,6 @@
 
 import Cocoa
 
-protocol SplitViewControllerProtocol {
+protocol SplitViewControllerOwner {
     var splitViewController: NSSplitViewController? { get }
 }
