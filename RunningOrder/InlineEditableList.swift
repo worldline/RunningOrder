@@ -12,7 +12,7 @@ import AppKit
 /// Display an inline editable list of string element
 struct InlineEditableList: View { // Change name ???
 
-    let title: String
+    let title: LocalizedStringKey
 
     let placeholder: String
 
@@ -20,7 +20,7 @@ struct InlineEditableList: View { // Change name ???
     @State private var hovered = false
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             HStack {
                 Text(title)
                     .foregroundColor(.gray)

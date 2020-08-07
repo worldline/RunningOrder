@@ -41,7 +41,7 @@ struct NewStoryView: View {
 
     private func createStory() {
         guard areAllFieldsFilled else { return }
-        self.createdStory = Story(name: name, ticketReference: ticketID, epic: epic)
+        self.createdStory = Story(name: name, ticketReference: ticketID, epic: epic, configuration: Configuration(), link: Link())
         dismiss()
     }
 }
