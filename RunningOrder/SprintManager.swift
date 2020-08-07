@@ -13,7 +13,7 @@ final class SprintManager: ObservableObject {
     @Published var sprints: [Sprint] = []
 
     func mutableSprint(_ sprint: Sprint) -> Binding<Sprint> {
-        guard let index = sprints.firstIndex(of: sprint) else { fatalError() }
+        guard let index = sprints.firstIndex(of: sprint) else { fatalError() } // TODO Error handling
         return Binding {
             self.sprints[index]
         } set: { newValue in

@@ -15,13 +15,6 @@ struct StoryDetail: View {
         VStack {
             Text(story.ticketReference)
             Text(story.name)
-            Text(story.environment)
-            Button {
-                self.story.environment = "Autre chose"
-            } label: {
-                Text("test")
-            }
-
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
