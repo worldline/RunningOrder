@@ -9,26 +9,20 @@
 import SwiftUI
 
 struct StoryDetail: View {
-    var sprintIndex: Int
-    var storyIndex: Int
+    let sprintIndex: Int
+    let storyIndex: Int
 
     @EnvironmentObject var sprintManager: SprintManager
-
-    var story: Story {
-        return sprintManager.sprints[sprintIndex].stories[storyIndex]
-    }
 
     var storyBinding: Binding<Story> {
         return sprintManager.mutableStory(sprintIndex: sprintIndex, storyIndex: storyIndex)
     }
 
-    private let displayMode = ["Vidéo", "Etapes"]
-
-    @State private var selectedMode = "Vidéo"
+    @State private var selectedMode = DisplayMode.video
 
     var body: some View {
         VStack(alignment: .leading) {
-            StoryDetailHeader(story: story)
+            StoryDetailHeader(story: storyBinding.wrappedValue)
                 .padding(.all, 10)
             Divider()
                 .padding(.all, 10)
@@ -50,14 +44,18 @@ struct StoryDetail: View {
 
                     InlineEditableList(title: "Identifier", placeholder: "", values: storyBinding.configuration.identifiers)
 
-                    Text("Link")
+                    Text("Links")
                         .font(.subheadline)
                         .bold()
                         .padding(.horizontal, 6)
 
-                    InlineEditableList(title: "Specification", placeholder: "", values: storyBinding.link.specifications)
-
-                    InlineEditableList(title: "Zeplin", placeholder: "", values: storyBinding.link.zeplins)
+                    InlineEditableList(title: "Links", placeholder: "", values: Binding<[String]>(
+                        get: { storyBinding.wrappedValue.links.map { $0.label } },
+                        set: { values in
+                            storyBinding.wrappedValue.links = values
+                                .map { Link(value: $0)}
+                        })
+                    )
 
                     Spacer()
                 }
@@ -65,32 +63,28 @@ struct StoryDetail: View {
 
                 VStack {
                     Picker("", selection: $selectedMode) {
-                        ForEach(displayMode, id: \.self) { choice in
-                            Text(choice)
+                        ForEach(DisplayMode.allCases, id: \.self) { choice in
+                            Text(choice.rawValue)
                         }
                     }
                     .pickerStyle(SegmentedPickerStyle())
 
-                    switch selectedMode {
-                    case "Vidéo":
-                        Text("Vidéo")
-                    case "Etapes":
-                        Text("Etapes")
-                    default:
-                        EmptyView()
-                    }
+                    Text(selectedMode.rawValue)
 
                     Spacer()
                 }
             }
-            Spacer()
         }.background(Color.white)
-
     }
 }
 
+private enum DisplayMode: LocalizedStringKey, CaseIterable {
+    case video = "Video"
+    case steps = "Steps"
+}
 struct StoryDetail_Previews: PreviewProvider {
     static var previews: some View {
         StoryDetail(sprintIndex: 0, storyIndex: 0)
+            .environmentObject(SprintManager())
     }
 }

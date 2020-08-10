@@ -13,8 +13,8 @@ struct Story {
     let ticketReference: String
     let epic: String
 
-    var configuration: Configuration
-    var link: Link
+    var configuration = Configuration()
+    var links: [Link] = []
 }
 
 extension Story: Equatable { }

@@ -9,8 +9,13 @@
 import Foundation
 
 struct Link {
-    var specifications: [String] = []
-    var zeplins: [String] = []
+    var label: String
+    var url: URL?
+
+    init(value: String) {
+        self.url = URL(string: value)
+        self.label = value
+    }
 }
 
 extension Link: Equatable { }

@@ -10,14 +10,7 @@ import SwiftUI
 
 struct StoryRow: View {
 
-    var sprintIndex: Int
-    var storyIndex: Int
-
-    @EnvironmentObject var sprintManager: SprintManager
-
-    var story: Story {
-        return sprintManager.sprints[sprintIndex].stories[storyIndex]
-    }
+    let story: Story
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -37,6 +30,6 @@ struct StoryRow: View {
 
 struct StoryRow_Previews: PreviewProvider {
     static var previews: some View {
-        StoryRow(sprintIndex: 0, storyIndex: 0)
+        StoryRow(story: Story.Previews.stories[0])
     }
 }

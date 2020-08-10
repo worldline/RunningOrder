@@ -13,11 +13,9 @@ extension Story: Identifiable {
 }
 
 struct StoryList: View {
-    var sprintIndex: Int
+    let sprintIndex: Int
 
-    var sprint: Sprint {
-        return sprintManager.sprints[sprintIndex]
-    }
+    var sprint: Sprint { return sprintManager.sprints[sprintIndex] }
 
     @EnvironmentObject var toolbarManager: ToolbarManager
     @EnvironmentObject var sprintManager: SprintManager
@@ -32,7 +30,7 @@ struct StoryList: View {
                     ForEach(sprint.stories.indices, id: \.self) { index in
                         NavigationLink(
                             destination: StoryDetail(sprintIndex: sprintIndex, storyIndex: index),
-                            label: { StoryRow(sprintIndex: sprintIndex, storyIndex: index) }
+                            label: { StoryRow(story: sprint.stories[index]) }
                         )
                     }
                 }

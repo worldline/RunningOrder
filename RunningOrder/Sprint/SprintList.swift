@@ -23,7 +23,7 @@ struct SprintList: View {
                 Section(header: Text("Active Sprints")) {
                     ForEach(sprintManager.sprints.indices, id: \.self) { index in
                         NavigationLink(
-                            destination: StoryList(sprintIndex: index )
+                            destination: StoryList(sprintIndex: index)
                                 .environmentObject(toolbarManager),
                             label: {
                                 HStack {
