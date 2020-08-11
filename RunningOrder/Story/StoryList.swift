@@ -25,19 +25,22 @@ struct StoryList: View {
             VStack(alignment: .leading, spacing: 0) {
                 Text("Sprint \(sprint.number) - \(sprint.name)")
                     .font(.headline)
-                    .padding(5)
+                    .padding(13)
                 List {
+                    Divider()
                     ForEach(sprint.stories.indices, id: \.self) { index in
                         NavigationLink(
                             destination: StoryDetail(sprintIndex: sprintIndex, storyIndex: index),
                             label: { StoryRow(story: sprint.stories[index]) }
                         )
+                        Divider()
                     }
                 }
+                .colorMultiply(Color("concrete"))
             }
-            .background(Color("snowbank"))
+            .background(Color("concrete"))
 
-            .frame(minWidth: 100, maxWidth: 200, maxHeight: .infinity)
+            .frame(minWidth: 100, maxWidth: 400)
 
             Text("Select a Story")
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -60,5 +63,6 @@ struct StoryList: View {
 struct StoryList_Previews: PreviewProvider {
     static var previews: some View {
         StoryList(sprintIndex: 0)
+            .environmentObject(SprintManager())
     }
 }

@@ -32,7 +32,7 @@ struct StoryDetail: View {
                     Text("Configuration")
                         .font(.subheadline)
                         .bold()
-                        .padding(.horizontal, 6)
+                        .padding(.horizontal, 10)
 
                     InlineEditableList(title: "Environments", values: storyBinding.configuration.environments)
 
@@ -47,7 +47,7 @@ struct StoryDetail: View {
                     Text("Links")
                         .font(.subheadline)
                         .bold()
-                        .padding(.horizontal, 6)
+                        .padding(.horizontal, 10)
 
                     InlineEditableList(title: "Links", values: Binding<[String]>(
                         get: { storyBinding.wrappedValue.links.map { $0.label } },
