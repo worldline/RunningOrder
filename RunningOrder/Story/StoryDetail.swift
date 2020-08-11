@@ -34,22 +34,22 @@ struct StoryDetail: View {
                         .bold()
                         .padding(.horizontal, 6)
 
-                    InlineEditableList(title: "Environments", placeholder: "", values: storyBinding.configuration.environments)
+                    InlineEditableList(title: "Environments", values: storyBinding.configuration.environments)
 
-                    InlineEditableList(title: "Mock", placeholder: "", values: storyBinding.configuration.mocks)
+                    InlineEditableList(title: "Mock", values: storyBinding.configuration.mocks)
 
-                    InlineEditableList(title: "Feature flip", placeholder: "", values: storyBinding.configuration.features)
+                    InlineEditableList(title: "Feature flip", values: storyBinding.configuration.features)
 
-                    InlineEditableList(title: "Indicators", placeholder: "", values: storyBinding.configuration.indicators)
+                    InlineEditableList(title: "Indicators", values: storyBinding.configuration.indicators)
 
-                    InlineEditableList(title: "Identifier", placeholder: "", values: storyBinding.configuration.identifiers)
+                    InlineEditableList(title: "Identifier", values: storyBinding.configuration.identifiers)
 
                     Text("Links")
                         .font(.subheadline)
                         .bold()
                         .padding(.horizontal, 6)
 
-                    InlineEditableList(title: "Links", placeholder: "", values: Binding<[String]>(
+                    InlineEditableList(title: "Links", values: Binding<[String]>(
                         get: { storyBinding.wrappedValue.links.map { $0.label } },
                         set: { values in
                             storyBinding.wrappedValue.links = values

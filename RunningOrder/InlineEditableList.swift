@@ -19,6 +19,12 @@ struct InlineEditableList: View { // Change name ???
     @Binding var values: [String]
     @State private var hovered = false
 
+    init(title: LocalizedStringKey, placeholder: String = "", values: Binding<[String]>) {
+        self.title = title
+        self._values = values
+        self.placeholder = placeholder
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             HStack {
