@@ -31,9 +31,13 @@
 		E882F03224CEBE49002D1591 /* ToolbarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E882F03124CEBE49002D1591 /* ToolbarManager.swift */; };
 		E882F03424CF030F002D1591 /* NewStoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E882F03324CF030F002D1591 /* NewStoryView.swift */; };
 		E88CC8E424D0119C00E9F2DD /* StoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CC8E324D0119C00E9F2DD /* StoryRow.swift */; };
+		E896ADBF24E1375500D82952 /* StoryDetailHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E896ADBE24E1375500D82952 /* StoryDetailHeader.swift */; };
+		E8A9567C24D2B0E7009E0C28 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A9567B24D2B0E7009E0C28 /* Tag.swift */; };
 		E8C7384924C98C2B0018AAEA /* FocusableNSTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C7384824C98C2B0018AAEA /* FocusableNSTextField.swift */; };
 		E8EB954524C5CA0D00BC76E4 /* SprintNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EB954424C5CA0D00BC76E4 /* SprintNumber.swift */; };
 		E8EB954924C5E23C00BC76E4 /* InlineEditableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EB954824C5E23C00BC76E4 /* InlineEditableList.swift */; };
+		E8F5501C24DD36060017582D /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8F5501B24DD36060017582D /* Configuration.swift */; };
+		E8F5501E24DD36100017582D /* Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8F5501D24DD36100017582D /* Link.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,9 +92,13 @@
 		E882F03124CEBE49002D1591 /* ToolbarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarManager.swift; sourceTree = "<group>"; };
 		E882F03324CF030F002D1591 /* NewStoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewStoryView.swift; sourceTree = "<group>"; };
 		E88CC8E324D0119C00E9F2DD /* StoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryRow.swift; sourceTree = "<group>"; };
+		E896ADBE24E1375500D82952 /* StoryDetailHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryDetailHeader.swift; sourceTree = "<group>"; };
+		E8A9567B24D2B0E7009E0C28 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		E8C7384824C98C2B0018AAEA /* FocusableNSTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusableNSTextField.swift; sourceTree = "<group>"; };
 		E8EB954424C5CA0D00BC76E4 /* SprintNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintNumber.swift; sourceTree = "<group>"; };
 		E8EB954824C5E23C00BC76E4 /* InlineEditableList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineEditableList.swift; sourceTree = "<group>"; };
+		E8F5501B24DD36060017582D /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		E8F5501D24DD36100017582D /* Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Link.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,9 +142,13 @@
 			children = (
 				1862423A24B485BA00A4A6CB /* StoryList.swift */,
 				1862423C24B485E400A4A6CB /* StoryDetail.swift */,
+				E896ADBE24E1375500D82952 /* StoryDetailHeader.swift */,
 				1862424224B48A8600A4A6CB /* Story.swift */,
 				E882F03324CF030F002D1591 /* NewStoryView.swift */,
 				E88CC8E324D0119C00E9F2DD /* StoryRow.swift */,
+				E8A9567B24D2B0E7009E0C28 /* Tag.swift */,
+				E8F5501B24DD36060017582D /* Configuration.swift */,
+				E8F5501D24DD36100017582D /* Link.swift */,
 			);
 			path = Story;
 			sourceTree = "<group>";
@@ -371,9 +383,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				E8C7384924C98C2B0018AAEA /* FocusableNSTextField.swift in Sources */,
+				E8A9567C24D2B0E7009E0C28 /* Tag.swift in Sources */,
 				1862424324B48A8600A4A6CB /* Story.swift in Sources */,
+				E8F5501E24DD36100017582D /* Link.swift in Sources */,
 				1858275E24B4C38B008BE248 /* Array+Extensions.swift in Sources */,
 				E88CC8E424D0119C00E9F2DD /* StoryRow.swift in Sources */,
+				E8F5501C24DD36060017582D /* Configuration.swift in Sources */,
 				1862423D24B485E400A4A6CB /* StoryDetail.swift in Sources */,
 				E81BBFE824CB194B00DB289A /* RoundButton.swift in Sources */,
 				1862423B24B485BA00A4A6CB /* StoryList.swift in Sources */,
@@ -390,6 +405,7 @@
 				18FF999624DC3472002A06FE /* SprintManager.swift in Sources */,
 				E81BBFE624CAD21100DB289A /* FocusableTextField.swift in Sources */,
 				18F7918424B61A5900FDCBEF /* Stories_Previews.swift in Sources */,
+				E896ADBF24E1375500D82952 /* StoryDetailHeader.swift in Sources */,
 				E882F03424CF030F002D1591 /* NewStoryView.swift in Sources */,
 				18F7918224B619B600FDCBEF /* Sprints_Previews.swift in Sources */,
 			);

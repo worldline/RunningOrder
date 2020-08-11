@@ -21,14 +21,14 @@ struct SprintList: View {
         VStack(alignment: .leading) {
             List {
                 Section(header: Text("Active Sprints")) {
-                    ForEach(sprintManager.sprints, id: \.self) { sprint in
+                    ForEach(sprintManager.sprints.indices, id: \.self) { index in
                         NavigationLink(
-                            destination: StoryList(sprint: sprintManager.mutableSprint(sprint))
+                            destination: StoryList(sprintIndex: index)
                                 .environmentObject(toolbarManager),
                             label: {
                                 HStack {
-                                    SprintNumber(number: sprint.number, colorIdentifier: sprint.colorIdentifier)
-                                    Text(sprint.name)
+                                    SprintNumber(number: sprintManager.sprints[index].number, colorIdentifier: sprintManager.sprints[index].colorIdentifier)
+                                    Text(sprintManager.sprints[index].name)
                                 }
                             }
                         )

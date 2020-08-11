@@ -32,6 +32,19 @@
 "Ticket ID" = "ID du Ticket";
 "Story EPIC" = "EPIC de la Story";
 
+// StoryDetail - Textfield Name
+"Configuration" = "Configuration";
+"Links" = "Liens";
+"Environments" = "Environnements";
+"Mock" = "Mock";
+"Feature Flip" = "Feature Flip";
+"Indicators" = "Indicateurs";
+"Identifier" = "Identifiants";
+"Specifications" = "Spécifications";
+"Zeplin" = "Zeplin";
+"Video" = "Vidéo";
+"Steps" = "Étapes";
+
 // Common
 "Cancel" = "Annuler";
 "Create" = "Créer";

@@ -9,17 +9,14 @@
 import SwiftUI
 
 struct StoryRow: View {
+
     let story: Story
 
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Text(story.epic)
-                    .foregroundColor(Color.white)
+                Tag(story.epic, color: Color("holiday blue"))
                     .font(.system(size: 10))
-                    .padding(.horizontal, 4)
-                    .background(Color("holiday blue"))
-                    .clipShape(RoundedRectangle(cornerRadius: 2))
                 Spacer()
                 Text(story.ticketReference)
                     .foregroundColor(.gray)

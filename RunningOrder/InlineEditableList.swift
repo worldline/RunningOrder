@@ -12,15 +12,21 @@ import AppKit
 /// Display an inline editable list of string element
 struct InlineEditableList: View { // Change name ???
 
-    let title: String
+    let title: LocalizedStringKey
 
     let placeholder: String
 
     @Binding var values: [String]
     @State private var hovered = false
 
+    init(title: LocalizedStringKey, placeholder: String = "", values: Binding<[String]>) {
+        self.title = title
+        self._values = values
+        self.placeholder = placeholder
+    }
+
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             HStack {
                 Text(title)
                     .foregroundColor(.gray)

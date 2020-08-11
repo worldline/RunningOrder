@@ -9,9 +9,12 @@
 import Foundation
 
 struct Story {
-    let name: String
+    var name: String
     let ticketReference: String
     let epic: String
+
+    var configuration = Configuration()
+    var links: [Link] = []
 }
 
 extension Story: Equatable { }

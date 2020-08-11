@@ -9,19 +9,82 @@
 import SwiftUI
 
 struct StoryDetail: View {
-    @Binding var story: Story
+    let sprintIndex: Int
+    let storyIndex: Int
+
+    @EnvironmentObject var sprintManager: SprintManager
+
+    var storyBinding: Binding<Story> {
+        return sprintManager.mutableStory(sprintIndex: sprintIndex, storyIndex: storyIndex)
+    }
+
+    @State private var selectedMode = DisplayMode.video
 
     var body: some View {
-        VStack {
-            Text(story.ticketReference)
-            Text(story.name)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        VStack(alignment: .leading) {
+            StoryDetailHeader(story: storyBinding.wrappedValue)
+                .padding(.all, 10)
+            Divider()
+                .padding(.all, 10)
+
+            HSplitView {
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("Configuration")
+                        .font(.subheadline)
+                        .bold()
+                        .padding(.horizontal, 6)
+
+                    InlineEditableList(title: "Environments", values: storyBinding.configuration.environments)
+
+                    InlineEditableList(title: "Mock", values: storyBinding.configuration.mocks)
+
+                    InlineEditableList(title: "Feature flip", values: storyBinding.configuration.features)
+
+                    InlineEditableList(title: "Indicators", values: storyBinding.configuration.indicators)
+
+                    InlineEditableList(title: "Identifier", values: storyBinding.configuration.identifiers)
+
+                    Text("Links")
+                        .font(.subheadline)
+                        .bold()
+                        .padding(.horizontal, 6)
+
+                    InlineEditableList(title: "Links", values: Binding<[String]>(
+                        get: { storyBinding.wrappedValue.links.map { $0.label } },
+                        set: { values in
+                            storyBinding.wrappedValue.links = values
+                                .map { Link(value: $0)}
+                        })
+                    )
+
+                    Spacer()
+                }
+                .padding(.all, 5)
+
+                VStack {
+                    Picker("", selection: $selectedMode) {
+                        ForEach(DisplayMode.allCases, id: \.self) { choice in
+                            Text(choice.rawValue)
+                        }
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+
+                    Text(selectedMode.rawValue)
+
+                    Spacer()
+                }
+            }
+        }.background(Color.white)
     }
 }
 
+private enum DisplayMode: LocalizedStringKey, CaseIterable {
+    case video = "Video"
+    case steps = "Steps"
+}
 struct StoryDetail_Previews: PreviewProvider {
     static var previews: some View {
-        StoryDetail(story: .constant(Story.Previews.stories[0]))
+        StoryDetail(sprintIndex: 0, storyIndex: 0)
+            .environmentObject(SprintManager())
     }
 }
