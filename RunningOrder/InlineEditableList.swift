@@ -36,7 +36,7 @@ struct InlineEditableList: View { // Change name ???
                     RoundButton(image: Image(nsImageName: NSImage.addTemplateName),
                                 color: Color.accentColor,
                                 action: addTextfieldValue)
-                        .frame(width: 20, height: 20)
+                        .frame(width: 17, height: 17)
                         .padding(.horizontal, 10)
                 }
             }
@@ -56,12 +56,13 @@ struct InlineEditableList: View { // Change name ???
                         RoundButton(image: Image(nsImageName: NSImage.removeTemplateName),
                                     color: Color.red,
                                     action: { deleteTextfieldValue(at: index) })
-                            .frame(width: 20, height: 20)
+                            .frame(width: 17, height: 17)
                             .padding(.horizontal, 10)
                     }
                 }
             }
         }
+        .padding(.all, 5)
         .background(Color("snowbank").opacity(hovered ? 1 : 0))
         .cornerRadius(5)
         .onHover { isHovered in

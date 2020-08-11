@@ -17,6 +17,7 @@ struct MainView: View {
 
             Text("Select a Sprint")
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.white)
         }
         .frame(
             minWidth: 800,
