@@ -9,7 +9,8 @@
 import Foundation
 
 struct Story {
-    var name: String
+    let sprintId: UUID
+    let name: String
     let ticketReference: String
     let epic: String
 

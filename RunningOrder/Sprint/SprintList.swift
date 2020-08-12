@@ -8,9 +8,7 @@
 
 import SwiftUI
 
-extension Sprint: Identifiable {
-    var id: String { self.name }
-}
+extension Sprint: Identifiable {}
 
 struct SprintList: View {
     @State private var showNewSprintModal = false
@@ -21,14 +19,14 @@ struct SprintList: View {
         VStack(alignment: .leading) {
             List {
                 Section(header: Text("Active Sprints")) {
-                    ForEach(sprintManager.sprints.indices, id: \.self) { index in
+                    ForEach(sprintManager.sprints, id: \.self) { sprint in
                         NavigationLink(
-                            destination: StoryList(sprintIndex: index)
+                            destination: StoryList(sprint: sprint)
                                 .environmentObject(toolbarManager),
                             label: {
                                 HStack {
-                                    SprintNumber(number: sprintManager.sprints[index].number, colorIdentifier: sprintManager.sprints[index].colorIdentifier)
-                                    Text(sprintManager.sprints[index].name)
+                                    SprintNumber(number: sprint.number, colorIdentifier: sprint.colorIdentifier)
+                                    Text(sprint.name)
                                 }
                             }
                         )

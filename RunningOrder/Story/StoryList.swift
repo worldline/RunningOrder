@@ -13,12 +13,11 @@ extension Story: Identifiable {
 }
 
 struct StoryList: View {
-    let sprintIndex: Int
 
-    var sprint: Sprint { return sprintManager.sprints[sprintIndex] }
+    let sprint: Sprint
 
     @EnvironmentObject var toolbarManager: ToolbarManager
-    @EnvironmentObject var sprintManager: SprintManager
+    @EnvironmentObject var storyManager: StoryManager
 
     var body: some View {
         NavigationView {
@@ -28,10 +27,10 @@ struct StoryList: View {
                     .padding(13)
                 List {
                     Divider()
-                    ForEach(sprint.stories.indices, id: \.self) { index in
+                    ForEach(storyManager.stories.indices, id: \.self) { index in
                         NavigationLink(
-                            destination: StoryDetail(sprintIndex: sprintIndex, storyIndex: index),
-                            label: { StoryRow(story: sprint.stories[index]) }
+                            destination: StoryDetail(storyIndex: index),
+                        label: { StoryRow(story: storyManager.stories[index]) }
                         )
                         Divider()
                     }
@@ -47,11 +46,14 @@ struct StoryList: View {
                 .background(Color.white)
         }
         .sheet(isPresented: $toolbarManager.isAddStoryButtonClicked) {
-            NewStoryView(createdStory: self.$sprintManager.sprints[sprintIndex].stories.appendedElement)
+            NewStoryView(sprintId: sprint.id, createdStory: $storyManager.stories.appendedElement, onAddingStory: { story in
+                Story.Previews.stories.append(story)
+            })
         }
         .onAppear {
             // enabling toolbar add story button
             toolbarManager.isASprintSelected = true
+            storyManager.fetchStories(sprintId: sprint.id)
         }
         .onDisappear {
             // disabling toolbar add story button
@@ -62,7 +64,7 @@ struct StoryList: View {
 
 struct StoryList_Previews: PreviewProvider {
     static var previews: some View {
-        StoryList(sprintIndex: 0)
+        StoryList(sprint: Sprint.Previews.sprints[0])
             .environmentObject(SprintManager())
     }
 }

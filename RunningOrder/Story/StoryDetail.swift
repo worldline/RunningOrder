@@ -9,13 +9,13 @@
 import SwiftUI
 
 struct StoryDetail: View {
-    let sprintIndex: Int
+
+    @EnvironmentObject var storyManager: StoryManager
+
     let storyIndex: Int
 
-    @EnvironmentObject var sprintManager: SprintManager
-
     var storyBinding: Binding<Story> {
-        return sprintManager.mutableStory(sprintIndex: sprintIndex, storyIndex: storyIndex)
+        return $storyManager.stories[storyIndex]
     }
 
     @State private var selectedMode = DisplayMode.video
@@ -50,7 +50,7 @@ struct StoryDetail: View {
                         .padding(.horizontal, 10)
 
                     InlineEditableList(title: "Links", values: Binding<[String]>(
-                        get: { storyBinding.wrappedValue.links.map { $0.label } },
+                                        get: { storyBinding.wrappedValue.links.map { $0.label } },
                         set: { values in
                             storyBinding.wrappedValue.links = values
                                 .map { Link(value: $0)}
@@ -84,7 +84,7 @@ private enum DisplayMode: LocalizedStringKey, CaseIterable {
 }
 struct StoryDetail_Previews: PreviewProvider {
     static var previews: some View {
-        StoryDetail(sprintIndex: 0, storyIndex: 0)
+        StoryDetail(storyIndex: 0)
             .environmentObject(SprintManager())
     }
 }

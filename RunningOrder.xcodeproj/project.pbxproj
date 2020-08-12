@@ -32,6 +32,7 @@
 		E882F03424CF030F002D1591 /* NewStoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E882F03324CF030F002D1591 /* NewStoryView.swift */; };
 		E88CC8E424D0119C00E9F2DD /* StoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CC8E324D0119C00E9F2DD /* StoryRow.swift */; };
 		E896ADBF24E1375500D82952 /* StoryDetailHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E896ADBE24E1375500D82952 /* StoryDetailHeader.swift */; };
+		E8A5BD1D24E3E8B200589452 /* StoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A5BD1C24E3E8B200589452 /* StoryManager.swift */; };
 		E8A9567C24D2B0E7009E0C28 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A9567B24D2B0E7009E0C28 /* Tag.swift */; };
 		E8C7384924C98C2B0018AAEA /* FocusableNSTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C7384824C98C2B0018AAEA /* FocusableNSTextField.swift */; };
 		E8EB954524C5CA0D00BC76E4 /* SprintNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EB954424C5CA0D00BC76E4 /* SprintNumber.swift */; };
@@ -93,6 +94,7 @@
 		E882F03324CF030F002D1591 /* NewStoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewStoryView.swift; sourceTree = "<group>"; };
 		E88CC8E324D0119C00E9F2DD /* StoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryRow.swift; sourceTree = "<group>"; };
 		E896ADBE24E1375500D82952 /* StoryDetailHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryDetailHeader.swift; sourceTree = "<group>"; };
+		E8A5BD1C24E3E8B200589452 /* StoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryManager.swift; sourceTree = "<group>"; };
 		E8A9567B24D2B0E7009E0C28 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		E8C7384824C98C2B0018AAEA /* FocusableNSTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusableNSTextField.swift; sourceTree = "<group>"; };
 		E8EB954424C5CA0D00BC76E4 /* SprintNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintNumber.swift; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 				E81BBFE724CB194B00DB289A /* RoundButton.swift */,
 				E882F03124CEBE49002D1591 /* ToolbarManager.swift */,
 				18FF999524DC3472002A06FE /* SprintManager.swift */,
+				E8A5BD1C24E3E8B200589452 /* StoryManager.swift */,
 				1862423E24B489A800A4A6CB /* Sprint */,
 				1862424124B48A7C00A4A6CB /* Story */,
 				18FE759124A23E680003C76E /* Assets.xcassets */,
@@ -384,6 +387,7 @@
 			files = (
 				E8C7384924C98C2B0018AAEA /* FocusableNSTextField.swift in Sources */,
 				E8A9567C24D2B0E7009E0C28 /* Tag.swift in Sources */,
+				E8A5BD1D24E3E8B200589452 /* StoryManager.swift in Sources */,
 				1862424324B48A8600A4A6CB /* Story.swift in Sources */,
 				E8F5501E24DD36100017582D /* Link.swift in Sources */,
 				1858275E24B4C38B008BE248 /* Array+Extensions.swift in Sources */,
