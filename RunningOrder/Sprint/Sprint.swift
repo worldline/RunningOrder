@@ -11,10 +11,15 @@ import SwiftUI
 
 struct Sprint {
 
-    let id = UUID()
     let number: Int
     let name: String
     let colorIdentifier: String
+}
+
+extension Sprint: Identifiable {
+    typealias ID = String
+    
+    var id: ID { return "\(self.name)\(self.number)" }
 }
 
 extension Sprint: Equatable { }

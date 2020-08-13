@@ -8,8 +8,6 @@
 
 import SwiftUI
 
-extension Sprint: Identifiable {}
-
 struct SprintList: View {
     @State private var showNewSprintModal = false
     @EnvironmentObject var toolbarManager: ToolbarManager

@@ -8,10 +8,6 @@
 
 import SwiftUI
 
-extension Story: Identifiable {
-    var id: String { ticketReference }
-}
-
 struct StoryList: View {
 
     let sprint: Sprint
@@ -27,10 +23,10 @@ struct StoryList: View {
                     .padding(13)
                 List {
                     Divider()
-                    ForEach(storyManager.stories.indices, id: \.self) { index in
+                    ForEach(storyManager.stories, id: \.self) { story in
                         NavigationLink(
-                            destination: StoryDetail(storyIndex: index),
-                        label: { StoryRow(story: storyManager.stories[index]) }
+                            destination: StoryDetail(story: story),
+                            label: { StoryRow(story: story) }
                         )
                         Divider()
                     }
@@ -47,12 +43,16 @@ struct StoryList: View {
         }
         .sheet(isPresented: $toolbarManager.isAddStoryButtonClicked) {
             NewStoryView(sprintId: sprint.id, createdStory: $storyManager.stories.appendedElement, onAddingStory: { story in
-                Story.Previews.stories.append(story)
+                if var sprintStories = Storage.stories[sprint.id] {
+                    sprintStories.append(story)
+                    Storage.stories[sprint.id] = sprintStories
+                }
             })
         }
         .onAppear {
             // enabling toolbar add story button
             toolbarManager.isASprintSelected = true
+
             storyManager.fetchStories(sprintId: sprint.id)
         }
         .onDisappear {

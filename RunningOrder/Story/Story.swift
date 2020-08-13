@@ -9,14 +9,15 @@
 import Foundation
 
 struct Story {
-    let sprintId: UUID
+    let sprintId: Sprint.ID
     let name: String
     let ticketReference: String
     let epic: String
-
-    var configuration = Configuration()
-    var links: [Link] = []
 }
 
+extension Story: Identifiable {
+    typealias ID = String
+    var id: String { ticketReference }
+}
 extension Story: Equatable { }
 extension Story: Hashable { }

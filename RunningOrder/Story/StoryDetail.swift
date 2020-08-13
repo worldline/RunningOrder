@@ -10,19 +10,18 @@ import SwiftUI
 
 struct StoryDetail: View {
 
-    @EnvironmentObject var storyManager: StoryManager
-
-    let storyIndex: Int
-
-    var storyBinding: Binding<Story> {
-        return $storyManager.stories[storyIndex]
-    }
+    let story: Story
 
     @State private var selectedMode = DisplayMode.video
+    @EnvironmentObject var storyInformationManager: StoryInformationManager
+
+    init(story: Story) {
+        self.story = story
+    }
 
     var body: some View {
         VStack(alignment: .leading) {
-            StoryDetailHeader(story: storyBinding.wrappedValue)
+            StoryDetailHeader(story: story)
                 .padding(.all, 10)
             Divider()
                 .padding(.all, 10)
@@ -34,15 +33,15 @@ struct StoryDetail: View {
                         .bold()
                         .padding(.horizontal, 10)
 
-                    InlineEditableList(title: "Environments", values: storyBinding.configuration.environments)
+                    InlineEditableList(title: "Environments", values: $storyInformationManager.storyInformation.configuration.environments)
 
-                    InlineEditableList(title: "Mock", values: storyBinding.configuration.mocks)
+                    InlineEditableList(title: "Mock", values: $storyInformationManager.storyInformation.configuration.mocks)
 
-                    InlineEditableList(title: "Feature flip", values: storyBinding.configuration.features)
+                    InlineEditableList(title: "Feature flip", values: $storyInformationManager.storyInformation.configuration.features)
 
-                    InlineEditableList(title: "Indicators", values: storyBinding.configuration.indicators)
+                    InlineEditableList(title: "Indicators", values: $storyInformationManager.storyInformation.configuration.indicators)
 
-                    InlineEditableList(title: "Identifier", values: storyBinding.configuration.identifiers)
+                    InlineEditableList(title: "Identifier", values: $storyInformationManager.storyInformation.configuration.identifiers)
 
                     Text("Links")
                         .font(.subheadline)
@@ -50,9 +49,9 @@ struct StoryDetail: View {
                         .padding(.horizontal, 10)
 
                     InlineEditableList(title: "Links", values: Binding<[String]>(
-                                        get: { storyBinding.wrappedValue.links.map { $0.label } },
+                                        get: { self.storyInformationManager.storyInformation.links.map { $0.label } },
                         set: { values in
-                            storyBinding.wrappedValue.links = values
+                            self.storyInformationManager.storyInformation.links = values
                                 .map { Link(value: $0)}
                         })
                     )
@@ -74,7 +73,11 @@ struct StoryDetail: View {
                     Spacer()
                 }
             }
-        }.background(Color.white)
+        }
+        .background(Color.white)
+        .onAppear {
+            storyInformationManager.fetchInformation(storyId: story.id)
+        }
     }
 }
 
@@ -84,7 +87,7 @@ private enum DisplayMode: LocalizedStringKey, CaseIterable {
 }
 struct StoryDetail_Previews: PreviewProvider {
     static var previews: some View {
-        StoryDetail(storyIndex: 0)
-            .environmentObject(SprintManager())
+        StoryDetail(story: Story.Previews.stories[0])
+            .environmentObject(StoryInformationManager())
     }
 }

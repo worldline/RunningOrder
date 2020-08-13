@@ -6,9 +6,8 @@
 //  Copyright © 2020 Worldline. All rights reserved.
 //
 
-import Combine
 import SwiftUI
 
 final class SprintManager: ObservableObject {
-    @Published var sprints: [Sprint] = Sprint.Previews.sprints
+    @Published var sprints: [Sprint] = Storage.sprints
 }

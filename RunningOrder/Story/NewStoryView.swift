@@ -10,7 +10,7 @@ import SwiftUI
 
 struct NewStoryView: View {
 
-    let sprintId: UUID
+    let sprintId: Sprint.ID
 
     @State private var name = ""
     @State private var ticketID = ""
