@@ -15,3 +15,6 @@ struct StoryInformation {
     var configuration = Configuration()
     var links: [Link] = []
 }
+
+extension StoryInformation: Equatable {}
+extension StoryInformation: Hashable {}

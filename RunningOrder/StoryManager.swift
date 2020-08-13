@@ -7,14 +7,24 @@
 //
 
 import SwiftUI
+import Combine
+
+final class StoryService {
+    var stories: [Story] = []
+}
 
 final class StoryManager: ObservableObject {
-    @Published var stories: [Story] = []
+    private let service = StoryService()
 
-    func fetchStories(sprintId: Sprint.ID) {
-        if let sprintStories = Storage.stories[sprintId] {
-            stories = sprintStories
+    @Published var stories: [Sprint.ID: [Story]] = [:]
+
+    func stories(for sprintId: Sprint.ID) -> [Story] {
+        if let sprintStories = stories[sprintId] {
+            return sprintStories
+        } else {
+            let fetched = service.stories.filter { $0.sprintId == sprintId }
+            stories[sprintId] = fetched
+            return fetched
         }
     }
-
 }

@@ -15,7 +15,8 @@ struct Story {
     let epic: String
 }
 
-extension Story: Identifiable {
+extension Story {
+    // swiftlint:disable:next type_name
     typealias ID = String
     var id: String { ticketReference }
 }

@@ -9,5 +9,5 @@
 import SwiftUI
 
 final class SprintManager: ObservableObject {
-    @Published var sprints: [Sprint] = Storage.sprints
+    @Published var sprints: [Sprint] = []
 }

@@ -13,10 +13,11 @@ struct StoryDetail: View {
     let story: Story
 
     @State private var selectedMode = DisplayMode.video
+    
     @EnvironmentObject var storyInformationManager: StoryInformationManager
 
-    init(story: Story) {
-        self.story = story
+    var informationBinding: Binding<StoryInformation> {
+        storyInformationManager.informations(for: story.id)
     }
 
     var body: some View {
@@ -33,27 +34,27 @@ struct StoryDetail: View {
                         .bold()
                         .padding(.horizontal, 10)
 
-                    InlineEditableList(title: "Environments", values: $storyInformationManager.storyInformation.configuration.environments)
+                    InlineEditableList(title: "Environments", values: informationBinding.configuration.environments)
 
-                    InlineEditableList(title: "Mock", values: $storyInformationManager.storyInformation.configuration.mocks)
+                    InlineEditableList(title: "Mock", values: informationBinding.configuration.mocks)
 
-                    InlineEditableList(title: "Feature flip", values: $storyInformationManager.storyInformation.configuration.features)
+                    InlineEditableList(title: "Feature flip", values: informationBinding.configuration.features)
 
-                    InlineEditableList(title: "Indicators", values: $storyInformationManager.storyInformation.configuration.indicators)
+                    InlineEditableList(title: "Indicators", values: informationBinding.configuration.indicators)
 
-                    InlineEditableList(title: "Identifier", values: $storyInformationManager.storyInformation.configuration.identifiers)
+                    InlineEditableList(title: "Identifier", values: informationBinding.configuration.identifiers)
 
                     Text("Links")
                         .font(.subheadline)
                         .bold()
                         .padding(.horizontal, 10)
 
-                    InlineEditableList(title: "Links", values: Binding<[String]>(
-                                        get: { self.storyInformationManager.storyInformation.links.map { $0.label } },
-                        set: { values in
-                            self.storyInformationManager.storyInformation.links = values
-                                .map { Link(value: $0)}
-                        })
+                    InlineEditableList(
+                        title: "Links",
+                        values: Binding<[String]>(
+                            get: { self.informationBinding.links.wrappedValue.map { $0.label } },
+                            set: { values in self.informationBinding.links.wrappedValue = values.map { Link(value: $0)} }
+                        )
                     )
 
                     Spacer()
@@ -75,9 +76,6 @@ struct StoryDetail: View {
             }
         }
         .background(Color.white)
-        .onAppear {
-            storyInformationManager.fetchInformation(storyId: story.id)
-        }
     }
 }
 

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SwiftUI
 
 struct Sprint {
 
@@ -16,9 +15,9 @@ struct Sprint {
     let colorIdentifier: String
 }
 
-extension Sprint: Identifiable {
+extension Sprint {
+    // swiftlint:disable:next type_name
     typealias ID = String
-    
     var id: ID { return "\(self.name)\(self.number)" }
 }
 

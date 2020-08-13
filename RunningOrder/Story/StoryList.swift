@@ -8,12 +8,28 @@
 
 import SwiftUI
 
+extension Story: Identifiable {}
+
 struct StoryList: View {
 
     let sprint: Sprint
 
     @EnvironmentObject var toolbarManager: ToolbarManager
+
     @EnvironmentObject var storyManager: StoryManager
+    @EnvironmentObject var storyInformationManager: StoryInformationManager
+
+    var createdStoryBinding: Binding<Story?> {
+        return Binding<Story?>(
+            get: { return nil },
+            set: { newValue in
+                if let story = newValue, var currentStories = storyManager.stories[sprint.id] {
+                    currentStories.append(story)
+                    storyManager.stories[sprint.id] = currentStories
+                }
+            }
+        )
+    }
 
     var body: some View {
         NavigationView {
@@ -23,9 +39,10 @@ struct StoryList: View {
                     .padding(13)
                 List {
                     Divider()
-                    ForEach(storyManager.stories, id: \.self) { story in
+
+                    ForEach(storyManager.stories(for: sprint.id), id: \.self) { story in
                         NavigationLink(
-                            destination: StoryDetail(story: story),
+                            destination: StoryDetail(story: story).environmentObject(storyInformationManager),
                             label: { StoryRow(story: story) }
                         )
                         Divider()
@@ -42,18 +59,11 @@ struct StoryList: View {
                 .background(Color.white)
         }
         .sheet(isPresented: $toolbarManager.isAddStoryButtonClicked) {
-            NewStoryView(sprintId: sprint.id, createdStory: $storyManager.stories.appendedElement, onAddingStory: { story in
-                if var sprintStories = Storage.stories[sprint.id] {
-                    sprintStories.append(story)
-                    Storage.stories[sprint.id] = sprintStories
-                }
-            })
+            NewStoryView(sprintId: sprint.id, createdStory: createdStoryBinding)
         }
         .onAppear {
             // enabling toolbar add story button
             toolbarManager.isASprintSelected = true
-
-            storyManager.fetchStories(sprintId: sprint.id)
         }
         .onDisappear {
             // disabling toolbar add story button

@@ -22,8 +22,6 @@ struct NewStoryView: View {
 
     @Binding var createdStory: Story?
 
-    let onAddingStory: (Story) -> Void
-
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
@@ -50,13 +48,12 @@ struct NewStoryView: View {
 
         let newStory = Story(sprintId: sprintId, name: name, ticketReference: ticketID, epic: epic)
         self.createdStory = newStory
-        onAddingStory(newStory)
         dismiss()
     }
 }
 
 struct NewStoryView_Previews: PreviewProvider {
     static var previews: some View {
-        NewStoryView(sprintId: Sprint.Previews.sprints[0].id, createdStory: .constant(nil), onAddingStory: {_ in })
+        NewStoryView(sprintId: Sprint.Previews.sprints[0].id, createdStory: .constant(nil))
     }
 }

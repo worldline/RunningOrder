@@ -8,10 +8,13 @@
 
 import SwiftUI
 
+extension Sprint: Identifiable {}
+
 struct SprintList: View {
     @State private var showNewSprintModal = false
     @EnvironmentObject var toolbarManager: ToolbarManager
     @EnvironmentObject var sprintManager: SprintManager
+    @EnvironmentObject var storyManager: StoryManager
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -19,8 +22,7 @@ struct SprintList: View {
                 Section(header: Text("Active Sprints")) {
                     ForEach(sprintManager.sprints, id: \.self) { sprint in
                         NavigationLink(
-                            destination: StoryList(sprint: sprint)
-                                .environmentObject(toolbarManager),
+                            destination: StoryList(sprint: sprint).environmentObject(storyManager),
                             label: {
                                 HStack {
                                     SprintNumber(number: sprint.number, colorIdentifier: sprint.colorIdentifier)

@@ -10,28 +10,26 @@ import Foundation
 import SwiftUI
 import Combine
 
+final class StoryInformationService {
+    var storyInformations: [StoryInformation] = []
+}
+
 final class StoryInformationManager: ObservableObject {
 
-    @Published var storyInformation = StoryInformation(storyId: "")
+    private let service = StoryInformationService()
 
-    private var cancellable: AnyCancellable?
+    @Published var storyInformations: [Story.ID: StoryInformation] = [:]
 
-    init() {
-        cancellable = $storyInformation
-            .dropFirst()
-            .sink { _ in
-                self.saveInformation()
-            }
-    }
+    func informations(for storyId: Story.ID) -> Binding<StoryInformation> {
+        if storyInformations[storyId] == nil {
+            let fetched = service.storyInformations.first(where: { $0.storyId == storyId })
+            storyInformations[storyId] = fetched ?? StoryInformation(storyId: storyId)
+        }
 
-    func fetchInformation(storyId: Story.ID) {
-        if let storyInformation = Storage.informations[storyId] {
-            self.storyInformation = storyInformation
+        return Binding {
+            self.storyInformations[storyId]!
+        } set: { newValue in
+            self.storyInformations[storyId] = newValue
         }
     }
-
-    func saveInformation() {
-        Storage.informations[storyInformation.storyId] = storyInformation
-    }
-
 }
