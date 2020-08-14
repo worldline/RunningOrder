@@ -13,6 +13,8 @@ struct StoryInformation {
 
     var configuration = Configuration()
     var links: [Link] = []
+
+    var steps: [String] = []
 }
 
 extension StoryInformation: Equatable {}

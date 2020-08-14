@@ -67,7 +67,13 @@ struct StoryDetail: View {
                     }
                     .pickerStyle(SegmentedPickerStyle())
 
-                    Text(selectedMode.rawValue)
+                    switch selectedMode {
+                    case .steps:
+                        InlineEditableList(title: "Steps", placeholder: "A step to follow", values: self.binding.steps)
+
+                    case .video:
+                        Text(selectedMode.rawValue)
+                    }
 
                     Spacer()
                 }
