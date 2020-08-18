@@ -26,56 +26,61 @@ struct StoryDetail: View {
                 .padding(.all, 10)
 
             HSplitView {
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("Configuration")
-                        .font(.subheadline)
-                        .bold()
-                        .padding(.horizontal, 10)
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 0) {
+                        Text("Configuration")
+                            .font(.subheadline)
+                            .bold()
+                            .padding(.horizontal, 10)
 
-                    InlineEditableList(title: "Environments", values: informationBinding.configuration.environments)
+                        InlineEditableList(title: "Environments", values: informationBinding.configuration.environments)
 
-                    InlineEditableList(title: "Mock", values: informationBinding.configuration.mocks)
+                        InlineEditableList(title: "Mock", values: informationBinding.configuration.mocks)
 
-                    InlineEditableList(title: "Feature flip", values: informationBinding.configuration.features)
+                        InlineEditableList(title: "Feature flip", values: informationBinding.configuration.features)
 
-                    InlineEditableList(title: "Indicators", values: informationBinding.configuration.indicators)
+                        InlineEditableList(title: "Indicators", values: informationBinding.configuration.indicators)
 
-                    InlineEditableList(title: "Identifier", values: informationBinding.configuration.identifiers)
+                        InlineEditableList(title: "Identifier", values: informationBinding.configuration.identifiers)
 
-                    Text("Links")
-                        .font(.subheadline)
-                        .bold()
-                        .padding(.horizontal, 10)
+                        Text("Links")
+                            .font(.subheadline)
+                            .bold()
+                            .padding(.horizontal, 10)
 
-                    InlineEditableList(
-                        title: "Links",
-                        values: Binding<[String]>(
-                            get: { self.informationBinding.links.wrappedValue.map { $0.label } },
-                            set: { values in self.informationBinding.links.wrappedValue = values.map { Link(value: $0) } }
+                        InlineEditableList(
+                            title: "Links",
+                            values: Binding<[String]>(
+                                get: { self.informationBinding.links.wrappedValue.map { $0.label } },
+                                set: { values in self.informationBinding.links.wrappedValue = values.map { Link(value: $0) } }
+                            )
                         )
-                    )
 
-                    Spacer()
+                        Spacer()
+                    }
+                    .padding(.all, 5)
+
                 }
-                .padding(.all, 5)
 
-                VStack {
-                    Picker("", selection: $selectedMode) {
-                        ForEach(DisplayMode.allCases, id: \.self) { choice in
-                            Text(choice.rawValue)
+                ScrollView {
+                    VStack {
+                        Picker("", selection: $selectedMode) {
+                            ForEach(DisplayMode.allCases, id: \.self) { choice in
+                                Text(choice.rawValue)
+                            }
                         }
+                        .pickerStyle(SegmentedPickerStyle())
+
+                        switch selectedMode {
+                        case .steps:
+                            InlineEditableList(title: "Steps", placeholder: "A step to follow", values: self.informationBinding.steps)
+
+                        case .video:
+                            Text(selectedMode.rawValue)
+                        }
+
+                        Spacer()
                     }
-                    .pickerStyle(SegmentedPickerStyle())
-
-                    switch selectedMode {
-                    case .steps:
-                        InlineEditableList(title: "Steps", placeholder: "A step to follow", values: self.binding.steps)
-
-                    case .video:
-                        Text(selectedMode.rawValue)
-                    }
-
-                    Spacer()
                 }
             }
         }
