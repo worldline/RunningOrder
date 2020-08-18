@@ -9,13 +9,16 @@
 import Foundation
 
 struct Story {
-    var name: String
+    let sprintId: Sprint.ID
+    let name: String
     let ticketReference: String
     let epic: String
-
-    var configuration = Configuration()
-    var links: [Link] = []
 }
 
+extension Story {
+    // swiftlint:disable:next type_name
+    typealias ID = String
+    var id: String { ticketReference }
+}
 extension Story: Equatable { }
 extension Story: Hashable { }

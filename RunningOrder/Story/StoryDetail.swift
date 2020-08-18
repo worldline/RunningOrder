@@ -9,20 +9,18 @@
 import SwiftUI
 
 struct StoryDetail: View {
-    let sprintIndex: Int
-    let storyIndex: Int
 
-    @EnvironmentObject var sprintManager: SprintManager
-
-    var storyBinding: Binding<Story> {
-        return sprintManager.mutableStory(sprintIndex: sprintIndex, storyIndex: storyIndex)
-    }
+    let story: Story
 
     @State private var selectedMode = DisplayMode.video
 
+    @EnvironmentObject var storyInformationManager: StoryInformationManager
+
+    var informationBinding: Binding<StoryInformation> { storyInformationManager.informations(for: story.id) }
+
     var body: some View {
         VStack(alignment: .leading) {
-            StoryDetailHeader(story: storyBinding.wrappedValue)
+            StoryDetailHeader(story: story)
                 .padding(.all, 10)
             Divider()
                 .padding(.all, 10)
@@ -34,27 +32,27 @@ struct StoryDetail: View {
                         .bold()
                         .padding(.horizontal, 10)
 
-                    InlineEditableList(title: "Environments", values: storyBinding.configuration.environments)
+                    InlineEditableList(title: "Environments", values: informationBinding.configuration.environments)
 
-                    InlineEditableList(title: "Mock", values: storyBinding.configuration.mocks)
+                    InlineEditableList(title: "Mock", values: informationBinding.configuration.mocks)
 
-                    InlineEditableList(title: "Feature flip", values: storyBinding.configuration.features)
+                    InlineEditableList(title: "Feature flip", values: informationBinding.configuration.features)
 
-                    InlineEditableList(title: "Indicators", values: storyBinding.configuration.indicators)
+                    InlineEditableList(title: "Indicators", values: informationBinding.configuration.indicators)
 
-                    InlineEditableList(title: "Identifier", values: storyBinding.configuration.identifiers)
+                    InlineEditableList(title: "Identifier", values: informationBinding.configuration.identifiers)
 
                     Text("Links")
                         .font(.subheadline)
                         .bold()
                         .padding(.horizontal, 10)
 
-                    InlineEditableList(title: "Links", values: Binding<[String]>(
-                        get: { storyBinding.wrappedValue.links.map { $0.label } },
-                        set: { values in
-                            storyBinding.wrappedValue.links = values
-                                .map { Link(value: $0)}
-                        })
+                    InlineEditableList(
+                        title: "Links",
+                        values: Binding<[String]>(
+                            get: { self.informationBinding.links.wrappedValue.map { $0.label } },
+                            set: { values in self.informationBinding.links.wrappedValue = values.map { Link(value: $0) } }
+                        )
                     )
 
                     Spacer()
@@ -74,7 +72,8 @@ struct StoryDetail: View {
                     Spacer()
                 }
             }
-        }.background(Color.white)
+        }
+        .background(Color.white)
     }
 }
 
@@ -84,7 +83,7 @@ private enum DisplayMode: LocalizedStringKey, CaseIterable {
 }
 struct StoryDetail_Previews: PreviewProvider {
     static var previews: some View {
-        StoryDetail(sprintIndex: 0, storyIndex: 0)
-            .environmentObject(SprintManager())
+        StoryDetail(story: Story.Previews.stories[0])
+            .environmentObject(StoryInformationManager())
     }
 }

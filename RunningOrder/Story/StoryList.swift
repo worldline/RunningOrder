@@ -8,17 +8,27 @@
 
 import SwiftUI
 
-extension Story: Identifiable {
-    var id: String { ticketReference }
-}
+extension Story: Identifiable {}
 
 struct StoryList: View {
-    let sprintIndex: Int
 
-    var sprint: Sprint { return sprintManager.sprints[sprintIndex] }
+    let sprint: Sprint
 
     @EnvironmentObject var toolbarManager: ToolbarManager
-    @EnvironmentObject var sprintManager: SprintManager
+
+    @EnvironmentObject var storyManager: StoryManager
+    @EnvironmentObject var storyInformationManager: StoryInformationManager
+
+    var createdStoryBinding: Binding<Story?> {
+        return Binding<Story?>(
+            get: { return nil },
+            set: { newValue in
+                if let story = newValue {
+                    storyManager.add(story: story, toSprint: sprint.id)
+                }
+            }
+        )
+    }
 
     var body: some View {
         NavigationView {
@@ -28,10 +38,11 @@ struct StoryList: View {
                     .padding(13)
                 List {
                     Divider()
-                    ForEach(sprint.stories.indices, id: \.self) { index in
+
+                    ForEach(storyManager.stories(for: sprint.id), id: \.self) { story in
                         NavigationLink(
-                            destination: StoryDetail(sprintIndex: sprintIndex, storyIndex: index),
-                            label: { StoryRow(story: sprint.stories[index]) }
+                            destination: StoryDetail(story: story).environmentObject(storyInformationManager),
+                            label: { StoryRow(story: story) }
                         )
                         Divider()
                     }
@@ -47,7 +58,7 @@ struct StoryList: View {
                 .background(Color.white)
         }
         .sheet(isPresented: $toolbarManager.isAddStoryButtonClicked) {
-            NewStoryView(createdStory: self.$sprintManager.sprints[sprintIndex].stories.appendedElement)
+            NewStoryView(sprintId: sprint.id, createdStory: createdStoryBinding)
         }
         .onAppear {
             // enabling toolbar add story button
@@ -62,7 +73,7 @@ struct StoryList: View {
 
 struct StoryList_Previews: PreviewProvider {
     static var previews: some View {
-        StoryList(sprintIndex: 0)
+        StoryList(sprint: Sprint.Previews.sprints[0])
             .environmentObject(SprintManager())
     }
 }

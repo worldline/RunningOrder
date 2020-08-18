@@ -7,14 +7,17 @@
 //
 
 import Foundation
-import SwiftUI
 
 struct Sprint {
     let number: Int
     let name: String
     let colorIdentifier: String
+}
 
-    var stories: [Story]
+extension Sprint {
+    // swiftlint:disable:next type_name
+    typealias ID = String
+    var id: ID { return "\(self.name)\(self.number)" }
 }
 
 extension Sprint: Equatable { }
