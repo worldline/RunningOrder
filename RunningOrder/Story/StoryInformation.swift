@@ -9,7 +9,6 @@
 import Foundation
 
 struct StoryInformation {
-
     let storyId: Story.ID
 
     var configuration = Configuration()

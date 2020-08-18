@@ -148,6 +148,7 @@
 			children = (
 				1862423A24B485BA00A4A6CB /* StoryList.swift */,
 				1862423C24B485E400A4A6CB /* StoryDetail.swift */,
+				E8A5BD1E24E42A9B00589452 /* StoryInformation.swift */,
 				E896ADBE24E1375500D82952 /* StoryDetailHeader.swift */,
 				1862424224B48A8600A4A6CB /* Story.swift */,
 				E882F03324CF030F002D1591 /* NewStoryView.swift */,
@@ -155,7 +156,6 @@
 				E8A9567B24D2B0E7009E0C28 /* Tag.swift */,
 				E8F5501B24DD36060017582D /* Configuration.swift */,
 				E8F5501D24DD36100017582D /* Link.swift */,
-				E8A5BD1E24E42A9B00589452 /* StoryInformation.swift */,
 			);
 			path = Story;
 			sourceTree = "<group>";

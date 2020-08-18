@@ -23,9 +23,8 @@ struct StoryList: View {
         return Binding<Story?>(
             get: { return nil },
             set: { newValue in
-                if let story = newValue, var currentStories = storyManager.stories[sprint.id] {
-                    currentStories.append(story)
-                    storyManager.stories[sprint.id] = currentStories
+                if let story = newValue {
+                    storyManager.add(story: story, toSprint: sprint.id)
                 }
             }
         )

@@ -13,12 +13,10 @@ struct StoryDetail: View {
     let story: Story
 
     @State private var selectedMode = DisplayMode.video
-    
+
     @EnvironmentObject var storyInformationManager: StoryInformationManager
 
-    var informationBinding: Binding<StoryInformation> {
-        storyInformationManager.informations(for: story.id)
-    }
+    var informationBinding: Binding<StoryInformation> { storyInformationManager.informations(for: story.id) }
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -53,7 +51,7 @@ struct StoryDetail: View {
                         title: "Links",
                         values: Binding<[String]>(
                             get: { self.informationBinding.links.wrappedValue.map { $0.label } },
-                            set: { values in self.informationBinding.links.wrappedValue = values.map { Link(value: $0)} }
+                            set: { values in self.informationBinding.links.wrappedValue = values.map { Link(value: $0) } }
                         )
                     )
 

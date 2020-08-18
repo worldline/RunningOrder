@@ -27,4 +27,11 @@ final class StoryManager: ObservableObject {
             return fetched
         }
     }
+
+    func add(story: Story, toSprint sprintId: Sprint.ID) {
+        if var currentStories = stories[sprintId] {
+            currentStories.append(story)
+            stories[sprintId] = currentStories
+        }
+    }
 }

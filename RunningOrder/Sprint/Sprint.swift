@@ -9,7 +9,6 @@
 import Foundation
 
 struct Sprint {
-
     let number: Int
     let name: String
     let colorIdentifier: String
