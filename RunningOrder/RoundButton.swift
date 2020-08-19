@@ -19,11 +19,11 @@ struct RoundButton: View {
             image
                 .resizable()
                 .padding(5)
-                .foregroundColor(.white)
+                .background(color)
+                .clipShape(Circle())
         }
-        .background(color)
+        .foregroundColor(.white)
         .buttonStyle(PlainButtonStyle())
-        .clipShape(Circle())
     }
 }
 
