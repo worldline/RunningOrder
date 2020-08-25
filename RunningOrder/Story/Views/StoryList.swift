@@ -19,12 +19,14 @@ struct StoryList: View {
     @EnvironmentObject var storyManager: StoryManager
     @EnvironmentObject var storyInformationManager: StoryInformationManager
 
+    private let disposeBag = DisposeBag()
+
     var createdStoryBinding: Binding<Story?> {
         return Binding<Story?>(
             get: { return nil },
             set: { newValue in
                 if let story = newValue {
-                    storyManager.add(story: story, toSprint: sprint.id)
+                    self.addStory(story: story)
                 }
             }
         )
@@ -68,6 +70,13 @@ struct StoryList: View {
             // disabling toolbar add story button
             toolbarManager.isASprintSelected = false
         }
+    }
+
+    func addStory(story: Story) {
+        storyManager.add(story: story)
+            .catchAndExit { error in print(error) } // TODO Clean error handling
+            .sink { _ in }
+            .store(in: &disposeBag.cancellables)
     }
 }
 

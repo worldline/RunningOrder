@@ -9,4 +9,11 @@
 import Cocoa
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate { }
+class AppDelegate: NSObject, NSApplicationDelegate {
+
+    let cloudkitManager = CloudKitManager()
+
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
+        cloudkitManager.createCustomZone()
+    }
+}
