@@ -371,6 +371,7 @@
 		E8A4E4CE24EE982B00DBBCEA /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E8AFA1F024F69AD200AA84D3 /* Services */,
 				E8A4E4CF24EE984A00DBBCEA /* Cloudkit+Sprint.swift */,
 			);
 			path = Extensions;
