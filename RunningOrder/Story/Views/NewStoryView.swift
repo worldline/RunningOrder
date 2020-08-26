@@ -7,7 +7,6 @@
 //
 
 import SwiftUI
-import CloudKit
 
 struct NewStoryView: View {
 

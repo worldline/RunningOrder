@@ -11,9 +11,9 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    let cloudkitManager = CloudKitManager()
+    let cloudkitContainer = CloudKitContainer.shared
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        cloudkitManager.createCustomZone()
+        cloudkitContainer.createCustomZoneIfNeeded()
     }
 }

@@ -11,7 +11,6 @@ import SwiftUI
 struct ProgressIndicator: NSViewRepresentable {
 
     func makeNSView(context: NSViewRepresentableContext<ProgressIndicator>) -> NSProgressIndicator {
-
         NSProgressIndicator()
     }
 
@@ -19,7 +18,6 @@ struct ProgressIndicator: NSViewRepresentable {
         nsView.style = .spinning
         nsView.startAnimation(true)
     }
-
 }
 
 struct ProgressIndicator_Previews: PreviewProvider {

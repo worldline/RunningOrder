@@ -12,25 +12,11 @@ import CloudKit
 extension Story: CKRecordable {
 
     init(from record: CKRecord) throws {
-        guard let name = record["name"] as? String else {
-            throw CloudKitManager.Error.castFailure
-        }
+        self.name = try record.property("name")
+        self.ticketReference = try record.property("ticketReference")
+        self.epic = try record.property("epic")
 
-        guard let ticketReference = record["ticketReference"] as? String else {
-            throw CloudKitManager.Error.castFailure
-        }
-
-        guard let epic = record["epic"] as? String else {
-            throw CloudKitManager.Error.castFailure
-        }
-
-        guard let sprintReference = record["sprintId"] as? CKRecord.Reference else {
-            throw CloudKitManager.Error.castFailure
-        }
-
-        self.name = name
-        self.ticketReference = ticketReference
-        self.epic = epic
+        let sprintReference: CKRecord.Reference = try record.property("sprintId")
         self.sprintId = sprintReference.recordID.recordName
     }
 
@@ -45,11 +31,11 @@ extension Story: CKRecordable {
         return storyRecord
     }
 
-    func recordId(zoneId: CKRecordZone.ID) -> CKRecord.ID {
+    private func recordId(zoneId: CKRecordZone.ID) -> CKRecord.ID {
         return CKRecord.ID(recordName: self.id, zoneID: zoneId)
     }
 
-    func sprintRecordId(zoneId: CKRecordZone.ID) -> CKRecord.ID {
+    private func sprintRecordId(zoneId: CKRecordZone.ID) -> CKRecord.ID {
         return CKRecord.ID(recordName: self.sprintId, zoneID: zoneId)
     }
 }

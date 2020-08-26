@@ -14,30 +14,28 @@ final class SprintManager: ObservableObject {
 
     var cancellables: Set<AnyCancellable> = []
 
-    private let cloudkitManager = CloudKitManager()
+    private let service: SprintService
 
-    func add(sprint: Sprint) -> AnyPublisher<[Sprint], Error> {
+    init(service: SprintService) {
+        self.service = service
+    }
 
-        let saveSprintPublisher = cloudkitManager.save(sprint: sprint)
-            .map { (savedSprint: Sprint) -> [Sprint] in
-                var newSprints = self.sprints
-                newSprints.append(savedSprint)
-                return newSprints
-            }
+    func add(sprint: Sprint) -> AnyPublisher<Sprint, Error> {
+        let saveSprintPublisher = service.save(sprint: sprint)
             .share()
             .receive(on: DispatchQueue.main)
 
         saveSprintPublisher
             .catchAndExit { _ in }
-            .assign(to: \.sprints, onStrong: self)
+            .append(to: \.sprints, onStrong: self)
             .store(in: &cancellables)
 
         return saveSprintPublisher.eraseToAnyPublisher()
     }
 
     func loadData() {
-        return cloudkitManager
-            .fetchAllSprints()
+        return service
+            .fetchAll()
             .replaceError(with: [])
             .receive(on: DispatchQueue.main)
             .assign(to: \.sprints, onStrong: self)

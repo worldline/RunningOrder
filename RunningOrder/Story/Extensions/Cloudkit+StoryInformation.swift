@@ -12,41 +12,18 @@ import CloudKit
 extension StoryInformation: CKRecordable {
 
     init(from record: CKRecord) throws {
-        guard let storyReference = record["storyId"] as? CKRecord.Reference else {
-            throw CloudKitManager.Error.castFailure
-        }
-
-        guard let steps = record["steps"] as? [String] else {
-            throw CloudKitManager.Error.castFailure
-        }
-
-        guard let environments = record["environments"] as? [String] else {
-            throw CloudKitManager.Error.castFailure
-        }
-
-        guard let mocks = record["mocks"] as? [String] else {
-            throw CloudKitManager.Error.castFailure
-        }
-
-        guard let features = record["features"] as? [String] else {
-            throw CloudKitManager.Error.castFailure
-        }
-
-        guard let indicators = record["indicators"] as? [String] else {
-            throw CloudKitManager.Error.castFailure
-        }
-
-        guard let identifiers = record["identifiers"] as? [String] else {
-            throw CloudKitManager.Error.castFailure
-        }
-
-        guard let links = record["links"] as? [String] else {
-            throw CloudKitManager.Error.castFailure
-        }
-
+        let storyReference: CKRecord.Reference = try record.property("storyId")
         self.storyId = storyReference.recordID.recordName
-        self.steps = steps
-        self.links = links.map { Link.init(value: $0) }
+
+        self.steps = try record.property("steps")
+        let environments: [String] = try record.property("steps")
+        let mocks: [String] = try record.property("mocks")
+        let features: [String] = try record.property("features")
+        let indicators: [String] = try record.property("indicators")
+        let identifiers: [String] = try record.property("identifiers")
+        let linkLabels: [String] = try record.property("links")
+
+        self.links = linkLabels.map { Link.init(value: $0) }
         self.configuration = .init(environments: environments, mocks: mocks, features: features, indicators: indicators, identifiers: identifiers)
     }
 
@@ -71,11 +48,11 @@ extension StoryInformation: CKRecordable {
         return storyInformationRecord
     }
 
-    func recordId(zoneId: CKRecordZone.ID) -> CKRecord.ID {
+    private func recordId(zoneId: CKRecordZone.ID) -> CKRecord.ID {
         return CKRecord.ID(recordName: "si-\(self.storyId)", zoneID: zoneId) // we construct an unique ID based on the storyID
     }
 
-    func storyRecordId(zoneId: CKRecordZone.ID) -> CKRecord.ID {
+    private func storyRecordId(zoneId: CKRecordZone.ID) -> CKRecord.ID {
         return CKRecord.ID(recordName: self.storyId, zoneID: zoneId)
     }
 }

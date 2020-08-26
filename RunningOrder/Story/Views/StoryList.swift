@@ -83,6 +83,6 @@ struct StoryList: View {
 struct StoryList_Previews: PreviewProvider {
     static var previews: some View {
         StoryList(sprint: Sprint.Previews.sprints[0])
-            .environmentObject(SprintManager())
+            .environmentObject(StoryManager(service: StoryService()))
     }
 }

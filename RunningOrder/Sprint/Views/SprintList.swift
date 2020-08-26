@@ -36,7 +36,9 @@ struct SprintList: View {
                 Section(header: Text("Active Sprints")) {
                     ForEach(sprintManager.sprints, id: \.self) { sprint in
                         NavigationLink(
-                            destination: StoryList(sprint: sprint).environmentObject(storyManager).environmentObject(toolbarManager),
+                            destination: StoryList(sprint: sprint)
+                                .environmentObject(storyManager)
+                                .environmentObject(toolbarManager),
                             label: {
                                 HStack {
                                     SprintNumber(number: sprint.number, colorIdentifier: sprint.colorIdentifier)
@@ -60,10 +62,9 @@ struct SprintList: View {
                     Text("New Sprint")
                         .foregroundColor(Color.accentColor)
                         .font(.system(size: 12))
-
                 }
-                .padding(.all, 20.0)
             }
+            .padding(.all, 20.0)
             .buttonStyle(PlainButtonStyle())
         }
         .onAppear {
@@ -76,10 +77,10 @@ struct SprintList: View {
 
     func addSprint(sprint: Sprint) {
         sprintManager.add(sprint: sprint)
-            .catchAndExit { error in
-                print(error) // TODO Clean error handling
-            }
-            .sink { _ in }
+            .ignoreOutput()
+            .sink (receiveFailure: { failure in
+                print(failure) // TODO error Handling
+            })
             .store(in: &disposeBag.cancellables)
     }
 }
@@ -87,7 +88,7 @@ struct SprintList: View {
 struct SprintList_Previews: PreviewProvider {
     static var previews: some View {
         SprintList()
-            .listStyle(SidebarListStyle())
+            .environmentObject(SprintManager(service: SprintService()))
             .frame(width: 250)
     }
 }

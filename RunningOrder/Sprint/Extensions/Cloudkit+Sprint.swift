@@ -11,21 +11,9 @@ import CloudKit
 
 extension Sprint: CKRecordable {
     init(from record: CKRecord) throws {
-        guard let name = record["name"] as? String else {
-            throw CloudKitManager.Error.castFailure
-        }
-
-        guard let number = record["number"] as? Int else {
-            throw CloudKitManager.Error.castFailure
-        }
-
-        guard let colorIdentifier = record["colorIdentifier"] as? String else {
-            throw CloudKitManager.Error.castFailure
-        }
-
-        self.name = name
-        self.number = number
-        self.colorIdentifier = colorIdentifier
+        self.name = try record.property("name")
+        self.number = try record.property("number")
+        self.colorIdentifier = try record.property("colorIdentifier")
     }
 
     func encode(zoneId: CKRecordZone.ID) -> CKRecord {
@@ -38,7 +26,7 @@ extension Sprint: CKRecordable {
         return sprintRecord
     }
 
-    func recordId(zoneId: CKRecordZone.ID) -> CKRecord.ID {
+    private func recordId(zoneId: CKRecordZone.ID) -> CKRecord.ID {
         return CKRecord.ID(recordName: self.id, zoneID: zoneId)
     }
 }

@@ -11,5 +11,5 @@ import CloudKit
 
 protocol CKRecordable {
     init(from record: CKRecord) throws
-    func encode(zoneId: CKRecordZone.ID) -> CKRecord
+    func encode(zoneId: CKRecordZone.ID) throws -> CKRecord
 }

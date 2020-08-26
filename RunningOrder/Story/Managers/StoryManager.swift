@@ -9,24 +9,23 @@
 import SwiftUI
 import Combine
 
-final class StoryService {
-    var stories: [Story] = []
-}
-
 final class StoryManager: ObservableObject {
-    private let service = StoryService()
 
     @Published var stories: [Sprint.ID: [Story]] = [:]
 
     var cancellables: Set<AnyCancellable> = []
 
-    private let cloudkitManager = CloudKitManager()
+    private let service: StoryService
 
+    init(service: StoryService) {
+        self.service = service
+    }
+    
     func stories(for sprintId: Sprint.ID) -> [Story] {
         if let sprintStories = stories[sprintId] {
             return sprintStories
         } else {
-            cloudkitManager.fetchStories(from: sprintId)
+            service.fetch(from: sprintId)
                 .catchAndExit { error in print(error) } // TODO Error Handling
                 .receive(on: DispatchQueue.main)
                 .assign(to: \.stories[sprintId], onStrong: self)
@@ -37,19 +36,14 @@ final class StoryManager: ObservableObject {
         }
     }
 
-    func add(story: Story) -> AnyPublisher<[Story], Error> {
-        let saveStoryPublisher = cloudkitManager.save(story: story)
-            .tryMap { (savedStory: Story) -> [Story] in
-                guard var newStories = self.stories[story.sprintId] else { throw CloudKitManager.Error.recordFailure}
-                newStories.append(savedStory)
-                return newStories
-            }
+    func add(story: Story) -> AnyPublisher<Story, Error> {
+        let saveStoryPublisher = service.save(story: story)
             .share()
             .receive(on: DispatchQueue.main)
 
         saveStoryPublisher
-            .catchAndExit { _ in }
-            .assign(to: \.stories[story.sprintId], onStrong: self)
+            .catchAndExit { _ in } // we do nothing if an error occurred
+            .append(to: \.stories[story.sprintId], onStrong: self) // we add append the Story Output to the Story array associates with sprintId
             .store(in: &cancellables)
 
         return saveStoryPublisher.eraseToAnyPublisher()

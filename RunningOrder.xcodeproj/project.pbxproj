@@ -28,7 +28,6 @@
 		E81BBFE624CAD21100DB289A /* FocusableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81BBFE524CAD21100DB289A /* FocusableTextField.swift */; };
 		E81BBFE824CB194B00DB289A /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81BBFE724CB194B00DB289A /* RoundButton.swift */; };
 		E83C002724ED7B0F00C83B85 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E83C002624ED7B0F00C83B85 /* CloudKit.framework */; };
-		E858997224EE65EF00BB65C8 /* CloudkitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E858997124EE65EF00BB65C8 /* CloudkitHelper.swift */; };
 		E858997424EE68FB00BB65C8 /* Cloudkit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E858997324EE68FB00BB65C8 /* Cloudkit+Extensions.swift */; };
 		E859371C24EEAFC500772BD2 /* Cloudkit+StoryInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E859371B24EEAFC500772BD2 /* Cloudkit+StoryInformation.swift */; };
 		E8760DCF24DADFD8003A2766 /* Image+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8760DCE24DADFD8003A2766 /* Image+Extensions.swift */; };
@@ -47,6 +46,10 @@
 		E8A5BD1F24E42A9B00589452 /* StoryInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A5BD1E24E42A9B00589452 /* StoryInformation.swift */; };
 		E8A5BD2324E433AD00589452 /* StoryInformationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A5BD2224E433AD00589452 /* StoryInformationManager.swift */; };
 		E8A9567C24D2B0E7009E0C28 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A9567B24D2B0E7009E0C28 /* Tag.swift */; };
+		E8AFA1F224F69BE300AA84D3 /* SprintService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8AFA1F124F69BE300AA84D3 /* SprintService.swift */; };
+		E8AFA1F424F69C1900AA84D3 /* CloudKitContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8AFA1F324F69C1900AA84D3 /* CloudKitContainer.swift */; };
+		E8AFA1F624F69D4900AA84D3 /* StoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8AFA1F524F69D4900AA84D3 /* StoryService.swift */; };
+		E8AFA1F824F69D5200AA84D3 /* StoryInformationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8AFA1F724F69D5200AA84D3 /* StoryInformationService.swift */; };
 		E8C7384924C98C2B0018AAEA /* FocusableNSTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C7384824C98C2B0018AAEA /* FocusableNSTextField.swift */; };
 		E8EB954524C5CA0D00BC76E4 /* SprintNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EB954424C5CA0D00BC76E4 /* SprintNumber.swift */; };
 		E8EB954924C5E23C00BC76E4 /* InlineEditableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EB954824C5E23C00BC76E4 /* InlineEditableList.swift */; };
@@ -105,7 +108,6 @@
 		E81BBFE724CB194B00DB289A /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		E83C002424ED7B0600C83B85 /* RunningOrderDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunningOrderDebug.entitlements; sourceTree = "<group>"; };
 		E83C002624ED7B0F00C83B85 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
-		E858997124EE65EF00BB65C8 /* CloudkitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudkitHelper.swift; sourceTree = "<group>"; };
 		E858997324EE68FB00BB65C8 /* Cloudkit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cloudkit+Extensions.swift"; sourceTree = "<group>"; };
 		E859371B24EEAFC500772BD2 /* Cloudkit+StoryInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cloudkit+StoryInformation.swift"; sourceTree = "<group>"; };
 		E8760DCE24DADFD8003A2766 /* Image+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Extensions.swift"; sourceTree = "<group>"; };
@@ -124,6 +126,10 @@
 		E8A5BD1E24E42A9B00589452 /* StoryInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryInformation.swift; sourceTree = "<group>"; };
 		E8A5BD2224E433AD00589452 /* StoryInformationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryInformationManager.swift; sourceTree = "<group>"; };
 		E8A9567B24D2B0E7009E0C28 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
+		E8AFA1F124F69BE300AA84D3 /* SprintService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintService.swift; sourceTree = "<group>"; };
+		E8AFA1F324F69C1900AA84D3 /* CloudKitContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitContainer.swift; sourceTree = "<group>"; };
+		E8AFA1F524F69D4900AA84D3 /* StoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryService.swift; sourceTree = "<group>"; };
+		E8AFA1F724F69D5200AA84D3 /* StoryInformationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryInformationService.swift; sourceTree = "<group>"; };
 		E8C7384824C98C2B0018AAEA /* FocusableNSTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusableNSTextField.swift; sourceTree = "<group>"; };
 		E8EB954424C5CA0D00BC76E4 /* SprintNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintNumber.swift; sourceTree = "<group>"; };
 		E8EB954824C5E23C00BC76E4 /* InlineEditableList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineEditableList.swift; sourceTree = "<group>"; };
@@ -161,6 +167,7 @@
 		1862423E24B489A800A4A6CB /* Sprint */ = {
 			isa = PBXGroup;
 			children = (
+				E8AFA1F024F69AD200AA84D3 /* Services */,
 				E8A4E4CE24EE982B00DBBCEA /* Extensions */,
 				E85D872624ED29F700837346 /* Managers */,
 				E85D872124ED299D00837346 /* Models */,
@@ -172,6 +179,7 @@
 		1862424124B48A7C00A4A6CB /* Story */ = {
 			isa = PBXGroup;
 			children = (
+				E8AFA1EF24F69ACB00AA84D3 /* Services */,
 				E8A4E4D424EE995900DBBCEA /* Extensions */,
 				E85D872524ED29EB00837346 /* Managers */,
 				E85D872224ED29A700837346 /* Models */,
@@ -265,7 +273,6 @@
 		E83C002024ED4D0200C83B85 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				E858997124EE65EF00BB65C8 /* CloudkitHelper.swift */,
 				E882F03124CEBE49002D1591 /* ToolbarManager.swift */,
 			);
 			path = Managers;
@@ -390,8 +397,26 @@
 			isa = PBXGroup;
 			children = (
 				E8A4E4D824EEA43900DBBCEA /* DisposeBag.swift */,
+				E8AFA1F324F69C1900AA84D3 /* CloudKitContainer.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		E8AFA1EF24F69ACB00AA84D3 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				E8AFA1F524F69D4900AA84D3 /* StoryService.swift */,
+				E8AFA1F724F69D5200AA84D3 /* StoryInformationService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		E8AFA1F024F69AD200AA84D3 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				E8AFA1F124F69BE300AA84D3 /* SprintService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		E8DDB4D224ED2C950093A42B /* Representables */ = {
@@ -564,6 +589,7 @@
 				E8A5BD1D24E3E8B200589452 /* StoryManager.swift in Sources */,
 				E8A2649F24F4FD58006B94EA /* ConfigurationView.swift in Sources */,
 				1862424324B48A8600A4A6CB /* Story.swift in Sources */,
+				E8AFA1F424F69C1900AA84D3 /* CloudKitContainer.swift in Sources */,
 				E8A5BD2324E433AD00589452 /* StoryInformationManager.swift in Sources */,
 				E8F5501E24DD36100017582D /* Link.swift in Sources */,
 				E858997424EE68FB00BB65C8 /* Cloudkit+Extensions.swift in Sources */,
@@ -571,12 +597,14 @@
 				E859371C24EEAFC500772BD2 /* Cloudkit+StoryInformation.swift in Sources */,
 				1858275E24B4C38B008BE248 /* Array+Extensions.swift in Sources */,
 				E88CC8E424D0119C00E9F2DD /* StoryRow.swift in Sources */,
+				E8AFA1F824F69D5200AA84D3 /* StoryInformationService.swift in Sources */,
+				E8AFA1F224F69BE300AA84D3 /* SprintService.swift in Sources */,
 				E8A4E4D924EEA43900DBBCEA /* DisposeBag.swift in Sources */,
 				E8F5501C24DD36060017582D /* Configuration.swift in Sources */,
 				1862423D24B485E400A4A6CB /* StoryDetail.swift in Sources */,
 				E8A264A124F4FE3D006B94EA /* StepsView.swift in Sources */,
+				E8AFA1F624F69D4900AA84D3 /* StoryService.swift in Sources */,
 				E8F4EEC624EE6BA300EC1CA2 /* Combine+Extensions.swift in Sources */,
-				E858997224EE65EF00BB65C8 /* CloudkitHelper.swift in Sources */,
 				E81BBFE824CB194B00DB289A /* RoundButton.swift in Sources */,
 				1862423B24B485BA00A4A6CB /* StoryList.swift in Sources */,
 				1862424724B48E9900A4A6CB /* NewSprintView.swift in Sources */,

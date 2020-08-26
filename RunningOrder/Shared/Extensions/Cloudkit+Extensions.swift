@@ -49,3 +49,16 @@ extension CKModifyRecordsOperation {
         return operationPublisher.eraseToAnyPublisher()
     }
 }
+
+extension CKRecord {
+    func property<T: CKRecordValueProtocol>(_ key: String) throws -> T {
+        guard let value = self[key] as? T else {
+            throw CKRecord.Error.decodeFailure(for: key)
+        }
+        return value
+    }
+
+    enum Error: Swift.Error {
+        case decodeFailure(for: String)
+    }
+}
