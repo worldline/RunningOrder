@@ -9,9 +9,9 @@
 import Cocoa
 import SwiftUI
 
-// toolbar guidance : https://developer.apple.com/documentation/appkit/touch_bar/integrating_a_toolbar_and_touch_bar_into_your_app
 final class AppWindowController: NSWindowController, SplitViewControllerOwner {
 
+    // Computed property needed to facilitate toolbar's sidebar management
     var splitViewController: NSSplitViewController? {
             (window?.contentView?.subviews.first?.subviews.first?.subviews.first as? NSSplitView)?.delegate as? NSSplitViewController
         }

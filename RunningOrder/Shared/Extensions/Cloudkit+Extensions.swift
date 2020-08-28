@@ -11,6 +11,8 @@ import Combine
 import CloudKit
 
 extension CKQueryOperation {
+    /// Combine publisher of an CKQueryOperation recordFetchedBlock completion block
+    /// Each iteration in the completion block will result in a value sent by the publisher
     func recordFetchedPublisher() -> AnyPublisher<CKRecord, Error> {
         let operationPublisher = PassthroughSubject<CKRecord, Error>()
 
@@ -30,7 +32,8 @@ extension CKQueryOperation {
 }
 
 extension CKModifyRecordsOperation {
-
+    /// Combine publisher of an CKModifyRecordsOperation perRecordCompletionBlock completion block
+    /// Each iteration in the completion block will result in a value sent by the publisher
     func perRecordPublisher() -> AnyPublisher<CKRecord, Error> {
         let operationPublisher = PassthroughSubject<CKRecord, Error>()
 
@@ -51,6 +54,10 @@ extension CKModifyRecordsOperation {
 }
 
 extension CKRecord {
+    /// A function equivalent to the CKRecord subscript to access to a record property
+    /// - Parameter key: The string key of the property
+    /// - Throws: If the property is not contained in the CKRecord
+    /// - Returns: The property value which conforms to the CKRecordValueProtocol
     func property<T: CKRecordValueProtocol>(_ key: String) throws -> T {
         guard let value = self[key] as? T else {
             throw CKRecord.Error.decodeFailure(for: key)

@@ -9,6 +9,7 @@
 import SwiftUI
 import Combine
 
+///The class responsible of managing the Story data, this is the only source of truth
 final class StoryManager: ObservableObject {
 
     @Published var stories: [Sprint.ID: [Story]] = [:]
@@ -20,8 +21,11 @@ final class StoryManager: ObservableObject {
     init(service: StoryService) {
         self.service = service
     }
-    
+
+    /// Returns the stories of a specific sprintId
+    /// - Parameter sprintId: The id of the sprint
     func stories(for sprintId: Sprint.ID) -> [Story] {
+        // if we have already fetched in the cloud no need to fetch again
         if let sprintStories = stories[sprintId] {
             return sprintStories
         } else {

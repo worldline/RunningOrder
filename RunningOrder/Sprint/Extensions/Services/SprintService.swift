@@ -10,6 +10,7 @@ import Foundation
 import Combine
 import CloudKit
 
+/// The service responsible of all the Sprint CRUD operation
 class SprintService {
     let cloudkitContainer = CloudKitContainer.shared
 
@@ -22,6 +23,7 @@ class SprintService {
 
         let fetchOperation = CKQueryOperation(query: query)
 
+        //specific CKRecordZone.ID where to fetch the records
         fetchOperation.zoneID = cloudkitContainer.sharedZoneId
 
         let configuration = CKOperation.Configuration()

@@ -10,17 +10,21 @@ import Foundation
 import Combine
 import CloudKit
 
+/// The service responsible of all the Story CRUD operation
 class StoryService {
     let cloudkitContainer = CloudKitContainer.shared
 
     func fetch(from sprintId: Sprint.ID) -> AnyPublisher<[Story], Swift.Error> {
         let reference = CKRecord.Reference(recordID: CKRecord.ID(recordName: sprintId, zoneID: cloudkitContainer.sharedZoneId), action: .deleteSelf)
+
+        // we query the story records of the specific sprintId
         let predicate = NSPredicate(format: "sprintId == %@", reference)
         let query = CKQuery(recordType: RecordType.story.rawValue, predicate: predicate)
         query.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
 
         let fetchOperation = CKQueryOperation(query: query)
-
+        
+        //specific CKRecordZone.ID where to fetch the records
         fetchOperation.zoneID = cloudkitContainer.sharedZoneId
 
         let configuration = CKOperation.Configuration()

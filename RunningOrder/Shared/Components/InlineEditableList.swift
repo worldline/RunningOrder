@@ -10,7 +10,7 @@ import SwiftUI
 import AppKit
 
 /// Display an inline editable list of string element
-struct InlineEditableList: View { // Change name ???
+struct InlineEditableList: View {
 
     let title: LocalizedStringKey
 
@@ -19,6 +19,10 @@ struct InlineEditableList: View { // Change name ???
     @Binding var values: [String]
     @State private var hovered = false
 
+    /// - Parameters:
+    ///   - title: The title to describe the editable list
+    ///   - placeholder: The placeholder to put in every list items
+    ///   - values: A binding to a string array which referers to the list values
     init(title: LocalizedStringKey, placeholder: String = "", values: Binding<[String]>) {
         self.title = title
         self._values = values
@@ -48,6 +52,7 @@ struct InlineEditableList: View { // Change name ???
                         set: { newValue in return self.values[index] = newValue}
                     ),
                     onCommit: {
+                        // we delete the field if its value is empty
                         if values[index].isEmpty {
                             deleteTextfieldValue(at: index)
                         }

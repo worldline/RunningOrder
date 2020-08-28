@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+/// A simple colored round button with an image in it 
 struct RoundButton: View {
 
     let image: Image

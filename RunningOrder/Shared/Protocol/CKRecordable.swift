@@ -9,6 +9,7 @@
 import Foundation
 import CloudKit
 
+/// A protocol which have to be conformed by entities stored in CloudKit to help encoding and decoding from CKRecord type
 protocol CKRecordable {
     init(from record: CKRecord) throws
     func encode(zoneId: CKRecordZone.ID) throws -> CKRecord

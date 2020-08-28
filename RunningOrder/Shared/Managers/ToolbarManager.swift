@@ -14,6 +14,8 @@ protocol SplitViewControllerOwner {
     var splitViewController: NSSplitViewController? { get }
 }
 
+// toolbar guidance : https://developer.apple.com/documentation/appkit/touch_bar/integrating_a_toolbar_and_touch_bar_into_your_app
+/// The class responsible of managing the toolbar and its respective toolbaritem
 class ToolbarManager: NSObject, ObservableObject, NSToolbarDelegate, NSToolbarItemValidation {
 
     let splitViewControllerOwner: SplitViewControllerOwner
@@ -24,6 +26,8 @@ class ToolbarManager: NSObject, ObservableObject, NSToolbarDelegate, NSToolbarIt
     init(splitViewControllerOwner: SplitViewControllerOwner) {
         self.splitViewControllerOwner = splitViewControllerOwner
     }
+
+    // MARK: NSToolbarDelegate
 
     func toolbar(_ toolbar: NSToolbar, itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier, willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
 
@@ -80,6 +84,8 @@ class ToolbarManager: NSObject, ObservableObject, NSToolbarDelegate, NSToolbarIt
         }
     }
 
+    // MARK: NSToolbarItemValidation
+
     func validateToolbarItem(_ item: NSToolbarItem) -> Bool {
         switch item.itemIdentifier {
         case .addStory:
@@ -89,6 +95,8 @@ class ToolbarManager: NSObject, ObservableObject, NSToolbarDelegate, NSToolbarIt
         }
     }
 
+    // MARK: Custom toolbar item
+
     @objc func toggleSidebar(_ sender: Any) {
         splitViewControllerOwner.splitViewController?.toggleSidebar(sender)
     }
@@ -97,6 +105,7 @@ class ToolbarManager: NSObject, ObservableObject, NSToolbarDelegate, NSToolbarIt
         isAddStoryButtonClicked.toggle()
     }
 
+    /// Usefull func to create a formated custom toolbar button with an image in it
     func customToolbarButtonItem(
         itemIdentifier: String,
         label: String,
