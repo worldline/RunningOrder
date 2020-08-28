@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+/// A NSViewRepresentable of the spinning styled NSProgressIndicator
 struct ProgressIndicator: NSViewRepresentable {
 
     func makeNSView(context: NSViewRepresentableContext<ProgressIndicator>) -> NSProgressIndicator {

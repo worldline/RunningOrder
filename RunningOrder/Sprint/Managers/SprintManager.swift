@@ -9,6 +9,7 @@
 import SwiftUI
 import Combine
 
+///The class responsible of managing the Sprint data, this is the only source of truth
 final class SprintManager: ObservableObject {
     @Published var sprints: [Sprint] = []
 

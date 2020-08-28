@@ -9,6 +9,7 @@
 import Foundation
 import Combine
 
+/// An usefull class to help SwiftUI views store cancellables and consume Combine publishers
 class DisposeBag {
     var cancellables: Set<AnyCancellable> = []
 }
