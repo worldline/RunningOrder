@@ -8,6 +8,7 @@
 import AppKit
 import SwiftUI
 
+/// A focusable version of a NSTextField
 class FocusableNSTextField: NSTextField {
     var onFocusChange: (Bool) -> Void = { _ in }
 
@@ -19,6 +20,7 @@ class FocusableNSTextField: NSTextField {
     }
 }
 
+/// The NSViewRepresentable of an NSFocusableTextField
 struct FocusableNSTextFieldRepresentable: NSViewRepresentable {
 
     let placeholder: String

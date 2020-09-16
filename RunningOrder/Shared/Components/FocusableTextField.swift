@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+/// A styled focusable version of a Textfield based on NSTextField
 struct FocusableTextField: View {
 
     let placeholder: String
@@ -17,6 +18,10 @@ struct FocusableTextField: View {
 
     let onCommit: () -> Void
 
+    /// - Parameters:
+    ///   - placeholder: the textfield placeholder
+    ///   - value: the binding to the textfield value
+    ///   - onCommit: the action to perform when the user hits the return key or when the component looses the focus
     init(_ placeholder: String, value: Binding<String>, onCommit: @escaping () -> Void) {
         self.placeholder = placeholder
         self._value = value

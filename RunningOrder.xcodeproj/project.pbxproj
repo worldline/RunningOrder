@@ -416,7 +416,8 @@
 			children = (
 				E8AFA1F124F69BE300AA84D3 /* SprintService.swift */,
 			);
-			path = Services;
+			name = Services;
+			path = Extensions/Services;
 			sourceTree = "<group>";
 		};
 		E8DDB4D224ED2C950093A42B /* Representables */ = {
