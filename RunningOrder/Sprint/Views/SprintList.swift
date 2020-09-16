@@ -7,14 +7,28 @@
 //
 
 import SwiftUI
+import Combine
 
 extension Sprint: Identifiable {}
 
 struct SprintList: View {
     @State private var showNewSprintModal = false
-    @EnvironmentObject var toolbarManager: ToolbarManager
     @EnvironmentObject var sprintManager: SprintManager
     @EnvironmentObject var storyManager: StoryManager
+    @EnvironmentObject var toolbarManager: ToolbarManager
+
+    private let disposeBag = DisposeBag()
+
+    var createdSprintBinding: Binding<Sprint?> {
+        return Binding<Sprint?>(
+            get: { return nil },
+            set: { newValue in
+                if let sprint = newValue {
+                    addSprint(sprint: sprint)
+                }
+            }
+        )
+    }
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -22,7 +36,9 @@ struct SprintList: View {
                 Section(header: Text("Active Sprints")) {
                     ForEach(sprintManager.sprints, id: \.self) { sprint in
                         NavigationLink(
-                            destination: StoryList(sprint: sprint).environmentObject(storyManager),
+                            destination: StoryList(sprint: sprint)
+                                .environmentObject(storyManager)
+                                .environmentObject(toolbarManager),
                             label: {
                                 HStack {
                                     SprintNumber(number: sprint.number, colorIdentifier: sprint.colorIdentifier)
@@ -36,7 +52,6 @@ struct SprintList: View {
                     EmptyView()
                 }
             }
-
             Button(action: { self.showNewSprintModal.toggle() }) {
                 HStack {
                     Image(nsImageName: NSImage.addTemplateName)
@@ -46,20 +61,34 @@ struct SprintList: View {
                         .clipShape(Circle())
                     Text("New Sprint")
                         .foregroundColor(Color.accentColor)
+                        .font(.system(size: 12))
                 }
             }
-            .padding(.all, 8.0)
+            .padding(.all, 20.0)
             .buttonStyle(PlainButtonStyle())
-        }.sheet(isPresented: $showNewSprintModal) {
-            NewSprintView(createdSprint: self.$sprintManager.sprints.appendedElement)
         }
+        .onAppear {
+            self.sprintManager.loadData()
+        }
+        .sheet(isPresented: $showNewSprintModal) {
+            NewSprintView(createdSprint: self.createdSprintBinding)
+        }
+    }
+
+    func addSprint(sprint: Sprint) {
+        sprintManager.add(sprint: sprint)
+            .ignoreOutput()
+            .sink (receiveFailure: { failure in
+                print(failure) // TODO error Handling
+            })
+            .store(in: &disposeBag.cancellables)
     }
 }
 
 struct SprintList_Previews: PreviewProvider {
     static var previews: some View {
         SprintList()
-            .listStyle(SidebarListStyle())
+            .environmentObject(SprintManager(service: SprintService()))
             .frame(width: 250)
     }
 }

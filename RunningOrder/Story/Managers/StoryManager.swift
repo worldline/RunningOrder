@@ -9,29 +9,43 @@
 import SwiftUI
 import Combine
 
-final class StoryService {
-    var stories: [Story] = []
-}
-
 final class StoryManager: ObservableObject {
-    private let service = StoryService()
 
     @Published var stories: [Sprint.ID: [Story]] = [:]
 
+    var cancellables: Set<AnyCancellable> = []
+
+    private let service: StoryService
+
+    init(service: StoryService) {
+        self.service = service
+    }
+    
     func stories(for sprintId: Sprint.ID) -> [Story] {
         if let sprintStories = stories[sprintId] {
             return sprintStories
         } else {
-            let fetched = service.stories.filter { $0.sprintId == sprintId }
-            stories[sprintId] = fetched
-            return fetched
+            service.fetch(from: sprintId)
+                .catchAndExit { error in print(error) } // TODO Error Handling
+                .receive(on: DispatchQueue.main)
+                .assign(to: \.stories[sprintId], onStrong: self)
+                .store(in: &cancellables)
+
+            // we return an empty array while the data is fetched in background, the UI will be updated when the task is done
+            return []
         }
     }
 
-    func add(story: Story, toSprint sprintId: Sprint.ID) {
-        if var currentStories = stories[sprintId] {
-            currentStories.append(story)
-            stories[sprintId] = currentStories
-        }
+    func add(story: Story) -> AnyPublisher<Story, Error> {
+        let saveStoryPublisher = service.save(story: story)
+            .share()
+            .receive(on: DispatchQueue.main)
+
+        saveStoryPublisher
+            .catchAndExit { _ in } // we do nothing if an error occurred
+            .append(to: \.stories[story.sprintId], onStrong: self) // we add append the Story Output to the Story array associates with sprintId
+            .store(in: &cancellables)
+
+        return saveStoryPublisher.eraseToAnyPublisher()
     }
 }

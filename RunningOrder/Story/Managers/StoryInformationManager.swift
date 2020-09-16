@@ -10,26 +10,55 @@ import Foundation
 import SwiftUI
 import Combine
 
-final class StoryInformationService {
-    var storyInformations: [StoryInformation] = []
-}
-
 final class StoryInformationManager: ObservableObject {
-
-    private let service = StoryInformationService()
 
     @Published var storyInformations: [Story.ID: StoryInformation] = [:]
 
-    func informations(for storyId: Story.ID) -> Binding<StoryInformation> {
-        if storyInformations[storyId] == nil {
-            let fetched = service.storyInformations.first(where: { $0.storyId == storyId })
-            storyInformations[storyId] = fetched ?? StoryInformation(storyId: storyId)
-        }
+    @Published var storyInformationsBuffer: [Story.ID: StoryInformation] = [:]
 
+    var cancellables: Set<AnyCancellable> = []
+
+    private let service: StoryInformationService
+
+    init(service: StoryInformationService) {
+        self.service = service
+
+        // saving storyinformation while live editing in the list component, each modification is stored in the buffer in order to persist it
+        // when the saving operation is sent to the cloud, we empty the buffer
+        // the throttle is here to reduce the number of operation
+        $storyInformationsBuffer
+            .filter { !$0.isEmpty }
+            .throttle(for: 4.0, scheduler: DispatchQueue.main, latest: true)
+            .sink { value in
+                self.service.save(storyInformations: Array(value.values))
+                    .ignoreOutput()
+                    .sink (receiveFailure: { failure in
+                        print(failure) // TODO error Handling
+                    })
+                    .store(in: &self.cancellables)
+
+                self.storyInformationsBuffer.removeAll()
+            }
+            .store(in: &cancellables)
+    }
+
+    func loadData(for storyId: Story.ID) {
+        guard storyInformations[storyId] == nil else { return } // we only need to fetch the information once
+
+        service.fetch(from: storyId)
+            .catchAndExit { error in print(error) } // TODO Error Handling
+            .receive(on: DispatchQueue.main)
+            .replaceEmpty(with: StoryInformation(storyId: storyId))         // we create the storyinformation if it is not yet persisted
+            .assign(to: \.storyInformations[storyId], onStrong: self)
+            .store(in: &cancellables)
+    }
+
+    func informations(for storyId: Story.ID) -> Binding<StoryInformation> {
         return Binding {
             self.storyInformations[storyId]!
         } set: { newValue in
             self.storyInformations[storyId] = newValue
+            self.storyInformationsBuffer[storyId] = newValue
         }
     }
 }

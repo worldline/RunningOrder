@@ -14,6 +14,7 @@ struct MainView: View {
         NavigationView {
             SprintList()
                 .listStyle(SidebarListStyle())
+                .frame(minWidth: 160)
 
             Text("Select a Sprint")
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
