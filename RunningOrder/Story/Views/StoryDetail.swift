@@ -42,9 +42,11 @@ struct StoryDetail: View {
     }
 }
 
+#if DEBUG
 struct StoryDetail_Previews: PreviewProvider {
     static var previews: some View {
         StoryDetail(story: Story.Previews.stories[0])
             .environmentObject(StoryInformationManager(service: StoryInformationService()))
     }
 }
+#endif

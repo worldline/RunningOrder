@@ -26,6 +26,17 @@ extension Publisher {
             .map { output in output! }
             .eraseToAnyPublisher()
     }
+
+    func sink(receiveFailure: @escaping (Failure) -> Void, receiveValue: @escaping (Self.Output) -> Void) -> AnyCancellable {
+        return sink(receiveCompletion: { result in
+            switch result {
+            case .failure(let error):
+                receiveFailure(error)
+            case .finished:
+                break
+            }
+        }, receiveValue: receiveValue)
+    }
 }
 
 extension Publisher where Self.Failure == Never {

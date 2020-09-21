@@ -23,7 +23,7 @@ class StoryService {
         query.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
 
         let fetchOperation = CKQueryOperation(query: query)
-        
+
         //specific CKRecordZone.ID where to fetch the records
         fetchOperation.zoneID = cloudkitContainer.sharedZoneId
 
@@ -33,10 +33,10 @@ class StoryService {
 
         fetchOperation.configuration = configuration
 
-        cloudkitContainer.container.privateCloudDatabase.add(fetchOperation)
+        cloudkitContainer.currentDatabase.add(fetchOperation)
 
         return fetchOperation
-            .recordFetchedPublisher()
+            .publishers().recordFetched
             .tryMap { try Story.init(from: $0) }
             .collect()
             .eraseToAnyPublisher()
@@ -53,9 +53,9 @@ class StoryService {
 
         saveOperation.configuration = configuration
 
-        cloudkitContainer.container.privateCloudDatabase.add(saveOperation)
+        cloudkitContainer.currentDatabase.add(saveOperation)
 
-        return saveOperation.perRecordPublisher()
+        return saveOperation.publishers().perRecord
             .tryMap { try Story.init(from: $0) }
             .eraseToAnyPublisher()
     }

@@ -32,10 +32,10 @@ class StoryInformationService {
 
         fetchOperation.configuration = configuration
 
-        cloudkitContainer.container.privateCloudDatabase.add(fetchOperation)
+        cloudkitContainer.currentDatabase.add(fetchOperation)
 
         return fetchOperation
-            .recordFetchedPublisher()
+            .publishers().recordFetched
             .tryMap { try StoryInformation.init(from: $0) }
             .eraseToAnyPublisher()
     }
@@ -52,9 +52,9 @@ class StoryInformationService {
         saveOperation.configuration = configuration
         saveOperation.savePolicy = .allKeys // save policy to handle update
 
-        cloudkitContainer.container.privateCloudDatabase.add(saveOperation)
+        cloudkitContainer.currentDatabase.add(saveOperation)
 
-        return saveOperation.perRecordPublisher()
+        return saveOperation.publishers().perRecord
             .tryMap { try StoryInformation.init(from: $0) }
             .collect()
             .eraseToAnyPublisher()

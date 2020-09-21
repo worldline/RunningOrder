@@ -26,8 +26,10 @@ struct StoryDetailHeader: View {
     }
 }
 
+#if DEBUG
 struct StoryDetailHeader_Previews: PreviewProvider {
     static var previews: some View {
         StoryDetailHeader(story: Story.Previews.stories[0])
     }
 }
+#endif

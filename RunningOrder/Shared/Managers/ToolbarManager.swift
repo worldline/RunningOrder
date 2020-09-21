@@ -9,6 +9,8 @@
 import Foundation
 import Cocoa
 import SwiftUI
+import CloudKit
+import Combine
 
 protocol SplitViewControllerOwner {
     var splitViewController: NSSplitViewController? { get }
@@ -16,45 +18,59 @@ protocol SplitViewControllerOwner {
 
 // toolbar guidance : https://developer.apple.com/documentation/appkit/touch_bar/integrating_a_toolbar_and_touch_bar_into_your_app
 /// The class responsible of managing the toolbar and its respective toolbaritem
-class ToolbarManager: NSObject, ObservableObject, NSToolbarDelegate, NSToolbarItemValidation {
+class ToolbarManager: NSObject, ObservableObject {
 
     let splitViewControllerOwner: SplitViewControllerOwner
     var isASprintSelected = false
 
     @Published var isAddStoryButtonClicked = false
 
-    init(splitViewControllerOwner: SplitViewControllerOwner) {
+    let spaceManager: SpaceManager
+    private var share: CKShare?
+
+    var cancellables = Set<AnyCancellable>()
+
+    init(splitViewControllerOwner: SplitViewControllerOwner, toolBar: NSToolbar, spaceManager: SpaceManager) {
         self.splitViewControllerOwner = splitViewControllerOwner
+        self.spaceManager = spaceManager
+
+        // update the status of cloudSharing directly when status of space is updated
+        spaceManager.$state
+            .receive(on: DispatchQueue.main)
+            .sink { _ in toolBar.validateVisibleItems() }
+            .store(in: &cancellables)
     }
+}
 
-    // MARK: NSToolbarDelegate
+// MARK: NSToolbarDelegate
 
+extension ToolbarManager: NSToolbarDelegate {
     func toolbar(_ toolbar: NSToolbar, itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier, willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
 
-        var toolbarItem = NSToolbarItem()
-
         switch itemIdentifier {
-
         case .addStory:
-            toolbarItem = customToolbarButtonItem(itemIdentifier: itemIdentifier.rawValue,
-                                                  label: NSLocalizedString("Add a story", comment: ""),
-                                                  paletteLabel: NSLocalizedString("Add a story", comment: ""),
-                                                  toolTip: NSLocalizedString("Add a story", comment: ""),
-                                                  iconImageName: NSImage.addTemplateName,
-                                                  action: #selector(addStory))
+            return customToolbarButtonItem(
+                itemIdentifier: itemIdentifier.rawValue,
+                label: NSLocalizedString("Add a story", comment: ""),
+                paletteLabel: NSLocalizedString("Add a story", comment: ""),
+                toolTip: NSLocalizedString("Add a story", comment: ""),
+                iconImageName: NSImage.addTemplateName,
+                action: #selector(addStory)
+            )
 
         case .sidebarToggle :
-            toolbarItem = customToolbarButtonItem(itemIdentifier: itemIdentifier.rawValue,
-                                                  label: NSLocalizedString("Sidebar", comment: ""),
-                                                  paletteLabel: NSLocalizedString("Sidebar", comment: ""),
-                                                  toolTip: NSLocalizedString("Show the Sidebar", comment: ""),
-                                                  iconImageName: NSImage.touchBarSidebarTemplateName,
-                                                  action: #selector(toggleSidebar(_:)))
+            return customToolbarButtonItem(
+                itemIdentifier: itemIdentifier.rawValue,
+                label: NSLocalizedString("Sidebar", comment: ""),
+                paletteLabel: NSLocalizedString("Sidebar", comment: ""),
+                toolTip: NSLocalizedString("Show the Sidebar", comment: ""),
+                iconImageName: NSImage.touchBarSidebarTemplateName,
+                action: #selector(toggleSidebar(_:))
+            )
+
         default:
             return nil
         }
-
-        return toolbarItem
     }
 
     func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
@@ -77,23 +93,34 @@ class ToolbarManager: NSObject, ObservableObject, NSToolbarDelegate, NSToolbarIt
     }
 
     func toolbarWillAddItem(_ notification: Notification) {
-        guard let userInfo = notification.userInfo else { return }
-        let item = userInfo["item"] as? NSToolbarItem
-        if let item = item, item.itemIdentifier == .toggleSidebar {
-            item.action = #selector(toggleSidebar)
-        }
-    }
+        guard let userInfo = notification.userInfo,
+              let item = userInfo["item"] as? NSToolbarItem,
+              item.itemIdentifier == .cloudSharing else { return }
 
-    // MARK: NSToolbarItemValidation
+        item.target = self
+    }
+}
+
+// MARK: NSToolbarItemValidation
+
+extension ToolbarManager: NSToolbarItemValidation, NSCloudSharingValidation {
+    func cloudShare(for item: NSValidatedUserInterfaceItem) -> CKShare? {
+        return share
+    }
 
     func validateToolbarItem(_ item: NSToolbarItem) -> Bool {
         switch item.itemIdentifier {
         case .addStory:
             return isASprintSelected
+        case .cloudSharing:
+            return self.spaceManager.space != nil
         default:
             return true
         }
     }
+}
+
+extension ToolbarManager {
 
     // MARK: Custom toolbar item
 
@@ -105,7 +132,56 @@ class ToolbarManager: NSObject, ObservableObject, NSToolbarDelegate, NSToolbarIt
         isAddStoryButtonClicked.toggle()
     }
 
-    /// Usefull func to create a formated custom toolbar button with an image in it
+    @objc func performCloudSharing(_ sender: Any) {
+        guard let space = self.spaceManager.space else { return }
+
+        if space.isShared {
+            displayAlreadySharing()
+        } else {
+            displayNewShare()
+        }
+    }
+
+    func displayNewShare() {
+        let itemProvider = NSItemProvider()
+        let container = CloudKitContainer.shared.container
+
+        itemProvider.registerCloudKitShare { [weak self] completion in
+            guard let self = self else { return }
+
+            self.spaceManager.saveAndShare()
+                .sink(receiveFailure: { error in
+                    completion(nil, container, error)
+                }, receiveValue: { [weak self] share in
+                    self?.share = share
+                    completion(share, container, nil)
+                })
+                .store(in: &self.cancellables)
+        }
+
+        let sharingService = NSSharingService(named: .cloudSharing)!
+        sharingService.delegate = self
+        sharingService.perform(withItems: [itemProvider])
+    }
+
+    func displayAlreadySharing() {
+        self.spaceManager.getShare()
+            .receive(on: DispatchQueue.main)
+            .sink(receiveFailure: { error in
+                Logger.error.log(error)
+            }, receiveValue: { [weak self] share in
+                self?.share = share
+                let itemProvider = NSItemProvider()
+                itemProvider.registerCloudKitShare(share, container: CloudKitContainer.shared.container)
+
+                let sharingService = NSSharingService(named: .cloudSharing)!
+                sharingService.delegate = self
+                sharingService.perform(withItems: [itemProvider])
+            })
+            .store(in: &cancellables)
+    }
+
+    /// Useful func to create a formated custom toolbar button with an image in it
     func customToolbarButtonItem(
         itemIdentifier: String,
         label: String,
@@ -134,13 +210,28 @@ class ToolbarManager: NSObject, ObservableObject, NSToolbarDelegate, NSToolbarIt
     }
 }
 
+extension ToolbarManager: NSCloudSharingServiceDelegate {
+    func sharingService(_ sharingService: NSSharingService, willShareItems items: [Any]) {
+
+    }
+    func sharingService(_ sharingService: NSSharingService, didShareItems items: [Any]) {
+
+    }
+    func sharingService(_ sharingService: NSSharingService, didFailToShareItems items: [Any], error: Error) {
+
+    }
+
+//    func options(for cloudKitSharingService: NSSharingService, share provider: NSItemProvider) -> NSSharingService.CloudKitOptions {
+//        return [.]
+//    }
+}
+
 extension NSToolbarItem.Identifier {
     static let addStory = NSToolbarItem.Identifier(rawValue: "AddStory")
     static let sidebarToggle = NSToolbarItem.Identifier(rawValue: "SidebarToggle")
 }
 
 class CustomToolbarItem: NSToolbarItem {
-
     override func validate() {
         if let control = view as? NSControl, let action = action,
            let validator = NSApp.target(forAction: action, to: target, from: self) {

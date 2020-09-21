@@ -42,11 +42,13 @@ struct StoryList: View {
                     Divider()
 
                     ForEach(storyManager.stories(for: sprint.id), id: \.self) { story in
-                        NavigationLink(
-                            destination: StoryDetail(story: story).environmentObject(storyInformationManager),
-                            label: { StoryRow(story: story) }
-                        )
-                        Divider()
+                        VStack {
+                            NavigationLink(
+                                destination: StoryDetail(story: story).environmentObject(storyInformationManager),
+                                label: { StoryRow(story: story) }
+                            )
+                            Divider()
+                        }
                     }
                 }
                 .colorMultiply(Color("concrete"))
@@ -74,15 +76,17 @@ struct StoryList: View {
 
     func addStory(story: Story) {
         storyManager.add(story: story)
-            .catchAndExit { error in print(error) } // TODO Clean error handling
+            .catchAndExit { error in Logger.error.log(error) } // TODO Clean error handling
             .sink { _ in }
             .store(in: &disposeBag.cancellables)
     }
 }
 
+#if DEBUG
 struct StoryList_Previews: PreviewProvider {
     static var previews: some View {
         StoryList(sprint: Sprint.Previews.sprints[0])
             .environmentObject(StoryManager(service: StoryService()))
     }
 }
+#endif

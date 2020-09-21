@@ -30,6 +30,8 @@
 	<string>NSApplication</string>
 	<key>NSSupportsAutomaticTermination</key>
 	<true/>
+	<key>CKSharingSupported</key>
+	<true/>
 	<key>NSSupportsSuddenTermination</key>
 	<true/>
 </dict>

@@ -1,5 +1,5 @@
 //
-//  Cloudkit+Story.swift
+//  Story+CloudKit.swift
 //  RunningOrder
 //
 //  Created by Lucas Barbero on 20/08/2020.
@@ -23,10 +23,12 @@ extension Story: CKRecordable {
     func encode(zoneId: CKRecordZone.ID) -> CKRecord {
         let storyRecord = CKRecord(recordType: RecordType.story.rawValue, recordID: recordId(zoneId: zoneId))
 
-        storyRecord["name"] = self.name as CKRecordValue
-        storyRecord["ticketReference"] = self.ticketReference as CKRecordValue
-        storyRecord["epic"] = self.epic as CKRecordValue
-        storyRecord["sprintId"] = CKRecord.Reference(recordID: sprintRecordId(zoneId: zoneId), action: .deleteSelf) as CKRecordValue
+        storyRecord["name"] = self.name
+        storyRecord["ticketReference"] = self.ticketReference
+        storyRecord["epic"] = self.epic
+        storyRecord["sprintId"] = CKRecord.Reference(recordID: sprintRecordId(zoneId: zoneId), action: .deleteSelf)
+
+        storyRecord.parent = CKRecord.Reference(recordID: sprintRecordId(zoneId: zoneId), action: .none)
 
         return storyRecord
     }

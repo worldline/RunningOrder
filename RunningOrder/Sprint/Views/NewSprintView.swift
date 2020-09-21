@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct NewSprintView: View {
+    let spaceId: String
     @State private var name: String = ""
     @State private var number: Int?
 
@@ -21,8 +22,8 @@ struct NewSprintView: View {
 
     var body: some View {
         VStack {
-            TextField("Sprint Number", value: $number, formatter: NumberFormatter())
             TextField("Sprint Name", text: $name, onEditingChanged: { _ in }, onCommit: createSprint)
+            TextField("Sprint Number", value: $number, formatter: NumberFormatter(), onCommit: createSprint)
 
             HStack {
                 Button(action: dismiss) { Text("Cancel") }
@@ -39,13 +40,18 @@ struct NewSprintView: View {
 
     private func createSprint() {
         guard areAllFieldsFilled else { return }
-        self.createdSprint = Sprint(number: number!, name: name, colorIdentifier: "holiday blue")
+        self.createdSprint = Sprint(
+            spaceId: spaceId,
+            number: number!,
+            name: name,
+            colorIdentifier: Color.Identifier.sprintColors.randomElement()!.rawValue
+        )
         dismiss()
     }
 }
 
 struct NewSprintView_Previews: PreviewProvider {
     static var previews: some View {
-        NewSprintView(createdSprint: .constant(nil))
+        NewSprintView(spaceId: "", createdSprint: .constant(nil))
     }
 }

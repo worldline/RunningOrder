@@ -52,8 +52,10 @@ struct NewStoryView: View {
     }
 }
 
+#if DEBUG
 struct NewStoryView_Previews: PreviewProvider {
     static var previews: some View {
         NewStoryView(sprintId: Sprint.Previews.sprints[0].id, createdStory: .constant(nil))
     }
 }
+#endif

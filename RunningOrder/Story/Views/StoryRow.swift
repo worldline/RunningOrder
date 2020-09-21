@@ -28,8 +28,10 @@ struct StoryRow: View {
     }
 }
 
+#if DEBUG
 struct StoryRow_Previews: PreviewProvider {
     static var previews: some View {
         StoryRow(story: Story.Previews.stories[0])
     }
 }
+#endif

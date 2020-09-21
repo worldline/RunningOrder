@@ -1,5 +1,5 @@
 //
-//  Cloudkit+Sprint.swift
+//  Sprint+CloudKit.swift
 //  RunningOrder
 //
 //  Created by Lucas Barbero on 20/08/2020.
@@ -11,6 +11,8 @@ import CloudKit
 
 extension Sprint: CKRecordable {
     init(from record: CKRecord) throws {
+        let ref: CKRecord.Reference = try record.property("spaceId")
+        self.spaceId = ref.recordID.recordName
         self.name = try record.property("name")
         self.number = try record.property("number")
         self.colorIdentifier = try record.property("colorIdentifier")
@@ -19,14 +21,21 @@ extension Sprint: CKRecordable {
     func encode(zoneId: CKRecordZone.ID) -> CKRecord {
         let sprintRecord = CKRecord(recordType: RecordType.sprint.rawValue, recordID: recordId(zoneId: zoneId))
 
-        sprintRecord["name"] = self.name as CKRecordValue
-        sprintRecord["number"] = self.number as CKRecordValue
-        sprintRecord["colorIdentifier"] = self.colorIdentifier as CKRecordValue
+        sprintRecord["spaceId"] = CKRecord.Reference(recordID: spaceRecordId(zoneId: zoneId), action: .deleteSelf)
+        sprintRecord.parent = CKRecord.Reference(recordID: spaceRecordId(zoneId: zoneId), action: .none)
+
+        sprintRecord["name"] = self.name
+        sprintRecord["number"] = self.number
+        sprintRecord["colorIdentifier"] = self.colorIdentifier
 
         return sprintRecord
     }
 
     private func recordId(zoneId: CKRecordZone.ID) -> CKRecord.ID {
         return CKRecord.ID(recordName: self.id, zoneID: zoneId)
+    }
+
+    private func spaceRecordId(zoneId: CKRecordZone.ID) -> CKRecord.ID {
+        return CKRecord.ID(recordName: self.spaceId, zoneID: zoneId)
     }
 }

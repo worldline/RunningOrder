@@ -12,8 +12,8 @@ import SwiftUI
 extension Sprint {
     enum Previews {
         static let sprints = [
-            Sprint(number: 1, name: "Sprint", colorIdentifier: "holiday blue"),
-            Sprint(number: 2, name: "Sprint", colorIdentifier: "elf green")
+            Sprint(spaceId: UUID().uuidString, number: 1, name: "Sprint", colorIdentifier: "holiday blue"),
+            Sprint(spaceId: UUID().uuidString, number: 2, name: "Sprint", colorIdentifier: "elf green")
         ]
     }
 }

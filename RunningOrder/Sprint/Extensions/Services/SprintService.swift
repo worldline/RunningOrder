@@ -14,16 +14,18 @@ import CloudKit
 class SprintService {
     let cloudkitContainer = CloudKitContainer.shared
 
-    func fetchAll() -> AnyPublisher<[Sprint], Swift.Error> {
+    func fetchAll(from spaceId: Space.ID) -> AnyPublisher<[Sprint], Swift.Error> {
+        let reference = CKRecord.Reference(recordID: CKRecord.ID(recordName: spaceId, zoneID: cloudkitContainer.sharedZoneId), action: .deleteSelf)
 
-        // we query all the records
-        let predicate = NSPredicate(value: true)
+        // we query the sprint records of the specific spaceId
+        let predicate = NSPredicate(format: "spaceId == %@", reference)
+
         let query = CKQuery(recordType: RecordType.sprint.rawValue, predicate: predicate)
         query.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
 
         let fetchOperation = CKQueryOperation(query: query)
 
-        //specific CKRecordZone.ID where to fetch the records
+        // specific CKRecordZone.ID where to fetch the records
         fetchOperation.zoneID = cloudkitContainer.sharedZoneId
 
         let configuration = CKOperation.Configuration()
@@ -32,10 +34,10 @@ class SprintService {
 
         fetchOperation.configuration = configuration
 
-        cloudkitContainer.container.privateCloudDatabase.add(fetchOperation)
+        cloudkitContainer.currentDatabase.add(fetchOperation)
 
         return fetchOperation
-            .recordFetchedPublisher()
+            .publishers().recordFetched
             .tryMap { try Sprint.init(from: $0) }
             .collect()
             .eraseToAnyPublisher()
@@ -52,9 +54,9 @@ class SprintService {
 
         saveOperation.configuration = configuration
 
-        cloudkitContainer.container.privateCloudDatabase.add(saveOperation)
+        cloudkitContainer.currentDatabase.add(saveOperation)
 
-        return saveOperation.perRecordPublisher()
+        return saveOperation.publishers().perRecord
             .tryMap { try Sprint.init(from: $0) }
             .eraseToAnyPublisher()
     }

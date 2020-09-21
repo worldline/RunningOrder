@@ -33,7 +33,7 @@ final class StoryInformationManager: ObservableObject {
                 self.service.save(storyInformations: Array(value.values))
                     .ignoreOutput()
                     .sink (receiveFailure: { failure in
-                        print(failure) // TODO error Handling
+                        Logger.error.log(failure) // TODO error Handling
                     })
                     .store(in: &self.cancellables)
 
@@ -46,7 +46,7 @@ final class StoryInformationManager: ObservableObject {
         guard storyInformations[storyId] == nil else { return } // we only need to fetch the information once
 
         service.fetch(from: storyId)
-            .catchAndExit { error in print(error) } // TODO Error Handling
+            .catchAndExit { error in Logger.error.log(error) } // TODO Error Handling
             .receive(on: DispatchQueue.main)
             .replaceEmpty(with: StoryInformation(storyId: storyId))         // we create the storyinformation if it is not yet persisted
             .assign(to: \.storyInformations[storyId], onStrong: self)
