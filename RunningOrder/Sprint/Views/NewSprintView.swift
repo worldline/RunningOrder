@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct NewSprintView: View {
-    let spaceId: String
+    let spaceId: Space.ID
     @State private var name: String = ""
     @State private var number: Int?
 

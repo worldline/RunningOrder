@@ -13,7 +13,7 @@ import CloudKit
 extension CKQueryOperation {
     /// Combine publisher of an CKQueryOperation recordFetchedBlock completion block
     /// Each iteration in the completion block will result in a value sent by the publisher
-    func publishers() -> (recordFetched: AnyPublisher<CKRecord, Error>, completion: AnyPublisher<CKQueryOperation.Cursor?, Error>){
+    func publishers() -> (recordFetched: AnyPublisher<CKRecord, Error>, completion: AnyPublisher<CKQueryOperation.Cursor?, Error>) {
         let operationPublisher = PassthroughSubject<CKRecord, Error>()
 
         self.recordFetchedBlock = { record in
@@ -49,8 +49,8 @@ extension CKModifyRecordsOperation {
         }
 
         let perRecordProgress = PassthroughSubject<(CKRecord, Double), Error>()
-        self.perRecordProgressBlock = { record, double in
-            perRecordProgress.send((record, double))
+        self.perRecordProgressBlock = { record, progress in
+            perRecordProgress.send((record, progress))
         }
 
         let completion = PassthroughSubject<([CKRecord]?, [CKRecord.ID]?), Error>()

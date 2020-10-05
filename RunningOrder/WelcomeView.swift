@@ -1,5 +1,5 @@
 //
-//  TutoView.swift
+//  WelcomeView.swift
 //  RunningOrder
 //
 //  Created by Clément Nonn on 22/09/2020.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct TutoView: View {
+struct WelcomeView: View {
 
     @Binding var space: Space?
     @State private var newSpaceName = ""
@@ -26,7 +26,7 @@ struct TutoView: View {
 
             Divider()
                 .overlay(Text("Or")
-                            .padding(.horizontal, /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                            .padding(.horizontal, 10)
                             .background(Color.white))
             Text("Just open a link from your team to access this space")
         }
@@ -35,8 +35,8 @@ struct TutoView: View {
     }
 }
 
-struct TutoView_Previews: PreviewProvider {
+struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
-        TutoView(space: .constant(nil))
+        WelcomeView(space: .constant(nil))
     }
 }

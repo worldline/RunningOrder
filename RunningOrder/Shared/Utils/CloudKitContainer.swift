@@ -26,17 +26,21 @@ extension CloudKitContainer {
 }
 
 class CloudKitContainer {
+    private static let createdCustomZoneKey = "CloudKitCreatedSharedZone"
     private static var createdCustomZone: Bool {
-        get { return UserDefaults.standard.bool(forKey: "CloudKitCreatedSharedZone") }
-        set { UserDefaults.standard.set(newValue, forKey: "CloudKitCreatedSharedZone") }
+        get { return UserDefaults.standard.bool(forKey: createdCustomZoneKey) }
+        set { UserDefaults.standard.set(newValue, forKey: createdCustomZoneKey) }
     }
 
+    private static let sharedOwnerNameKey = "CloudKitSharedOwnerName"
     private static var sharedOwnerName: String? {
-        get { return UserDefaults.standard.string(forKey: "CloudKitSharedOwnerName") }
-        set { UserDefaults.standard.set(newValue, forKey: "CloudKitSharedOwnerName") }
+        get { return UserDefaults.standard.string(forKey: sharedOwnerNameKey) }
+        set { UserDefaults.standard.set(newValue, forKey: sharedOwnerNameKey) }
     }
 
-    private let ownedZoneId = CKRecordZone.ID(zoneName: "SharedZone", ownerName: CKCurrentUserDefaultName)
+    private static let zoneName = "SharedZone"
+
+    private let ownedZoneId = CKRecordZone.ID(zoneName: CloudKitContainer.zoneName, ownerName: CKCurrentUserDefaultName)
 
     let container = CKContainer(identifier: "iCloud.com.worldline.RunningOrder")
 
@@ -45,7 +49,7 @@ class CloudKitContainer {
         case .owner:
             return ownedZoneId
         case .shared(let ownerName):
-            return CKRecordZone.ID(zoneName: "SharedZone", ownerName: ownerName)
+            return CKRecordZone.ID(zoneName: CloudKitContainer.zoneName, ownerName: ownerName)
         }
     }
 
@@ -88,6 +92,12 @@ class CloudKitContainer {
             }
         }
         container.privateCloudDatabase.add(zoneOperation)
+    }
+
+    func resetModeIfNeeded() {
+        if !self.mode.isOwner {
+            self.mode = .owner
+        }
     }
 
     var currentDatabase: CKDatabase {

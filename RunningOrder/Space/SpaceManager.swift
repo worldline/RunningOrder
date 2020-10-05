@@ -54,7 +54,7 @@ final class SpaceManager: ObservableObject {
 
     func fetchFromShared(_ recordId: CKRecord.ID) {
         Logger.verbose.log("try to fetch from shared")
-         spaceService.fetchShared(recordId)
+        spaceService.fetchShared(recordId)
             .map { State.spaceFound($0) }
             .catch { Just(State.error($0)) }
             .replaceEmpty(with: State.error(Error.noSpaceAvailable))
@@ -76,19 +76,19 @@ final class SpaceManager: ObservableObject {
     }
 
     func deleteCurrentSpace() {
-        if case SpaceManager.State.spaceFound(let space) = self.state {
-            spaceService.delete(space: space)
-                .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { result in
-                    switch result {
-                    case .failure(let error):
-                        Logger.error.log(error)
-                    case .finished:
-                        self.state = .noSpace
-                    }
-                })
-                .store(in: &cancellables)
-        }
+        guard case SpaceManager.State.spaceFound(let space) = self.state else { return }
+
+        spaceService.delete(space: space)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { result in
+                switch result {
+                case .failure(let error):
+                    Logger.error.log(error)
+                case .finished:
+                    self.state = .noSpace
+                }
+            })
+            .store(in: &cancellables)
     }
 
     func saveAndShare() -> AnyPublisher<CKShare, Swift.Error> {
@@ -104,5 +104,13 @@ final class SpaceManager: ObservableObject {
             return Fail(outputType: CKShare.self, failure: Error.noSpaceAvailable).eraseToAnyPublisher()
         }
         return self.spaceService.getShare(for: space)
+    }
+
+    func acceptShare(metadata: CKShare.Metadata) {
+        self.spaceService.acceptShare(metadata: metadata)
+            .sink(
+                receiveFailure: { error in Logger.error.log("error : \(error)") },
+                receiveValue: { [weak self] updatedMetadata in self?.fetchFromShared(updatedMetadata.rootRecordID) })
+            .store(in: &cancellables)
     }
 }

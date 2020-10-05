@@ -39,17 +39,17 @@ struct MainView: View {
             ProgressIndicator()
                 .onAppear { spaceManager.initialSetup() }
                 .padding()
-            .frame(
-                maxWidth: .infinity,
-                maxHeight: .infinity,
-                alignment: .center
-            )
+                .frame(
+                    maxWidth: .infinity,
+                    maxHeight: .infinity,
+                    alignment: .center
+                )
         case .error(let error):
             Text("error : \(error)" as String)
                 .padding()
 
         case .noSpace:
-            TutoView(space: createdSpaceBinding)
+            WelcomeView(space: createdSpaceBinding)
 
         case .spaceFound(let space):
             NavigationView {

@@ -9,14 +9,20 @@
 import Foundation
 import CloudKit
 
+/// A work space, referenced from all sprints.
+/// What we share between users is a space, with all data hierarchy beneath it.
 struct Space {
     var id: ID { underlyingRecord.recordID.recordName }
     var name: String {
         do {
             return try underlyingRecord.property("name")
         } catch {
+            #if DEBUG
+            fatalError("\(error)")
+            #else
             Logger.error.log(error)
             return ""
+            #endif
         }
     }
 

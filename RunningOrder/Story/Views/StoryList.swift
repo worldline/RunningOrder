@@ -82,11 +82,9 @@ struct StoryList: View {
     }
 }
 
-#if DEBUG
 struct StoryList_Previews: PreviewProvider {
     static var previews: some View {
         StoryList(sprint: Sprint.Previews.sprints[0])
             .environmentObject(StoryManager(service: StoryService()))
     }
 }
-#endif

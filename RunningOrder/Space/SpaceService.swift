@@ -13,6 +13,7 @@ import CloudKit
 /// The service responsible of all the Sprint CRUD operation
 class SpaceService {
     let cloudkitContainer = CloudKitContainer.shared
+    var cancellables = Set<AnyCancellable>()
 
     func fetchShared(_ id: CKRecord.ID) -> AnyPublisher<Space, Swift.Error> {
         let operation = CKFetchRecordsOperation(recordIDs: [id])
@@ -86,7 +87,6 @@ class SpaceService {
     func saveAndShare(space: Space) -> AnyPublisher<CKShare, Swift.Error> {
         let share = CKShare(rootRecord: space.underlyingRecord)
         share[CKShare.SystemFieldKey.title] = space.name
-//        share[CKShare.SystemFieldKey.thumbnailImageData] =
 
         let saveOperation = CKModifyRecordsOperation()
         saveOperation.recordsToSave = [space.underlyingRecord, share]
@@ -119,5 +119,28 @@ class SpaceService {
             .completion
             .ignoreOutput()
             .eraseToAnyPublisher()
+    }
+
+    func acceptShare(metadata: CKShare.Metadata) -> AnyPublisher<CKShare.Metadata, Swift.Error> {
+        let acceptSharesOperation = CKAcceptSharesOperation(shareMetadatas: [metadata])
+
+        let pub = acceptSharesOperation.publishers().perShare.map { return $0.0 }.share()
+
+        pub.sink(
+            receiveFailure: { _ in },
+            receiveValue: { [weak self] updatedMetadata in
+                if let ownerId = updatedMetadata.ownerIdentity.userRecordID?.recordName {
+                    self?.cloudkitContainer.mode = .shared(ownerName: ownerId)
+                } else {
+                    Logger.error.log("no owner !")
+                }
+            })
+            .store(in: &cancellables)
+
+        let remoteContainer = CKContainer(identifier: metadata.containerIdentifier)
+
+        remoteContainer.add(acceptSharesOperation)
+
+        return pub.eraseToAnyPublisher()
     }
 }

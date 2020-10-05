@@ -210,21 +210,7 @@ extension ToolbarManager {
     }
 }
 
-extension ToolbarManager: NSCloudSharingServiceDelegate {
-    func sharingService(_ sharingService: NSSharingService, willShareItems items: [Any]) {
-
-    }
-    func sharingService(_ sharingService: NSSharingService, didShareItems items: [Any]) {
-
-    }
-    func sharingService(_ sharingService: NSSharingService, didFailToShareItems items: [Any], error: Error) {
-
-    }
-
-//    func options(for cloudKitSharingService: NSSharingService, share provider: NSItemProvider) -> NSSharingService.CloudKitOptions {
-//        return [.]
-//    }
-}
+extension ToolbarManager: NSCloudSharingServiceDelegate {}
 
 extension NSToolbarItem.Identifier {
     static let addStory = NSToolbarItem.Identifier(rawValue: "AddStory")
