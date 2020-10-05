@@ -1,5 +1,5 @@
 //
-//  Cloudkit+StoryInformation.swift
+//  StoryInformation+CloudKit.swift
 //  RunningOrder
 //
 //  Created by Lucas Barbero on 20/08/2020.
@@ -16,7 +16,7 @@ extension StoryInformation: CKRecordable {
         self.storyId = storyReference.recordID.recordName
 
         self.steps = try record.property("steps")
-        let environments: [String] = try record.property("steps")
+        let environments: [String] = try record.property("environments")
         let mocks: [String] = try record.property("mocks")
         let features: [String] = try record.property("features")
         let indicators: [String] = try record.property("indicators")
@@ -30,20 +30,21 @@ extension StoryInformation: CKRecordable {
     func encode(zoneId: CKRecordZone.ID) -> CKRecord {
         let storyInformationRecord = CKRecord(recordType: RecordType.storyInformation.rawValue, recordID: recordId(zoneId: zoneId))
 
-        storyInformationRecord["storyId"] = CKRecord.Reference(recordID: storyRecordId(zoneId: zoneId), action: .deleteSelf) as CKRecordValue
-        storyInformationRecord["steps"] = self.steps as CKRecordValue
+        storyInformationRecord["storyId"] = CKRecord.Reference(recordID: storyRecordId(zoneId: zoneId), action: .deleteSelf)
+        storyInformationRecord.parent = CKRecord.Reference(recordID: storyRecordId(zoneId: zoneId), action: .none)
+        storyInformationRecord["steps"] = self.steps
 
         // Configuration
 
-        storyInformationRecord["environments"] = self.configuration.environments as CKRecordValue
-        storyInformationRecord["mocks"] = self.configuration.mocks as CKRecordValue
-        storyInformationRecord["features"] = self.configuration.features as CKRecordValue
-        storyInformationRecord["indicators"] = self.configuration.indicators as CKRecordValue
-        storyInformationRecord["identifiers"] = self.configuration.identifiers as CKRecordValue
+        storyInformationRecord["environments"] = self.configuration.environments
+        storyInformationRecord["mocks"] = self.configuration.mocks
+        storyInformationRecord["features"] = self.configuration.features
+        storyInformationRecord["indicators"] = self.configuration.indicators
+        storyInformationRecord["identifiers"] = self.configuration.identifiers
 
         // Links : for now as a link label is only the url string representation we can only store all the labels, will change in the future
 
-        storyInformationRecord["links"] = self.links.map { $0.label } as CKRecordValue
+        storyInformationRecord["links"] = self.links.map { $0.label }
 
         return storyInformationRecord
     }

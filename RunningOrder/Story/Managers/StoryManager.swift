@@ -30,7 +30,7 @@ final class StoryManager: ObservableObject {
             return sprintStories
         } else {
             service.fetch(from: sprintId)
-                .catchAndExit { error in print(error) } // TODO Error Handling
+                .catchAndExit { error in Logger.error.log(error) } // TODO Error Handling
                 .receive(on: DispatchQueue.main)
                 .assign(to: \.stories[sprintId], onStrong: self)
                 .store(in: &cancellables)

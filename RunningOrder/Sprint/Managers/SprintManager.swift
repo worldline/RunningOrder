@@ -34,9 +34,9 @@ final class SprintManager: ObservableObject {
         return saveSprintPublisher.eraseToAnyPublisher()
     }
 
-    func loadData() {
+    func loadData(from space: Space) {
         return service
-            .fetchAll()
+            .fetchAll(from: space.id)
             .replaceError(with: [])
             .receive(on: DispatchQueue.main)
             .assign(to: \.sprints, onStrong: self)

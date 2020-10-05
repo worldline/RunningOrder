@@ -19,18 +19,27 @@ final class AppWindowController: NSWindowController, SplitViewControllerOwner {
     override func windowDidLoad() {
         super.windowDidLoad()
 
-        let toolbarManager = ToolbarManager(splitViewControllerOwner: self)
-
         let toolbar = NSToolbar()
-        toolbar.delegate = toolbarManager
 
-        window?.toolbar = toolbar
+        let spaceManager = SpaceManager(service: SpaceService())
+        let toolbarManager = ToolbarManager(
+            splitViewControllerOwner: self,
+            toolBar: toolbar,
+            spaceManager: spaceManager
+        )
 
         let view = MainView()
             .environmentObject(toolbarManager)
+            .environmentObject(spaceManager)
             .environmentObject(SprintManager(service: SprintService()))
             .environmentObject(StoryManager(service: StoryService()))
             .environmentObject(StoryInformationManager(service: StoryInformationService()))
+
+        toolbar.delegate = toolbarManager
+
+        (NSApplication.shared.delegate as? AppDelegate)?.spaceManager = spaceManager
+
+        window?.toolbar = toolbar
         window?.contentViewController = NSHostingController(rootView: view)
     }
 }

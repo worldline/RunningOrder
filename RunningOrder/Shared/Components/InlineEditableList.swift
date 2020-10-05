@@ -38,7 +38,7 @@ struct InlineEditableList: View {
                 Spacer()
                 if hovered {
                     RoundButton(image: Image(nsImageName: NSImage.addTemplateName),
-                                color: Color.accentColor,
+                                color: Color.blue,
                                 action: addTextfieldValue)
                         .frame(width: 17, height: 17)
                         .padding(.horizontal, 10)

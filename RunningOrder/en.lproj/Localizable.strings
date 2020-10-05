@@ -48,3 +48,10 @@
 // Common
 "Cancel" = "Cancel";
 "Create" = "Create";
+
+// Welcome
+"Welcome" = "Welcome";
+"You don't have yet your space, or joined a shared space" = "You don't have yet your space, or joined a shared space";
+"Or" = "Or";
+"My Space Name" = "My Space Name";
+"Just open a link from your team to access this space" = "Just open a link from your team to access this space";

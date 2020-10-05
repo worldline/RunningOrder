@@ -17,6 +17,8 @@ struct SprintList: View {
     @EnvironmentObject var storyManager: StoryManager
     @EnvironmentObject var toolbarManager: ToolbarManager
 
+    let space: Space
+
     private let disposeBag = DisposeBag()
 
     var createdSprintBinding: Binding<Sprint?> {
@@ -68,18 +70,18 @@ struct SprintList: View {
             .buttonStyle(PlainButtonStyle())
         }
         .onAppear {
-            self.sprintManager.loadData()
+            self.sprintManager.loadData(from: space)
         }
         .sheet(isPresented: $showNewSprintModal) {
-            NewSprintView(createdSprint: self.createdSprintBinding)
+            NewSprintView(spaceId: space.id, createdSprint: self.createdSprintBinding)
         }
     }
 
     func addSprint(sprint: Sprint) {
         sprintManager.add(sprint: sprint)
             .ignoreOutput()
-            .sink (receiveFailure: { failure in
-                print(failure) // TODO error Handling
+            .sink(receiveFailure: { failure in
+                Logger.error.log(failure) // TODO error Handling
             })
             .store(in: &disposeBag.cancellables)
     }
@@ -87,7 +89,7 @@ struct SprintList: View {
 
 struct SprintList_Previews: PreviewProvider {
     static var previews: some View {
-        SprintList()
+        SprintList(space: Space(name: "toto"))
             .environmentObject(SprintManager(service: SprintService()))
             .frame(width: 250)
     }
