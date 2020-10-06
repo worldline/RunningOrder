@@ -18,8 +18,13 @@ final class SprintManager: ObservableObject {
 
     private let service: SprintService
 
-    init(service: SprintService) {
+    init(service: SprintService, dataPublisher: AnyPublisher<ChangeInformation, Never>) {
         self.service = service
+
+        dataPublisher.sink(receiveValue: { informations in
+            self.updateData(with: informations.toUpdate)
+            self.deleteData(recordIds: informations.toDelete)
+        }).store(in: &cancellables)
     }
 
     func add(sprint: Sprint) -> AnyPublisher<Sprint, Error> {

@@ -19,8 +19,13 @@ final class StoryManager: ObservableObject {
 
     private let service: StoryService
 
-    init(service: StoryService) {
+    init(service: StoryService, dataPublisher: AnyPublisher<ChangeInformation, Never>) {
         self.service = service
+
+        dataPublisher.sink(receiveValue: { informations in
+            self.updateData(with: informations.toUpdate)
+            self.deleteData(recordIds: informations.toDelete)
+        }).store(in: &cancellables)
     }
 
     /// Returns the stories of a specific sprintId

@@ -18,7 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     let cloudkitContainer = CloudKitContainer.shared
     var spaceManager: SpaceManager?
-    var changesManager: CloudKitChangesManager?
+    var changesService: CloudKitChangesService?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         registerForPushNotification()
@@ -57,6 +57,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func application(_ application: NSApplication, didReceiveRemoteNotification userInfo: [String: Any]) {
         guard cloudkitContainer.validateNotification(userInfo) else { return }
 
-        changesManager?.fetchChanges()
+        changesService?.fetchChanges()
     }
 }

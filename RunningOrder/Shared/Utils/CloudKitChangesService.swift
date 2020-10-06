@@ -1,5 +1,5 @@
 //
-//  CloudKitChangesManager.swift
+//  CloudKitChangesService.swift
 //  RunningOrder
 //
 //  Created by Clément Nonn on 05/10/2020.
@@ -10,21 +10,20 @@ import Foundation
 import Combine
 import CloudKit
 
-final class CloudKitChangesManager {
-    private unowned let container: CloudKitContainer
-    private unowned let sprintManager: SprintManager
-    private unowned let storyManager: StoryManager
-    private unowned let storyInformationManager: StoryInformationManager
+typealias ChangeInformation = (toUpdate: [CKRecord], toDelete: [CKRecord.ID])
 
+final class CloudKitChangesService: ObservableObject {
+    private unowned let container: CloudKitContainer
     private var currentChangeServerToken: CKServerChangeToken?
 
     private var cancellables = Set<AnyCancellable>()
 
-    init(container: CloudKitContainer, sprintManager: SprintManager, storyManager: StoryManager, storyInformationManager: StoryInformationManager) {
+    let sprintChangesPublisher = PassthroughSubject<ChangeInformation, Never>()
+    let storyChangesPublisher = PassthroughSubject<ChangeInformation, Never>()
+    let storyInformationChangesPublisher = PassthroughSubject<ChangeInformation, Never>()
+
+    init(container: CloudKitContainer) {
         self.container = container
-        self.sprintManager = sprintManager
-        self.storyManager = storyManager
-        self.storyInformationManager = storyInformationManager
     }
 
     func fetchChanges() {
@@ -39,18 +38,18 @@ final class CloudKitChangesManager {
         let (_, recordPublisher, recordDeletedPublisher, tokenChangesPublisher, recordZoneFetchPublisher) = operation.publishers()
 
         Publishers.CombineLatest(recordPublisher.collect(), recordDeletedPublisher.collect())
-            .map { records, toDelete -> ([CKRecord.RecordType: [CKRecord]], [CKRecord.RecordType: [CKRecord.ID]]) in
+            .map { records, toDelete -> ([CKRecord.RecordType: ChangeInformation]) in
                 let idsToDelete = toDelete.map { $0.0 }
                 let toUpdate = records.filter { !idsToDelete.contains($0.recordID) }
 
                 let groupedUpdates = [CKRecord.RecordType: [CKRecord]](grouping: toUpdate, by: { record in record.recordType })
                 let groupedDeletion = [CKRecord.RecordType: [(CKRecord.ID, CKRecord.RecordType)]](grouping: toDelete, by: { element in return element.1 }).mapValues { array -> [CKRecord.ID] in return array.map { $0.0 } }
-                return (groupedUpdates, groupedDeletion)
+
+                return groupedUpdates.combine(with: groupedDeletion) { updates, deletions -> ChangeInformation in
+                    (updates ?? [], deletions ?? [])
+                }
             }
-            .sink { [weak self] updates in
-                self?.handle(recordsToUpdate: updates.0)
-                self?.handle(recordIdsToDelete: updates.1)
-            }
+            .sink { [weak self] updates in self?.handleUpdates(updates: updates) }
             .store(in: &cancellables)
 
         let tokenChanged = tokenChangesPublisher
@@ -74,39 +73,20 @@ final class CloudKitChangesManager {
         container.currentDatabase.add(operation)
     }
 
-    private func handle(recordsToUpdate: [CKRecord.RecordType: [CKRecord]]) {
-        for (recordType, records) in recordsToUpdate {
-            guard let type = RecordType(rawValue: recordType) else {
-                Logger.error.log("unrecognized record type \(recordType)")
+    func handleUpdates(updates: [CKRecord.RecordType: ChangeInformation]) {
+        for (key, changes) in updates {
+            guard let type = RecordType(rawValue: key) else {
+                Logger.error.log("unrecognized record type \(key)")
                 continue
             }
 
             switch type {
             case .sprint:
-                self.sprintManager.updateData(with: records)
+                self.sprintChangesPublisher.send(changes)
             case .story:
-                self.storyManager.updateData(with: records)
+                self.storyChangesPublisher.send(changes)
             case .storyInformation:
-                self.storyInformationManager.updateData(with: records)
-            case .space:
-                break
-            }
-        }
-    }
-
-    private func handle(recordIdsToDelete: [CKRecord.RecordType: [CKRecord.ID]]) {
-        for (recordType, ids) in recordIdsToDelete {
-            guard let type = RecordType(rawValue: recordType) else {
-                Logger.error.log("unrecognized record type \(recordType)")
-                continue
-            }
-            switch type {
-            case .sprint:
-                self.sprintManager.deleteData(recordIds: ids)
-            case .story:
-                self.storyManager.deleteData(recordIds: ids)
-            case .storyInformation:
-                self.storyInformationManager.deleteData(recordIds: ids)
+                self.storyInformationChangesPublisher.send(changes)
             case .space:
                 break
             }

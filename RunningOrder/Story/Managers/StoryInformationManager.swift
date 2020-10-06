@@ -21,8 +21,13 @@ final class StoryInformationManager: ObservableObject {
 
     private let service: StoryInformationService
 
-    init(service: StoryInformationService) {
+    init(service: StoryInformationService, dataPublisher: AnyPublisher<ChangeInformation, Never>) {
         self.service = service
+
+        dataPublisher.sink(receiveValue: { informations in
+            self.updateData(with: informations.toUpdate)
+            self.deleteData(recordIds: informations.toDelete)
+        }).store(in: &cancellables)
 
         // saving storyinformation while live editing in the list component, each modification is stored in the buffer in order to persist it
         // when the saving operation is sent to the cloud, we empty the buffer
