@@ -15,7 +15,7 @@ struct StoryRow: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Tag(story.epic, color: Color("holiday blue"))
+                Tag(story.epic, color: Color(identifier: .holidayBlue))
                     .font(.system(size: 10))
                 Spacer()
                 Text(story.ticketReference)

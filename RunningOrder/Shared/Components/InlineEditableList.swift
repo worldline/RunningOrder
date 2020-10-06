@@ -68,7 +68,7 @@ struct InlineEditableList: View {
             }
         }
         .padding(.all, 5)
-        .background(Color("snowbank").opacity(hovered ? 1 : 0))
+        .background(Color(identifier: .snowbank).opacity(hovered ? 1 : 0))
         .cornerRadius(5)
         .onHover { isHovered in
             withAnimation(.easeIn) {

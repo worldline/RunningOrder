@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 import Combine
+import CloudKit
 
 final class StoryInformationManager: ObservableObject {
 
@@ -42,23 +43,38 @@ final class StoryInformationManager: ObservableObject {
             .store(in: &cancellables)
     }
 
-    func loadData(for storyId: Story.ID) {
-        guard storyInformations[storyId] == nil else { return } // we only need to fetch the information once
-
-        service.fetch(from: storyId)
-            .catchAndExit { error in Logger.error.log(error) } // TODO Error Handling
-            .receive(on: DispatchQueue.main)
-            .replaceEmpty(with: StoryInformation(storyId: storyId))         // we create the storyinformation if it is not yet persisted
-            .assign(to: \.storyInformations[storyId], onStrong: self)
-            .store(in: &cancellables)
-    }
-
     func informations(for storyId: Story.ID) -> Binding<StoryInformation> {
         return Binding {
-            self.storyInformations[storyId]!
+            self.storyInformations[storyId] ?? StoryInformation(storyId: storyId)
         } set: { newValue in
             self.storyInformations[storyId] = newValue
             self.storyInformationsBuffer[storyId] = newValue
+        }
+    }
+
+    func updateData(with updatedRecords: [CKRecord]) {
+        do {
+            let updatedStoryInformations = try updatedRecords
+                .map(StoryInformation.init(from:))
+                .map { ($0.storyId, $0) }
+
+            let updatedDico = [Story.ID: StoryInformation](updatedStoryInformations) { _, new in new }
+            DispatchQueue.main.async {
+                self.storyInformations.merge(updatedDico, uniquingKeysWith: { _, new in new })
+            }
+
+        } catch {
+            Logger.error.log(error)
+        }
+    }
+
+    func deleteData(recordIds: [CKRecord.ID]) {
+        for recordId in recordIds {
+            if let existingReference = storyInformations.keys.first(where: { StoryInformation.recordName(for: $0) == recordId.recordName}) {
+                storyInformations[existingReference] = nil
+            } else {
+                Logger.warning.log("storyInformation not found when deleting \(recordId.recordName)")
+            }
         }
     }
 }

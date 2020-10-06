@@ -69,9 +69,6 @@ struct SprintList: View {
             .padding(.all, 20.0)
             .buttonStyle(PlainButtonStyle())
         }
-        .onAppear {
-            self.sprintManager.loadData(from: space)
-        }
         .sheet(isPresented: $showNewSprintModal) {
             NewSprintView(spaceId: space.id, createdSprint: self.createdSprintBinding)
         }

@@ -11,9 +11,14 @@ import SwiftUI
 
 extension Color {
     enum Identifier: String {
+        case concrete
         case snowbank
         case holidayBlue = "holiday blue"
         case elfGreen = "elf green"
+    }
+
+    init(identifier: Color.Identifier) {
+        self.init(identifier.rawValue)
     }
 }
 

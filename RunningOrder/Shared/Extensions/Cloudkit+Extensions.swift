@@ -132,6 +132,76 @@ extension CKFetchRecordsOperation {
     }
 }
 
+extension CKModifySubscriptionsOperation {
+    func publisher() -> AnyPublisher<([CKSubscription]?, [CKSubscription.ID]?), Error> {
+        let modifySubscriptions = PassthroughSubject<([CKSubscription]?, [CKSubscription.ID]?), Error>()
+        self.modifySubscriptionsCompletionBlock = { subscriptions, ids, error in
+            if let error = error {
+                modifySubscriptions.send(completion: .failure(error))
+                return
+            }
+
+            modifySubscriptions.send((subscriptions, ids))
+            modifySubscriptions.send(completion: .finished)
+        }
+
+        return modifySubscriptions.eraseToAnyPublisher()
+    }
+}
+
+extension CKFetchRecordZoneChangesOperation {
+    func publishers() -> (fetchRecordZoneChangesCompletion: AnyPublisher<Never, Error>,
+                          recordChanged: AnyPublisher<CKRecord, Never>,
+                          recordWithIDWasDeleted: AnyPublisher<(CKRecord.ID, CKRecord.RecordType), Never>,
+                          recordZoneChangeTokensUpdated: AnyPublisher<(CKRecordZone.ID, CKServerChangeToken?, Data?), Never>,
+                          recordZoneFetchCompletion: AnyPublisher<(CKRecordZone.ID, CKServerChangeToken?, Data?, Bool), Error>) {
+        let recordWithIDWasDeleted = PassthroughSubject<(CKRecord.ID, CKRecord.RecordType), Never>()
+        self.recordWithIDWasDeletedBlock = { id, type in
+            recordWithIDWasDeleted.send((id, type))
+        }
+
+        let recordChanged = PassthroughSubject<CKRecord, Never>()
+        self.recordChangedBlock = { record in
+            recordChanged.send(record)
+        }
+
+        let recordZoneChangeTokensUpdated = PassthroughSubject<(CKRecordZone.ID, CKServerChangeToken?, Data?), Never>()
+        self.recordZoneChangeTokensUpdatedBlock = { id, serverToken, clientToken in
+            recordZoneChangeTokensUpdated.send((id, serverToken, clientToken))
+        }
+
+        let recordZoneFetchCompletion = PassthroughSubject<(CKRecordZone.ID, CKServerChangeToken?, Data?, Bool), Error>()
+        self.recordZoneFetchCompletionBlock = { id, serverToken, clientToken, moreComing, error in
+            if let error = error {
+                recordZoneFetchCompletion.send(completion: .failure(error))
+            } else {
+                recordZoneFetchCompletion.send((id, serverToken, clientToken, moreComing))
+            }
+        }
+
+        let fetchRecordZoneChangesCompletion = PassthroughSubject<Never, Error>()
+        self.fetchRecordZoneChangesCompletionBlock = { error in
+            recordChanged.send(completion: .finished)
+            recordZoneChangeTokensUpdated.send(completion: .finished)
+            recordWithIDWasDeleted.send(completion: .finished)
+
+            if let error = error {
+                fetchRecordZoneChangesCompletion.send(completion: .failure(error))
+            } else {
+                fetchRecordZoneChangesCompletion.send(completion: .finished)
+            }
+        }
+
+        return (fetchRecordZoneChangesCompletion.eraseToAnyPublisher(),
+                recordChanged.eraseToAnyPublisher(),
+                recordWithIDWasDeleted.eraseToAnyPublisher(),
+                recordZoneChangeTokensUpdated.eraseToAnyPublisher(),
+                recordZoneFetchCompletion.eraseToAnyPublisher())
+    }
+}
+
+// MARK: -
+
 extension CKRecord {
     /// A function equivalent to the CKRecord subscript to access to a record property
     /// - Parameter key: The string key of the property
@@ -146,5 +216,32 @@ extension CKRecord {
 
     enum Error: Swift.Error {
         case decodeFailure(for: String)
+    }
+}
+
+extension CKDatabase {
+    enum Error: Swift.Error {
+        case missingSubscriptions
+    }
+
+    func fetchAllSubscriptions() -> AnyPublisher<[CKSubscription], Swift.Error> {
+        let publisher = PassthroughSubject<[CKSubscription], Swift.Error>()
+
+        self.fetchAllSubscriptions { subscriptions, error in
+            if let error = error {
+                publisher.send(completion: .failure(error))
+                return
+            }
+
+            guard let subscriptions = subscriptions else {
+                publisher.send(completion: .failure(Error.missingSubscriptions))
+                return
+            }
+
+            publisher.send(subscriptions)
+            publisher.send(completion: .finished)
+        }
+
+        return publisher.eraseToAnyPublisher()
     }
 }

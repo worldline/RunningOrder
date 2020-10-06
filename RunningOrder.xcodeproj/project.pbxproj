@@ -21,6 +21,7 @@
 		1862424324B48A8600A4A6CB /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862424224B48A8600A4A6CB /* Story.swift */; };
 		1862424724B48E9900A4A6CB /* NewSprintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862424624B48E9900A4A6CB /* NewSprintView.swift */; };
 		1888AFC525271A4200D5C678 /* Colors+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1888AFC425271A4200D5C678 /* Colors+Extensions.swift */; };
+		1890DCC2252B705400D236B6 /* CloudKitChangesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1890DCC1252B705400D236B6 /* CloudKitChangesManager.swift */; };
 		18CDCDD624B4A49200043E1D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 18CDCDD824B4A49200043E1D /* Localizable.strings */; };
 		18F7918224B619B600FDCBEF /* Sprints_Previews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F7918124B619B600FDCBEF /* Sprints_Previews.swift */; };
 		18F7918424B61A5900FDCBEF /* Stories_Previews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F7918324B61A5900FDCBEF /* Stories_Previews.swift */; };
@@ -96,6 +97,7 @@
 		1862424224B48A8600A4A6CB /* Story.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Story.swift; sourceTree = "<group>"; };
 		1862424624B48E9900A4A6CB /* NewSprintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSprintView.swift; sourceTree = "<group>"; };
 		1888AFC425271A4200D5C678 /* Colors+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Colors+Extensions.swift"; sourceTree = "<group>"; };
+		1890DCC1252B705400D236B6 /* CloudKitChangesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitChangesManager.swift; sourceTree = "<group>"; };
 		18CDCDD724B4A49200043E1D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		18CDCDD924B4A4A500043E1D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		18CDCDDA24B4A4A500043E1D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -423,6 +425,7 @@
 			children = (
 				E8A4E4D824EEA43900DBBCEA /* DisposeBag.swift */,
 				E8AFA1F324F69C1900AA84D3 /* CloudKitContainer.swift */,
+				1890DCC1252B705400D236B6 /* CloudKitChangesManager.swift */,
 				183C021F251B765400EC09FD /* Logger.swift */,
 			);
 			path = Utils;
@@ -646,6 +649,7 @@
 				E8A264A324F4FF31006B94EA /* ProgressIndicator.swift in Sources */,
 				18FE758E24A23E670003C76E /* AppDelegate.swift in Sources */,
 				E8EB954524C5CA0D00BC76E4 /* SprintNumber.swift in Sources */,
+				1890DCC2252B705400D236B6 /* CloudKitChangesManager.swift in Sources */,
 				185277D52518AC8C0050F6C1 /* Space.swift in Sources */,
 				185277F52519F32E0050F6C1 /* WelcomeView.swift in Sources */,
 				1888AFC525271A4200D5C678 /* Colors+Extensions.swift in Sources */,

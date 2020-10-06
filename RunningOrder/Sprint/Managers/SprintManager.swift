@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Combine
+import CloudKit
 
 ///The class responsible of managing the Sprint data, this is the only source of truth
 final class SprintManager: ObservableObject {
@@ -34,13 +35,29 @@ final class SprintManager: ObservableObject {
         return saveSprintPublisher.eraseToAnyPublisher()
     }
 
-    func loadData(from space: Space) {
-        return service
-            .fetchAll(from: space.id)
-            .replaceError(with: [])
-            .receive(on: DispatchQueue.main)
-            .assign(to: \.sprints, onStrong: self)
-            .store(in: &cancellables)
+    func updateData(with updatedRecords: [CKRecord]) {
+        for updatedRecord in updatedRecords {
+            do {
+                let sprint = try Sprint(from: updatedRecord)
+                if let index = sprints.firstIndex(where: { $0.id == sprint.id }) {
+                    sprints[index] = sprint
+                } else {
+                    Logger.warning.log("sprint with id \(sprint.id) not found, so appending it to existing sprint list")
+                    sprints.append(sprint)
+                }
+            } catch {
+                Logger.error.log(error)
+            }
+        }
+    }
 
+    func deleteData(recordIds: [CKRecord.ID]) {
+        for recordId in recordIds {
+            guard let index = sprints.firstIndex(where: { $0.id == recordId.recordName }) else {
+                Logger.warning.log("sprint not found when deleting \(recordId.recordName)")
+                return
+            }
+            sprints.remove(at: index)
+        }
     }
 }
