@@ -87,7 +87,7 @@ struct SprintList: View {
 struct SprintList_Previews: PreviewProvider {
     static var previews: some View {
         SprintList(space: Space(name: "toto"))
-            .environmentObject(SprintManager(service: SprintService()))
+            .environmentObject(SprintManager(service: SprintService(), dataPublisher: changeInformationPreview))
             .frame(width: 250)
     }
 }

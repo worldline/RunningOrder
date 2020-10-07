@@ -57,9 +57,13 @@ final class StoryManager: ObservableObject {
                 } else {
                     Logger.warning.log("story with id \(story.id) not found, so appending it to existing story list")
                     if stories.index(forKey: story.sprintId) == nil {
-                        stories[story.sprintId] = [story]
+                        DispatchQueue.main.async {
+                            self.stories[story.sprintId] = [story]
+                        }
                     } else {
-                        stories[story.sprintId]?.append(story)
+                        DispatchQueue.main.async {
+                            self.stories[story.sprintId]?.append(story)
+                        }
                     }
                 }
             }
@@ -81,7 +85,9 @@ final class StoryManager: ObservableObject {
     func deleteData(recordIds: [CKRecord.ID]) {
         for recordId in recordIds {
             if let existingReference = findExistingStory(for: recordId) {
-                stories[existingReference.sprintId]!.remove(at: existingReference.index)
+                DispatchQueue.main.async {
+                    self.stories[existingReference.sprintId]!.remove(at: existingReference.index)
+                }
             } else {
                 Logger.warning.log("story not found when deleting \(recordId.recordName)")
             }

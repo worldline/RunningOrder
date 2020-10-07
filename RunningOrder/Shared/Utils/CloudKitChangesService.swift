@@ -12,6 +12,8 @@ import CloudKit
 
 typealias ChangeInformation = (toUpdate: [CKRecord], toDelete: [CKRecord.ID])
 
+let changeInformationPreview = Just<ChangeInformation>((toUpdate: [], toDelete: [])).eraseToAnyPublisher()
+
 final class CloudKitChangesService: ObservableObject {
     private unowned let container: CloudKitContainer
     private var currentChangeServerToken: CKServerChangeToken?

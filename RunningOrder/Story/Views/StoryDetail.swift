@@ -33,6 +33,6 @@ struct StoryDetail: View {
 struct StoryDetail_Previews: PreviewProvider {
     static var previews: some View {
         StoryDetail(story: Story.Previews.stories[0])
-            .environmentObject(StoryInformationManager(service: StoryInformationService()))
+            .environmentObject(StoryInformationManager(service: StoryInformationService(), dataPublisher: changeInformationPreview))
     }
 }

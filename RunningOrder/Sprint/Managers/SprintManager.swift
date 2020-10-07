@@ -45,10 +45,14 @@ final class SprintManager: ObservableObject {
             do {
                 let sprint = try Sprint(from: updatedRecord)
                 if let index = sprints.firstIndex(where: { $0.id == sprint.id }) {
-                    sprints[index] = sprint
+                    DispatchQueue.main.async {
+                        self.sprints[index] = sprint
+                    }
                 } else {
-                    Logger.warning.log("sprint with id \(sprint.id) not found, so appending it to existing sprint list")
-                    sprints.append(sprint)
+                    Logger.verbose.log("sprint with id \(sprint.id) not found, so appending it to existing sprint list")
+                    DispatchQueue.main.async {
+                        self.sprints.append(sprint)
+                    }
                 }
             } catch {
                 Logger.error.log(error)
@@ -62,7 +66,9 @@ final class SprintManager: ObservableObject {
                 Logger.warning.log("sprint not found when deleting \(recordId.recordName)")
                 return
             }
-            sprints.remove(at: index)
+            DispatchQueue.main.async {
+                self.sprints.remove(at: index)
+            }
         }
     }
 }
