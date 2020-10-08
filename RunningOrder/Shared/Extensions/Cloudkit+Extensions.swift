@@ -152,9 +152,9 @@ extension CKModifySubscriptionsOperation {
 extension CKFetchRecordZoneChangesOperation {
     func publishers() -> (fetchRecordZoneChangesCompletion: AnyPublisher<Never, Error>,
                           recordChanged: AnyPublisher<CKRecord, Never>,
-                          recordWithIDWasDeleted: AnyPublisher<(CKRecord.ID, CKRecord.RecordType), Never>,
-                          recordZoneChangeTokensUpdated: AnyPublisher<(CKRecordZone.ID, CKServerChangeToken?, Data?), Never>,
-                          recordZoneFetchCompletion: AnyPublisher<(CKRecordZone.ID, CKServerChangeToken?, Data?, Bool), Error>) {
+                          recordWithIDWasDeleted: AnyPublisher<(recordId: CKRecord.ID, recordType: CKRecord.RecordType), Never>,
+                          recordZoneChangeTokensUpdated: AnyPublisher<(zoneId: CKRecordZone.ID, serverToken: CKServerChangeToken?, clientToken: Data?), Never>,
+                          recordZoneFetchCompletion: AnyPublisher<(zoneId: CKRecordZone.ID, serverToken: CKServerChangeToken?, clientToken: Data?, isMoreComing: Bool), Error>) {
         let recordWithIDWasDeleted = PassthroughSubject<(CKRecord.ID, CKRecord.RecordType), Never>()
         self.recordWithIDWasDeletedBlock = { id, type in
             recordWithIDWasDeleted.send((id, type))

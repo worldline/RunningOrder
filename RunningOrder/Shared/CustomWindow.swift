@@ -27,13 +27,13 @@ final class AppWindowController: NSWindowController, SplitViewControllerOwner {
             toolBar: toolbar,
             spaceManager: spaceManager
         )
-        let changeService = CloudKitChangesService(container: CloudKitContainer.shared)
+        let changesService = CloudKitChangesService(container: CloudKitContainer.shared)
 
-        let sprintManager = SprintManager(service: SprintService(), dataPublisher: changeService.sprintChangesPublisher.eraseToAnyPublisher())
-        let storyManager = StoryManager(service: StoryService(), dataPublisher: changeService.storyChangesPublisher.eraseToAnyPublisher())
-        let storyInformationManager = StoryInformationManager(service: StoryInformationService(), dataPublisher: changeService.storyInformationChangesPublisher.eraseToAnyPublisher())
+        let sprintManager = SprintManager(service: SprintService(), dataPublisher: changesService.sprintChangesPublisher.eraseToAnyPublisher())
+        let storyManager = StoryManager(service: StoryService(), dataPublisher: changesService.storyChangesPublisher.eraseToAnyPublisher())
+        let storyInformationManager = StoryInformationManager(service: StoryInformationService(), dataPublisher: changesService.storyInformationChangesPublisher.eraseToAnyPublisher())
 
-        changeService.fetchChanges()
+        changesService.fetchChanges()
 
         let view = MainView()
             .environmentObject(toolbarManager)
@@ -45,7 +45,7 @@ final class AppWindowController: NSWindowController, SplitViewControllerOwner {
         toolbar.delegate = toolbarManager
 
         (NSApplication.shared.delegate as? AppDelegate)?.spaceManager = spaceManager
-        (NSApplication.shared.delegate as? AppDelegate)?.changesService = changeService
+        (NSApplication.shared.delegate as? AppDelegate)?.changesService = changesService
 
         window?.toolbar = toolbar
         window?.contentViewController = NSHostingController(rootView: view)

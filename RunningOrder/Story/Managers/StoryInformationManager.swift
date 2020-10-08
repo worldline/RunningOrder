@@ -24,9 +24,9 @@ final class StoryInformationManager: ObservableObject {
     init(service: StoryInformationService, dataPublisher: AnyPublisher<ChangeInformation, Never>) {
         self.service = service
 
-        dataPublisher.sink(receiveValue: { informations in
-            self.updateData(with: informations.toUpdate)
-            self.deleteData(recordIds: informations.toDelete)
+        dataPublisher.sink(receiveValue: { [weak self] informations in
+            self?.updateData(with: informations.toUpdate)
+            self?.deleteData(recordIds: informations.toDelete)
         }).store(in: &cancellables)
 
         // saving storyinformation while live editing in the list component, each modification is stored in the buffer in order to persist it
@@ -59,13 +59,13 @@ final class StoryInformationManager: ObservableObject {
 
     func updateData(with updatedRecords: [CKRecord]) {
         do {
-            let updatedStoryInformations = try updatedRecords
+            let updatedStoryInformationArray = try updatedRecords
                 .map(StoryInformation.init(from:))
                 .map { ($0.storyId, $0) }
 
-            let updatedDico = [Story.ID: StoryInformation](updatedStoryInformations) { _, new in new }
+            let updatedDictionary = [Story.ID: StoryInformation](updatedStoryInformationArray) { _, new in new }
             DispatchQueue.main.async {
-                self.storyInformations.merge(updatedDico, uniquingKeysWith: { _, new in new })
+                self.storyInformations.merge(updatedDictionary, uniquingKeysWith: { _, new in new })
             }
 
         } catch {

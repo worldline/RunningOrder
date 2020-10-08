@@ -41,11 +41,12 @@ final class CloudKitChangesService: ObservableObject {
 
         Publishers.CombineLatest(recordPublisher.collect(), recordDeletedPublisher.collect())
             .map { records, toDelete -> ([CKRecord.RecordType: ChangeInformation]) in
-                let idsToDelete = toDelete.map { $0.0 }
+                let idsToDelete = toDelete.map { $0.recordId }
                 let toUpdate = records.filter { !idsToDelete.contains($0.recordID) }
 
                 let groupedUpdates = [CKRecord.RecordType: [CKRecord]](grouping: toUpdate, by: { record in record.recordType })
-                let groupedDeletion = [CKRecord.RecordType: [(CKRecord.ID, CKRecord.RecordType)]](grouping: toDelete, by: { element in return element.1 }).mapValues { array -> [CKRecord.ID] in return array.map { $0.0 } }
+                let groupedDeletion = [CKRecord.RecordType: [(recordId: CKRecord.ID, recordType: CKRecord.RecordType)]](grouping: toDelete, by: { element in return element.recordType })
+                    .mapValues { array -> [CKRecord.ID] in return array.map { $0.recordId } }
 
                 return groupedUpdates.combine(with: groupedDeletion) { updates, deletions -> ChangeInformation in
                     (updates ?? [], deletions ?? [])
@@ -55,12 +56,12 @@ final class CloudKitChangesService: ObservableObject {
             .store(in: &cancellables)
 
         let tokenChanged = tokenChangesPublisher
-            .filter { $0.0 == zoneId }
-            .map(\.1)
+            .filter { $0.zoneId == zoneId }
+            .map(\.serverToken)
 
         recordZoneFetchPublisher
-            .filter { $0.0 == zoneId }
-            .map(\.1)
+            .filter { $0.zoneId == zoneId }
+            .map(\.serverToken)
             .catchAndExit { [weak self] error in
                 if let error = error as? CKError, error.code == .changeTokenExpired {
                     self?.currentChangeServerToken = nil

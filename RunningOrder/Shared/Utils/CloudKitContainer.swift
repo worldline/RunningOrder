@@ -159,7 +159,7 @@ class CloudKitContainer {
 
         return database.fetchAllSubscriptions()
             .filter { $0.isEmpty }
-            .flatMap { _ in return self.createSubscriptions(for: database) }
+            .flatMap { [weak self] _ in return self?.createSubscriptions(for: database) ?? Empty(completeImmediately: true, outputType: Never.self, failureType: Error.self).eraseToAnyPublisher() }
             .sink(receiveFailure: { error in Logger.error.log(error) })
             .store(in: &cancellables)
     }

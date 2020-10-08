@@ -21,9 +21,9 @@ final class SprintManager: ObservableObject {
     init(service: SprintService, dataPublisher: AnyPublisher<ChangeInformation, Never>) {
         self.service = service
 
-        dataPublisher.sink(receiveValue: { informations in
-            self.updateData(with: informations.toUpdate)
-            self.deleteData(recordIds: informations.toDelete)
+        dataPublisher.sink(receiveValue: { [weak self] informations in
+            self?.updateData(with: informations.toUpdate)
+            self?.deleteData(recordIds: informations.toDelete)
         }).store(in: &cancellables)
     }
 
