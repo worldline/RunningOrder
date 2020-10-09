@@ -14,32 +14,6 @@ import CloudKit
 class StoryInformationService {
     let cloudkitContainer = CloudKitContainer.shared
 
-    func fetch(from storyId: Story.ID) -> AnyPublisher<StoryInformation, Swift.Error> {
-        let reference = CKRecord.Reference(recordID: CKRecord.ID(recordName: storyId, zoneID: cloudkitContainer.sharedZoneId), action: .deleteSelf)
-
-        // we query the storyinformation recordsof the specific storyId
-        let predicate = NSPredicate(format: "storyId == %@", reference)
-        let query = CKQuery(recordType: RecordType.storyInformation.rawValue, predicate: predicate)
-
-        let fetchOperation = CKQueryOperation(query: query)
-
-        //specific CKRecordZone.ID where to fetch the records
-        fetchOperation.zoneID = cloudkitContainer.sharedZoneId
-
-        let configuration = CKOperation.Configuration()
-        configuration.timeoutIntervalForRequest = 5
-        configuration.timeoutIntervalForResource = 5
-
-        fetchOperation.configuration = configuration
-
-        cloudkitContainer.currentDatabase.add(fetchOperation)
-
-        return fetchOperation
-            .publishers().recordFetched
-            .tryMap { try StoryInformation.init(from: $0) }
-            .eraseToAnyPublisher()
-    }
-
     func save(storyInformations: [StoryInformation]) -> AnyPublisher<[StoryInformation], Swift.Error> {
         let storyInformationRecords = storyInformations.map { $0.encode(zoneId: cloudkitContainer.sharedZoneId) }
 

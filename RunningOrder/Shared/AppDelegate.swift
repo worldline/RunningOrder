@@ -9,18 +9,42 @@
 import Cocoa
 import CloudKit
 import Combine
+import UserNotifications
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    let cloudkitContainer = CloudKitContainer.shared
-    var cancellables = Set<AnyCancellable>()
-    var spaceManager: SpaceManager?
+    private var cancellables = Set<AnyCancellable>()
 
-    func applicationDidFinishLaunching(_ aNotification: Notification) { }
+    let cloudkitContainer = CloudKitContainer.shared
+    var spaceManager: SpaceManager?
+    var changesService: CloudKitChangesService?
+
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
+        registerForPushNotification()
+    }
 
     func application(_ application: NSApplication, userDidAcceptCloudKitShareWith metadata: CKShare.Metadata) {
         spaceManager?.acceptShare(metadata: metadata)
+    }
+
+    func application(_ application: NSApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        Logger.error.log(error)
+    }
+
+    func application(_ application: NSApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        Logger.verbose.log("notifications token : \(deviceToken)")
+    }
+
+    private func registerForPushNotification() {
+        UNUserNotificationCenter.current().requestAuthorization(options: []) { granted, error in
+            if let error = error {
+                Logger.error.log(error)
+            } else {
+                Logger.verbose.log("notifications grant status : \(granted)")
+            }
+        }
+        NSApplication.shared.registerForRemoteNotifications()
     }
 
     @IBAction func deleteSpace(sender: Any) {
@@ -28,5 +52,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         spaceManager.deleteCurrentSpace()
         cloudkitContainer.resetModeIfNeeded()
+    }
+
+    func application(_ application: NSApplication, didReceiveRemoteNotification userInfo: [String: Any]) {
+        guard cloudkitContainer.validateNotification(userInfo) else { return }
+
+        changesService?.fetchChanges()
     }
 }

@@ -20,7 +20,7 @@ struct StoryDetailHeader: View {
                 .padding(.bottom, 10)
             HStack {
                 Tag(story.ticketReference, color: Color.gray)
-                Tag(story.epic, color: Color("holiday blue"))
+                Tag(story.epic, color: Color(identifier: .holidayBlue))
             }
         }
     }

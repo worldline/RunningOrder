@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Combine
+import CloudKit
 
 ///The class responsible of managing the Story data, this is the only source of truth
 final class StoryManager: ObservableObject {
@@ -18,26 +19,19 @@ final class StoryManager: ObservableObject {
 
     private let service: StoryService
 
-    init(service: StoryService) {
+    init(service: StoryService, dataPublisher: AnyPublisher<ChangeInformation, Never>) {
         self.service = service
+
+        dataPublisher.sink(receiveValue: { [weak self] informations in
+            self?.updateData(with: informations.toUpdate)
+            self?.deleteData(recordIds: informations.toDelete)
+        }).store(in: &cancellables)
     }
 
     /// Returns the stories of a specific sprintId
     /// - Parameter sprintId: The id of the sprint
     func stories(for sprintId: Sprint.ID) -> [Story] {
-        // if we have already fetched in the cloud no need to fetch again
-        if let sprintStories = stories[sprintId] {
-            return sprintStories
-        } else {
-            service.fetch(from: sprintId)
-                .catchAndExit { error in Logger.error.log(error) } // TODO Error Handling
-                .receive(on: DispatchQueue.main)
-                .assign(to: \.stories[sprintId], onStrong: self)
-                .store(in: &cancellables)
-
-            // we return an empty array while the data is fetched in background, the UI will be updated when the task is done
-            return []
-        }
+        return stories[sprintId] ?? []
     }
 
     func add(story: Story) -> AnyPublisher<Story, Error> {
@@ -51,5 +45,52 @@ final class StoryManager: ObservableObject {
             .store(in: &cancellables)
 
         return saveStoryPublisher.eraseToAnyPublisher()
+    }
+
+    func updateData(with updatedRecords: [CKRecord]) {
+        do {
+            let updatedStories = try updatedRecords.map(Story.init(from:))
+
+            for story in updatedStories {
+                if let index = stories[story.sprintId]?.firstIndex(where: { $0.id == story.id }) {
+                    stories[story.sprintId]?[index] = story
+                } else {
+                    Logger.warning.log("story with id \(story.id) not found, so appending it to existing story list")
+                    if stories.index(forKey: story.sprintId) == nil {
+                        DispatchQueue.main.async {
+                            self.stories[story.sprintId] = [story]
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            self.stories[story.sprintId]?.append(story)
+                        }
+                    }
+                }
+            }
+        } catch {
+            Logger.error.log(error)
+        }
+    }
+
+    private func findExistingStory(for recordId: CKRecord.ID) -> (sprintId: Sprint.ID, index: Int)? {
+        for (sprintId, stories) in stories {
+            if let index = stories.firstIndex(where: { $0.id == recordId.recordName }) {
+                return (sprintId, index)
+            }
+        }
+
+        return nil
+    }
+
+    func deleteData(recordIds: [CKRecord.ID]) {
+        for recordId in recordIds {
+            if let existingReference = findExistingStory(for: recordId) {
+                DispatchQueue.main.async {
+                    self.stories[existingReference.sprintId]!.remove(at: existingReference.index)
+                }
+            } else {
+                Logger.warning.log("story not found when deleting \(recordId.recordName)")
+            }
+        }
     }
 }

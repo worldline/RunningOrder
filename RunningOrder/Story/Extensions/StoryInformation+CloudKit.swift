@@ -50,7 +50,11 @@ extension StoryInformation: CKRecordable {
     }
 
     private func recordId(zoneId: CKRecordZone.ID) -> CKRecord.ID {
-        return CKRecord.ID(recordName: "si-\(self.storyId)", zoneID: zoneId) // we construct an unique ID based on the storyID
+        return CKRecord.ID(recordName: Self.recordName(for: self.storyId), zoneID: zoneId) // we construct an unique ID based on the storyID
+    }
+
+    static func recordName(for storyId: String) -> String {
+        return "si-\(storyId)"
     }
 
     private func storyRecordId(zoneId: CKRecordZone.ID) -> CKRecord.ID {

@@ -51,9 +51,9 @@ struct StoryList: View {
                         }
                     }
                 }
-                .colorMultiply(Color("concrete"))
+                .colorMultiply(Color(identifier: .concrete))
             }
-            .background(Color("concrete"))
+            .background(Color(identifier: .concrete))
 
             .frame(minWidth: 100, maxWidth: 400)
 
@@ -76,8 +76,8 @@ struct StoryList: View {
 
     func addStory(story: Story) {
         storyManager.add(story: story)
-            .catchAndExit { error in Logger.error.log(error) } // TODO Clean error handling
-            .sink { _ in }
+            .ignoreOutput()
+            .sink(receiveFailure: { error in Logger.error.log(error) }) // TODO Clean error handling
             .store(in: &disposeBag.cancellables)
     }
 }
@@ -85,6 +85,6 @@ struct StoryList: View {
 struct StoryList_Previews: PreviewProvider {
     static var previews: some View {
         StoryList(sprint: Sprint.Previews.sprints[0])
-            .environmentObject(StoryManager(service: StoryService()))
+            .environmentObject(StoryManager(service: StoryService(), dataPublisher: changeInformationPreview))
     }
 }

@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct StoryDetail: View {
-
     let story: Story
 
     @EnvironmentObject var storyInformationManager: StoryInformationManager
@@ -22,29 +21,18 @@ struct StoryDetail: View {
                 .padding(.all, 10)
             Divider()
                 .padding(.all, 10)
-
-            if storyInformationManager.storyInformations[story.id] != nil {
-                HSplitView {
-
-                    ConfigurationView(storyInformation: informationBinding)
-
-                    StepsView(storyInformation: informationBinding)
-                }
-            } else {
-                ProgressIndicator()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            HSplitView {
+                ConfigurationView(storyInformation: informationBinding)
+                StepsView(storyInformation: informationBinding)
             }
         }
         .background(Color.white)
-        .onAppear {
-            self.storyInformationManager.loadData(for: story.id)
-        }
     }
 }
 
 struct StoryDetail_Previews: PreviewProvider {
     static var previews: some View {
         StoryDetail(story: Story.Previews.stories[0])
-            .environmentObject(StoryInformationManager(service: StoryInformationService()))
+            .environmentObject(StoryInformationManager(service: StoryInformationService(), dataPublisher: changeInformationPreview))
     }
 }

@@ -69,9 +69,6 @@ struct SprintList: View {
             .padding(.all, 20.0)
             .buttonStyle(PlainButtonStyle())
         }
-        .onAppear {
-            self.sprintManager.loadData(from: space)
-        }
         .sheet(isPresented: $showNewSprintModal) {
             NewSprintView(spaceId: space.id, createdSprint: self.createdSprintBinding)
         }
@@ -90,7 +87,7 @@ struct SprintList: View {
 struct SprintList_Previews: PreviewProvider {
     static var previews: some View {
         SprintList(space: Space(name: "toto"))
-            .environmentObject(SprintManager(service: SprintService()))
+            .environmentObject(SprintManager(service: SprintService(), dataPublisher: changeInformationPreview))
             .frame(width: 250)
     }
 }

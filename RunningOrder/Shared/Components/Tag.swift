@@ -29,6 +29,6 @@ struct Tag: View {
 
 struct Tag_Previews: PreviewProvider {
     static var previews: some View {
-        Tag("A Tag", color: Color("holiday blue"))
+        Tag("A Tag", color: Color(identifier: .holidayBlue))
     }
 }
