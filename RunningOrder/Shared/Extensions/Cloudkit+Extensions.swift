@@ -155,7 +155,7 @@ extension CKFetchRecordZoneChangesOperation {
                           recordWithIDWasDeleted: AnyPublisher<(recordId: CKRecord.ID, recordType: CKRecord.RecordType), Never>,
                           recordZoneChangeTokensUpdated: AnyPublisher<(zoneId: CKRecordZone.ID, serverToken: CKServerChangeToken?, clientToken: Data?), Never>,
                           recordZoneFetchCompletion: AnyPublisher<(zoneId: CKRecordZone.ID, serverToken: CKServerChangeToken?, clientToken: Data?, isMoreComing: Bool), Error>) {
-        let recordWithIDWasDeleted = PassthroughSubject<(CKRecord.ID, CKRecord.RecordType), Never>()
+        let recordWithIDWasDeleted = PassthroughSubject<(recordId: CKRecord.ID, recordType: CKRecord.RecordType), Never>()
         self.recordWithIDWasDeletedBlock = { id, type in
             recordWithIDWasDeleted.send((id, type))
         }
@@ -165,12 +165,12 @@ extension CKFetchRecordZoneChangesOperation {
             recordChanged.send(record)
         }
 
-        let recordZoneChangeTokensUpdated = PassthroughSubject<(CKRecordZone.ID, CKServerChangeToken?, Data?), Never>()
+        let recordZoneChangeTokensUpdated = PassthroughSubject<(zoneId: CKRecordZone.ID, serverToken: CKServerChangeToken?, clientToken: Data?), Never>()
         self.recordZoneChangeTokensUpdatedBlock = { id, serverToken, clientToken in
             recordZoneChangeTokensUpdated.send((id, serverToken, clientToken))
         }
 
-        let recordZoneFetchCompletion = PassthroughSubject<(CKRecordZone.ID, CKServerChangeToken?, Data?, Bool), Error>()
+        let recordZoneFetchCompletion = PassthroughSubject<(zoneId: CKRecordZone.ID, serverToken: CKServerChangeToken?, clientToken: Data?, isMoreComing: Bool), Error>()
         self.recordZoneFetchCompletionBlock = { id, serverToken, clientToken, moreComing, error in
             if let error = error {
                 recordZoneFetchCompletion.send(completion: .failure(error))
@@ -192,11 +192,13 @@ extension CKFetchRecordZoneChangesOperation {
             }
         }
 
-        return (fetchRecordZoneChangesCompletion.eraseToAnyPublisher(),
-                recordChanged.eraseToAnyPublisher(),
-                recordWithIDWasDeleted.eraseToAnyPublisher(),
-                recordZoneChangeTokensUpdated.eraseToAnyPublisher(),
-                recordZoneFetchCompletion.eraseToAnyPublisher())
+        return (
+            fetchRecordZoneChangesCompletion: fetchRecordZoneChangesCompletion.eraseToAnyPublisher(),
+            recordChanged: recordChanged.eraseToAnyPublisher(),
+            recordWithIDWasDeleted: recordWithIDWasDeleted.eraseToAnyPublisher(),
+            recordZoneChangeTokensUpdated: recordZoneChangeTokensUpdated.eraseToAnyPublisher(),
+            recordZoneFetchCompletion: recordZoneFetchCompletion.eraseToAnyPublisher()
+        )
     }
 }
 
