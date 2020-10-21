@@ -51,21 +51,21 @@ final class StoryManager: ObservableObject {
         do {
             let updatedStories = try updatedRecords.map(Story.init(from:))
 
+            var currentStories = self.stories
             for story in updatedStories {
-                if let index = stories[story.sprintId]?.firstIndex(where: { $0.id == story.id }) {
-                    stories[story.sprintId]?[index] = story
+                if let index = currentStories[story.sprintId]?.firstIndex(where: { $0.id == story.id }) {
+                    currentStories[story.sprintId]?[index] = story
                 } else {
                     Logger.warning.log("story with id \(story.id) not found, so appending it to existing story list")
-                    if stories.index(forKey: story.sprintId) == nil {
-                        DispatchQueue.main.async {
-                            self.stories[story.sprintId] = [story]
-                        }
+                    if currentStories.index(forKey: story.sprintId) == nil {
+                        currentStories[story.sprintId] = [story]
                     } else {
-                        DispatchQueue.main.async {
-                            self.stories[story.sprintId]?.append(story)
-                        }
+                        currentStories[story.sprintId]?.append(story)
                     }
                 }
+            }
+            DispatchQueue.main.async {
+                self.stories = currentStories
             }
         } catch {
             Logger.error.log(error)

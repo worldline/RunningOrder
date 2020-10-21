@@ -51,6 +51,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         guard let spaceManager = spaceManager else { return }
 
         spaceManager.deleteCurrentSpace()
+        // TODO: delete local cache
         cloudkitContainer.resetModeIfNeeded()
     }
 

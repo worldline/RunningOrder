@@ -60,6 +60,25 @@ final class SprintManager: ObservableObject {
         }
     }
 
+    func deleteSprint(_ sprint: Sprint) {
+        guard let index = self.sprints.firstIndex(of: sprint) else {
+            Logger.error.log("couldn't find index of sprint in stored sprints")
+            return
+        }
+
+        service.delete(sprint: sprint)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                switch completion {
+                case .failure(let error):
+                    Logger.error.log(error)
+                case .finished:
+                    self?.sprints.remove(at: index)
+                }
+            })
+            .store(in: &cancellables)
+    }
+
     func deleteData(recordIds: [CKRecord.ID]) {
         for recordId in recordIds {
             guard let index = sprints.firstIndex(where: { $0.id == recordId.recordName }) else {

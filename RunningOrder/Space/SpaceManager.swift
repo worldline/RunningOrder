@@ -36,20 +36,27 @@ final class SpaceManager: ObservableObject {
         return space
     }
 
-    init(service: SpaceService) {
+    init(service: SpaceService, dataPublisher: AnyPublisher<ChangeInformation, Never>) {
         self.spaceService = service
-    }
 
-    func initialSetup() {
-        // Loading from persistence when set
-
-        spaceService.fetch()
-            .map { State.spaceFound($0) }
-            .catch { Just(State.error($0)) }
-            .replaceEmpty(with: State.noSpace)
-            .receive(on: DispatchQueue.main)
+        dataPublisher
+            .map(updateState(with:))
             .assign(to: \.state, onStrong: self)
             .store(in: &cancellables)
+    }
+
+    private func updateState(with information: ChangeInformation) -> State {
+        Logger.debug.log(information)
+        if !information.toDelete.isEmpty, case .spaceFound(let space) = state, information.toDelete.contains(where: { $0.recordName == space.id }) {
+            // current space will be deleted
+            Logger.warning.log("The current space will be deleted. We should delete the sharing if we are not the 'master'")
+        }
+
+        if let record = information.toUpdate.last {
+            return .spaceFound(Space(underlyingRecord: record))
+        } else {
+            return .noSpace
+        }
     }
 
     func fetchFromShared(_ recordId: CKRecord.ID) {

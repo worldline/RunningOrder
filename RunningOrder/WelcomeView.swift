@@ -12,6 +12,7 @@ struct WelcomeView: View {
 
     @Binding var space: Space?
     @State private var newSpaceName = ""
+    @State private var hasErrorOnField = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -19,7 +20,16 @@ struct WelcomeView: View {
             Text("You don't have yet your space, or joined a shared space")
             HStack {
                 TextField("My Space Name", text: $newSpaceName)
+                    .overlay(Rectangle()
+                                .strokeBorder(Color.red, lineWidth: 2.0, antialiased: true)
+                                .opacity(hasErrorOnField ? 1 : 0))
+                    .animation(.default)
                 Button("Create") {
+                    hasErrorOnField = newSpaceName.isEmpty
+                    guard !newSpaceName.isEmpty else {
+                        return
+                    }
+
                     space = Space(name: newSpaceName)
                 }
             }
