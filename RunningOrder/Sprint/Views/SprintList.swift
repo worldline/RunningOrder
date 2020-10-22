@@ -15,6 +15,7 @@ struct SprintList: View {
     @State private var showNewSprintModal = false
     @EnvironmentObject var sprintManager: SprintManager
     @EnvironmentObject var storyManager: StoryManager
+    @EnvironmentObject var storyInformationManager: StoryInformationManager
     @EnvironmentObject var toolbarManager: ToolbarManager
 
     let space: Space
@@ -40,14 +41,20 @@ struct SprintList: View {
                         NavigationLink(
                             destination: StoryList(sprint: sprint)
                                 .environmentObject(storyManager)
-                                .environmentObject(toolbarManager),
+                                .environmentObject(toolbarManager)
+                                .environmentObject(storyInformationManager),
                             label: {
                                 HStack {
                                     SprintNumber(number: sprint.number, colorIdentifier: sprint.colorIdentifier)
                                     Text(sprint.name)
                                 }
                             }
-                        )
+                        ).contextMenu {
+                            Button(
+                                action: { self.sprintManager.delete(sprint: sprint) },
+                                label: { Text("Delete Sprint") }
+                            )
+                        }
                     }
                 }
                 Section(header: Text("Old Sprints")) {

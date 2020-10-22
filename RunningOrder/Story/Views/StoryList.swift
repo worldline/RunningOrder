@@ -44,7 +44,8 @@ struct StoryList: View {
                     ForEach(storyManager.stories(for: sprint.id), id: \.self) { story in
                         VStack {
                             NavigationLink(
-                                destination: StoryDetail(story: story).environmentObject(storyInformationManager),
+                                destination: StoryDetail(story: story)
+                                    .environmentObject(storyInformationManager),
                                 label: { StoryRow(story: story) }
                             )
                             Divider()

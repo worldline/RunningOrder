@@ -21,17 +21,18 @@ final class AppWindowController: NSWindowController, SplitViewControllerOwner {
 
         let toolbar = NSToolbar()
 
-        let spaceManager = SpaceManager(service: SpaceService())
+        let changesService = CloudKitChangesService(container: CloudKitContainer.shared)
+
+        let spaceManager = SpaceManager(service: SpaceService(), dataPublisher: changesService.spaceChangesPublisher.eraseToAnyPublisher())
+        let sprintManager = SprintManager(service: SprintService(), dataPublisher: changesService.sprintChangesPublisher.eraseToAnyPublisher())
+        let storyManager = StoryManager(service: StoryService(), dataPublisher: changesService.storyChangesPublisher.eraseToAnyPublisher())
+        let storyInformationManager = StoryInformationManager(service: StoryInformationService(), dataPublisher: changesService.storyInformationChangesPublisher.eraseToAnyPublisher())
+
         let toolbarManager = ToolbarManager(
             splitViewControllerOwner: self,
             toolBar: toolbar,
             spaceManager: spaceManager
         )
-        let changesService = CloudKitChangesService(container: CloudKitContainer.shared)
-
-        let sprintManager = SprintManager(service: SprintService(), dataPublisher: changesService.sprintChangesPublisher.eraseToAnyPublisher())
-        let storyManager = StoryManager(service: StoryService(), dataPublisher: changesService.storyChangesPublisher.eraseToAnyPublisher())
-        let storyInformationManager = StoryInformationManager(service: StoryInformationService(), dataPublisher: changesService.storyInformationChangesPublisher.eraseToAnyPublisher())
 
         changesService.fetchChanges()
 

@@ -184,6 +184,7 @@ extension CKFetchRecordZoneChangesOperation {
             recordChanged.send(completion: .finished)
             recordZoneChangeTokensUpdated.send(completion: .finished)
             recordWithIDWasDeleted.send(completion: .finished)
+            recordZoneFetchCompletion.send(completion: .finished)
 
             if let error = error {
                 fetchRecordZoneChangesCompletion.send(completion: .failure(error))

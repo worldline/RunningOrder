@@ -10,6 +10,12 @@ import Foundation
 import Combine
 import CloudKit
 
+extension SpaceService {
+    enum Error: Swift.Error {
+        case noShareFound
+    }
+}
+
 /// The service responsible of all the Sprint CRUD operation
 class SpaceService {
     let cloudkitContainer = CloudKitContainer.shared
@@ -28,31 +34,6 @@ class SpaceService {
                     throw SpaceManager.Error.noSpaceAvailable
                 }
             }.eraseToAnyPublisher()
-    }
-
-    func fetch() -> AnyPublisher<Space, Swift.Error> {
-
-        // we query all the records
-        let predicate = NSPredicate(value: true)
-        let query = CKQuery(recordType: RecordType.space.rawValue, predicate: predicate)
-
-        let fetchOperation = CKQueryOperation(query: query)
-
-        // specific CKRecordZone.ID where to fetch the records
-        fetchOperation.zoneID = cloudkitContainer.sharedZoneId
-
-        let configuration = CKOperation.Configuration()
-        configuration.timeoutIntervalForRequest = 5
-        configuration.timeoutIntervalForResource = 5
-
-        fetchOperation.configuration = configuration
-        cloudkitContainer.currentDatabase.add(fetchOperation)
-
-        return fetchOperation
-            .publishers().recordFetched
-            .map { Space(underlyingRecord: $0) }
-            .first()
-            .eraseToAnyPublisher()
     }
 
     func save(space: Space) -> AnyPublisher<Space, Swift.Error> {
@@ -106,7 +87,19 @@ class SpaceService {
 
     func delete(space: Space) -> AnyPublisher<Never, Swift.Error> {
         let deleteOperation = CKModifyRecordsOperation()
-        deleteOperation.recordIDsToDelete = [space.underlyingRecord.recordID]
+        let recordIdToDelete: CKRecord.ID
+        if cloudkitContainer.mode.isOwner {
+            recordIdToDelete = space.underlyingRecord.recordID
+        } else {
+            if let shareId = space.underlyingRecord.share?.recordID {
+                recordIdToDelete = shareId
+            } else {
+                Logger.error.log("couldn't find the id of the share this way")
+                return Fail(error: Error.noShareFound).eraseToAnyPublisher()
+            }
+
+        }
+        deleteOperation.recordIDsToDelete = [recordIdToDelete]
 
         let configuration = CKOperation.Configuration()
         configuration.qualityOfService = .utility

@@ -32,4 +32,20 @@ class SprintService {
             .eraseToAnyPublisher()
     }
 
+    func delete(sprint: Sprint) -> AnyPublisher<Never, Swift.Error> {
+        let record = sprint.encode(zoneId: cloudkitContainer.sharedZoneId)
+        let deleteOperation = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: [record.recordID])
+
+        let configuration = CKOperation.Configuration()
+        configuration.qualityOfService = .utility
+
+        deleteOperation.configuration = configuration
+
+        cloudkitContainer.currentDatabase.add(deleteOperation)
+
+        return deleteOperation.publishers()
+            .completion
+            .ignoreOutput()
+            .eraseToAnyPublisher()
+    }
 }

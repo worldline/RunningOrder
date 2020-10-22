@@ -82,11 +82,13 @@ extension Publisher where Self.Failure == Never {
     /// - Parameters:
     ///   - keyPath: A key path that indicates the property to append
     ///   - object: The object that contains the array property
-    func append<Root: AnyObject>(
-        to keyPath: ReferenceWritableKeyPath<Root, [Self.Output]?>,
-        onStrong object: Root) -> AnyCancellable {
+    func append<Root: AnyObject>(to keyPath: ReferenceWritableKeyPath<Root, [Self.Output]?>, onStrong object: Root) -> AnyCancellable {
         sink { [weak object] value in
-            object?[keyPath: keyPath]?.append(value)
+            if object?[keyPath: keyPath] != nil {
+                object?[keyPath: keyPath]?.append(value)
+            } else {
+                object?[keyPath: keyPath] = [value]
+            }
         }
     }
 }
@@ -106,8 +108,7 @@ extension Publisher where Self.Output == Never {
     }
 
     /// A combine sink version to ignore receiveValue completion block when Self.Output == Never
-    /// - Parameter completion: <#completion description#>
-    /// - Returns: <#description#>
+    /// - Parameter completion: The action to perform with the completion of the publisher
     func sink(receiveCompletion completion: @escaping (Subscribers.Completion<Failure>) -> Void) -> AnyCancellable {
         self.sink(receiveCompletion: completion, receiveValue: { _ in })
     }

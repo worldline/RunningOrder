@@ -37,7 +37,6 @@ struct MainView: View {
         switch spaceManager.state {
         case .loading:
             ProgressIndicator()
-                .onAppear { spaceManager.initialSetup() }
                 .padding()
                 .frame(
                     maxWidth: .infinity,

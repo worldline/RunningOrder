@@ -23,6 +23,7 @@ final class CloudKitChangesService: ObservableObject {
     let sprintChangesPublisher = PassthroughSubject<ChangeInformation, Never>()
     let storyChangesPublisher = PassthroughSubject<ChangeInformation, Never>()
     let storyInformationChangesPublisher = PassthroughSubject<ChangeInformation, Never>()
+    let spaceChangesPublisher = PassthroughSubject<ChangeInformation, Never>()
 
     init(container: CloudKitContainer) {
         self.container = container
@@ -52,6 +53,7 @@ final class CloudKitChangesService: ObservableObject {
                     (updates ?? [], deletions ?? [])
                 }
             }
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] updates in self?.handleUpdates(updates: updates) }
             .store(in: &cancellables)
 
@@ -91,6 +93,7 @@ final class CloudKitChangesService: ObservableObject {
             case .storyInformation:
                 self.storyInformationChangesPublisher.send(changes)
             case .space:
+                self.spaceChangesPublisher.send(changes)
                 break
             }
         }
