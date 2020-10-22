@@ -26,9 +26,7 @@ struct WelcomeView: View {
                     .animation(.default)
                 Button("Create") {
                     hasErrorOnField = newSpaceName.isEmpty
-                    guard !newSpaceName.isEmpty else {
-                        return
-                    }
+                    guard !hasErrorOnField else { return }
 
                     space = Space(name: newSpaceName)
                 }

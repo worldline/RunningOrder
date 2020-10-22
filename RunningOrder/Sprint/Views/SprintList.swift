@@ -51,7 +51,7 @@ struct SprintList: View {
                             }
                         ).contextMenu {
                             Button(
-                                action: { self.sprintManager.deleteSprint(sprint) },
+                                action: { self.sprintManager.delete(sprint: sprint) },
                                 label: { Text("Delete Sprint") }
                             )
                         }

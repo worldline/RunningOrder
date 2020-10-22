@@ -60,7 +60,7 @@ final class SprintManager: ObservableObject {
         }
     }
 
-    func deleteSprint(_ sprint: Sprint) {
+    func delete(sprint: Sprint) {
         guard let index = self.sprints.firstIndex(of: sprint) else {
             Logger.error.log("couldn't find index of sprint in stored sprints")
             return
@@ -71,7 +71,7 @@ final class SprintManager: ObservableObject {
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
                 case .failure(let error):
-                    Logger.error.log(error)
+                    Logger.error.log(error) // TODO: error Handling
                 case .finished:
                     self?.sprints.remove(at: index)
                 }

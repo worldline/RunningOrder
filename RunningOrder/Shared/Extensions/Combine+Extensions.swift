@@ -108,8 +108,7 @@ extension Publisher where Self.Output == Never {
     }
 
     /// A combine sink version to ignore receiveValue completion block when Self.Output == Never
-    /// - Parameter completion: completion description
-    /// - Returns: description
+    /// - Parameter completion: The action to perform with the completion of the publisher
     func sink(receiveCompletion completion: @escaping (Subscribers.Completion<Failure>) -> Void) -> AnyCancellable {
         self.sink(receiveCompletion: completion, receiveValue: { _ in })
     }

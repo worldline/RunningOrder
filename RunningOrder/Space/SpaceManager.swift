@@ -49,7 +49,17 @@ final class SpaceManager: ObservableObject {
         Logger.debug.log(information)
         if !information.toDelete.isEmpty, case .spaceFound(let space) = state, information.toDelete.contains(where: { $0.recordName == space.id }) {
             // current space will be deleted
-            Logger.warning.log("The current space will be deleted. We should delete the sharing if we are not the 'master'")
+            spaceService.delete(space: space)
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { completion in
+                    switch completion {
+                    case .failure(let error):
+                        Logger.error.log(error) // TODO: error handling
+                    case .finished:
+                        self.state = .noSpace
+                    }
+                })
+                .store(in: &cancellables)
         }
 
         if let record = information.toUpdate.last {

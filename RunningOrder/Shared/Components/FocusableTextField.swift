@@ -16,6 +16,8 @@ struct FocusableTextField: View {
     @State private var isFocused = false
     @Binding var value: String
 
+    private var borderOpacity: Double { isFocused ? 1 : 0 }
+
     let onCommit: () -> Void
 
     /// - Parameters:
@@ -33,11 +35,11 @@ struct FocusableTextField: View {
             .padding(.all, 5)
             // on focus background
             .background(RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(Color.white.opacity(isFocused ? 1 : 0)))
+                            .foregroundColor(Color.white.opacity(borderOpacity)))
             // on focus border
             .overlay(RoundedRectangle(cornerRadius: 10)
                         .strokeBorder(Color.accentColor, lineWidth: 1.0, antialiased: true)
-                        .opacity(isFocused ? 1 : 0))
+                        .opacity(borderOpacity))
             .animation(.easeIn)
             .focusable()
     }
