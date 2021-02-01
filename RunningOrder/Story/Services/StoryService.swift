@@ -31,4 +31,21 @@ class StoryService {
             .tryMap { try Story.init(from: $0) }
             .eraseToAnyPublisher()
     }
+
+    func delete(story: Story) -> AnyPublisher<Never, Swift.Error> {
+        let record = story.encode(zoneId: cloudkitContainer.sharedZoneId)
+        let deleteOperation = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: [record.recordID])
+
+        let configuration = CKOperation.Configuration()
+        configuration.qualityOfService = .utility
+
+        deleteOperation.configuration = configuration
+
+        cloudkitContainer.currentDatabase.add(deleteOperation)
+
+        return deleteOperation.publishers()
+            .completion
+            .ignoreOutput()
+            .eraseToAnyPublisher()
+    }
 }
