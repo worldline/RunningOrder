@@ -36,9 +36,11 @@ final class CloudKitChangesService: ObservableObject {
             configurationsByRecordZoneID: [zoneId: .init(previousServerChangeToken: currentChangeServerToken)]
         )
 
+        operation.qualityOfService = .userInteractive
+
         operation.fetchAllChanges = true
 
-        let (_, recordPublisher, recordDeletedPublisher, tokenChangesPublisher, recordZoneFetchPublisher) = operation.publishers()
+        let (fetchRecordZoneChangesPublisher, recordPublisher, recordDeletedPublisher, tokenChangesPublisher, recordZoneFetchPublisher) = operation.publishers()
 
         Publishers.CombineLatest(recordPublisher.collect(), recordDeletedPublisher.collect())
             .map { records, toDelete -> ([CKRecord.RecordType: ChangeInformation]) in
@@ -75,8 +77,27 @@ final class CloudKitChangesService: ObservableObject {
             .assign(to: \.currentChangeServerToken, onStrong: self)
             .store(in: &cancellables)
 
+        fetchRecordZoneChangesPublisher
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    Logger.debug.log("call finished")
+                    if self.firstCallSpaceEmpty {
+                        self.spaceChangesPublisher.send((toUpdate: [], toDelete: []))
+                        self.firstCallSpaceEmpty = false
+                    }
+
+                case .failure(let error):
+                    Logger.error.log("error : \(error)") // TODO: Error handling
+                }
+            })
+            .store(in: &cancellables)
+
+        Logger.debug.log("launch operation")
         container.currentDatabase.add(operation)
     }
+
+    private var firstCallSpaceEmpty = true
 
     func handleUpdates(updates: [CKRecord.RecordType: ChangeInformation]) {
         for (key, changes) in updates {
@@ -94,6 +115,7 @@ final class CloudKitChangesService: ObservableObject {
                 self.storyInformationChangesPublisher.send(changes)
             case .space:
                 self.spaceChangesPublisher.send(changes)
+                self.firstCallSpaceEmpty = false
                 break
             }
         }
