@@ -49,7 +49,9 @@ final class StoryManager: ObservableObject {
 
     func updateData(with updatedRecords: [CKRecord]) {
         do {
-            let updatedStories = try updatedRecords.map(Story.init(from:))
+            let updatedStories = try updatedRecords
+                .sorted(by: { ($0.creationDate ?? Date()) < ($1.creationDate ?? Date()) })
+                .map(Story.init(from:))
 
             var currentStories = self.stories
             for story in updatedStories {
@@ -80,6 +82,28 @@ final class StoryManager: ObservableObject {
         }
 
         return nil
+    }
+
+    func delete(story: Story) {
+        guard let (sprintId, index) = findExistingStory(for: CKRecord.ID(recordName: story.id)) else {
+            Logger.error.log("couldn't find index of story in stored stories")
+            return
+        }
+
+        service.delete(story: story)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                switch completion {
+                case .failure(let error):
+                    Logger.error.log(error) // TODO: error Handling
+                case .finished:
+                    self?.stories[sprintId]?.remove(at: index)
+                    if self?.stories[sprintId]?.isEmpty ?? false {
+                        self?.stories.removeValue(forKey: sprintId)
+                    }
+                }
+            })
+            .store(in: &cancellables)
     }
 
     func deleteData(recordIds: [CKRecord.ID]) {

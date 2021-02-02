@@ -48,6 +48,12 @@ struct StoryList: View {
                                     .environmentObject(storyInformationManager),
                                 label: { StoryRow(story: story) }
                             )
+                            .contextMenu {
+                                Button(
+                                    action: { self.storyManager.delete(story: story) },
+                                    label: { Text("Delete Story") }
+                                )
+                            }
                             Divider()
                         }
                     }

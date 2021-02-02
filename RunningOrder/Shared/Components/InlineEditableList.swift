@@ -49,7 +49,7 @@ struct InlineEditableList: View {
                 ZStack(alignment: .trailing) {
                     FocusableTextField(placeholder, value: Binding(
                         get: { return values[index] },
-                        set: { newValue in return self.values[index] = newValue}
+                        set: { newValue in return self.values[index] = newValue }
                     ),
                     onCommit: {
                         // we delete the field if its value is empty

@@ -10,7 +10,7 @@ import SwiftUI
 
 struct StepsView: View {
     @Binding var storyInformation: StoryInformation
-    @State private var selectedMode = DisplayMode.video
+    @State private var selectedMode = DisplayMode.steps
 
     var body: some View {
         ScrollView {
