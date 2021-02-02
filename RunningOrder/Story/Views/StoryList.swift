@@ -62,10 +62,19 @@ struct StoryList: View {
             .background(Color(identifier: .concrete))
 
             .frame(minWidth: 100, maxWidth: 400)
+        }
+        .navigationTitle("Sprint \(sprint.number) - \(sprint.name)")
+        .frame(minWidth: 100, idealWidth: 300)
+        .toolbar {
+            ToolbarItems.sidebarItem
 
-            Text("Select a Story")
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.white)
+            ToolbarItem(placement: ToolbarItemPlacement.cancellationAction) {
+                Button {
+                    self.isAddStoryViewDisplayed = true
+                } label: {
+                    Image(systemName: "square.and.pencil")
+                }
+            }
         }
         .sheet(isPresented: $isAddStoryViewDisplayed) {
             NewStoryView(sprintId: sprint.id, createdStory: createdStoryBinding)

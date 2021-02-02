@@ -12,6 +12,8 @@ struct StoryDetail: View {
     let story: Story
 
     @EnvironmentObject var storyInformationManager: StoryInformationManager
+    @EnvironmentObject var storyManager: StoryManager
+    @EnvironmentObject var spaceManager: SpaceManager
 
     var informationBinding: Binding<StoryInformation> { storyInformationManager.informations(for: story.id) }
 
@@ -27,6 +29,23 @@ struct StoryDetail: View {
             }
         }
         .background(Color.white)
+        .toolbar {
+            ToolbarItemGroup {
+                Text(story.name)
+                    .font(.title3)
+                    .fontWeight(.semibold)
+
+                Spacer()
+            }
+
+            ToolbarItem(placement: ToolbarItemPlacement.cancellationAction) {
+                Button(action: { self.storyManager.delete(story: story) }) {
+                    Image(systemName: "trash")
+                }
+            }
+
+            ToolbarItems.cloudSharingItem(for: CloudSharingHandler(spaceManager: self.spaceManager))
+        }
     }
 }
 
@@ -34,5 +53,7 @@ struct StoryDetail_Previews: PreviewProvider {
     static var previews: some View {
         StoryDetail(story: Story.Previews.stories[0])
             .environmentObject(StoryInformationManager(service: StoryInformationService(), dataPublisher: changeInformationPreview))
+            .environmentObject(StoryManager(service: StoryService(), dataPublisher: changeInformationPreview))
+            .environmentObject(SpaceManager(service: SpaceService(), dataPublisher: changeInformationPreview))
     }
 }
