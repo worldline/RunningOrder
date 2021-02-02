@@ -19,6 +19,7 @@ struct StoryList: View {
     @EnvironmentObject var storyInformationManager: StoryInformationManager
 
     private let disposeBag = DisposeBag()
+    @State private var selected: Story?
 
     var createdStoryBinding: Binding<Story?> {
         return Binding<Story?>(
@@ -32,36 +33,26 @@ struct StoryList: View {
     }
 
     var body: some View {
-        NavigationView {
-            VStack(alignment: .leading, spacing: 0) {
-                Text("Sprint \(sprint.number) - \(sprint.name)")
-                    .font(.headline)
-                    .padding(13)
-                List {
-                    Divider()
-
-                    ForEach(storyManager.stories(for: sprint.id), id: \.self) { story in
-                        VStack {
-                            NavigationLink(
-                                destination: StoryDetail(story: story)
-                                    .environmentObject(storyInformationManager),
-                                label: { StoryRow(story: story) }
-                            )
-                            .contextMenu {
-                                Button(
-                                    action: { self.storyManager.delete(story: story) },
-                                    label: { Text("Delete Story") }
-                                )
-                            }
-                            Divider()
-                        }
-                    }
+        List(storyManager.stories(for: sprint.id), id: \.self, selection: $selected) { story in
+            VStack {
+                NavigationLink(
+                    destination: StoryDetail(story: story),
+                    label: { StoryRow(story: story) }
+                )
+                .contextMenu {
+                    Button(
+                        action: { self.storyManager.delete(story: story) },
+                        label: { Text("Delete Story") }
+                    )
                 }
-                .colorMultiply(Color(identifier: .concrete))
-            }
-            .background(Color(identifier: .concrete))
 
-            .frame(minWidth: 100, maxWidth: 400)
+                if story == selected {
+                    Divider()
+                        .hidden()
+                } else {
+                    Divider()
+                }
+            }
         }
         .navigationTitle("Sprint \(sprint.number) - \(sprint.name)")
         .frame(minWidth: 100, idealWidth: 300)

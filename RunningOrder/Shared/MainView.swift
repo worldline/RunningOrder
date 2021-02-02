@@ -49,6 +49,13 @@ struct MainView: View {
 
         case .noSpace:
             WelcomeView(space: createdSpaceBinding)
+                .frame(
+                    minWidth: 300,
+                    maxWidth: 500,
+                    minHeight: 200,
+                    maxHeight: 200,
+                    alignment: .leading
+                )
 
         case .spaceFound(let space):
             NavigationView {

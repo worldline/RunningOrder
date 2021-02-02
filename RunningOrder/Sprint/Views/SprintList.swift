@@ -34,47 +34,44 @@ struct SprintList: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading) {
-            List {
-                Section(header: Text("Active Sprints")) {
-                    ForEach(sprintManager.sprints, id: \.self) { sprint in
-                        NavigationLink(
-                            destination: StoryList(sprint: sprint)
-                                .environmentObject(storyManager)
-                                .environmentObject(storyInformationManager),
-                            label: {
-                                HStack {
-                                    SprintNumber(number: sprint.number, colorIdentifier: sprint.colorIdentifier)
-                                    Text(sprint.name)
-                                }
+        List {
+            Section(header: Text("Active Sprints")) {
+                ForEach(sprintManager.sprints, id: \.self) { sprint in
+                    NavigationLink(
+                        destination: StoryList(sprint: sprint),
+                        label: {
+                            HStack {
+                                SprintNumber(number: sprint.number, colorIdentifier: sprint.colorIdentifier)
+                                Text(sprint.name)
                             }
-                        ).contextMenu {
-                            Button(
-                                action: { self.sprintManager.delete(sprint: sprint) },
-                                label: { Text("Delete Sprint") }
-                            )
                         }
+                    )
+                    .contextMenu {
+                        Button(
+                            action: { self.sprintManager.delete(sprint: sprint) },
+                            label: { Text("Delete Sprint") }
+                        )
                     }
                 }
-                Section(header: Text("Old Sprints")) {
-                    EmptyView()
-                }
             }
-            Button(action: { self.showNewSprintModal.toggle() }) {
-                HStack {
-                    Image(nsImageName: NSImage.addTemplateName)
-                        .frame(width: 20, height: 20)
-                        .foregroundColor(.white)
-                        .background(Color.accentColor)
-                        .clipShape(Circle())
-                    Text("New Sprint")
-                        .foregroundColor(Color.accentColor)
-                        .font(.system(size: 12))
-                }
+            Section(header: Text("Old Sprints")) {
+                EmptyView()
             }
-            .padding(.all, 20.0)
-            .buttonStyle(PlainButtonStyle())
         }
+        .overlay(Button(action: { self.showNewSprintModal.toggle() }) {
+            HStack {
+                Image(nsImageName: NSImage.addTemplateName)
+                    .frame(width: 20, height: 20)
+                    .foregroundColor(.white)
+                    .background(Color.accentColor)
+                    .clipShape(Circle())
+                Text("New Sprint")
+                    .foregroundColor(Color.accentColor)
+                    .font(.system(size: 12))
+            }
+        }
+        .padding(.all, 20.0)
+        .buttonStyle(PlainButtonStyle()), alignment: .bottom)
         .sheet(isPresented: $showNewSprintModal) {
             NewSprintView(spaceId: space.id, createdSprint: self.createdSprintBinding)
         }

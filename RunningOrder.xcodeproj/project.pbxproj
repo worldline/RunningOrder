@@ -25,6 +25,7 @@
 		1888AFC525271A4200D5C678 /* Colors+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1888AFC425271A4200D5C678 /* Colors+Extensions.swift */; };
 		1890DCC2252B705400D236B6 /* CloudKitChangesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1890DCC1252B705400D236B6 /* CloudKitChangesService.swift */; };
 		18CDCDD624B4A49200043E1D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 18CDCDD824B4A49200043E1D /* Localizable.strings */; };
+		18F6F6C725C9D029008078ED /* InlineButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F6F6C625C9D029008078ED /* InlineButtonStyle.swift */; };
 		18F7918224B619B600FDCBEF /* Sprints_Previews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F7918124B619B600FDCBEF /* Sprints_Previews.swift */; };
 		18F7918424B61A5900FDCBEF /* Stories_Previews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F7918324B61A5900FDCBEF /* Stories_Previews.swift */; };
 		18FE758E24A23E670003C76E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FE758D24A23E670003C76E /* AppDelegate.swift */; };
@@ -33,7 +34,7 @@
 		18FE759524A23E680003C76E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18FE759424A23E680003C76E /* Preview Assets.xcassets */; };
 		18FE75A424A23E680003C76E /* RunningOrderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FE75A324A23E680003C76E /* RunningOrderTests.swift */; };
 		18FF999624DC3472002A06FE /* SprintManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FF999524DC3472002A06FE /* SprintManager.swift */; };
-		E81BBFE624CAD21100DB289A /* FocusableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81BBFE524CAD21100DB289A /* FocusableTextField.swift */; };
+		E81BBFE624CAD21100DB289A /* StyledFocusableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81BBFE524CAD21100DB289A /* StyledFocusableTextField.swift */; };
 		E81BBFE824CB194B00DB289A /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81BBFE724CB194B00DB289A /* RoundButton.swift */; };
 		E83C002724ED7B0F00C83B85 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E83C002624ED7B0F00C83B85 /* CloudKit.framework */; };
 		E858997424EE68FB00BB65C8 /* Cloudkit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E858997324EE68FB00BB65C8 /* Cloudkit+Extensions.swift */; };
@@ -102,6 +103,7 @@
 		1890DCC1252B705400D236B6 /* CloudKitChangesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitChangesService.swift; sourceTree = "<group>"; };
 		18CDCDD724B4A49200043E1D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		18CDCDDA24B4A4A500043E1D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		18F6F6C625C9D029008078ED /* InlineButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineButtonStyle.swift; sourceTree = "<group>"; };
 		18F7918124B619B600FDCBEF /* Sprints_Previews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sprints_Previews.swift; sourceTree = "<group>"; };
 		18F7918324B61A5900FDCBEF /* Stories_Previews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stories_Previews.swift; sourceTree = "<group>"; };
 		18FE758A24A23E670003C76E /* RunningOrder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RunningOrder.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -118,7 +120,7 @@
 		18FE75AE24A23E680003C76E /* RunningOrderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningOrderUITests.swift; sourceTree = "<group>"; };
 		18FE75B024A23E680003C76E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		18FF999524DC3472002A06FE /* SprintManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintManager.swift; sourceTree = "<group>"; };
-		E81BBFE524CAD21100DB289A /* FocusableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusableTextField.swift; sourceTree = "<group>"; };
+		E81BBFE524CAD21100DB289A /* StyledFocusableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyledFocusableTextField.swift; sourceTree = "<group>"; };
 		E81BBFE724CB194B00DB289A /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		E83C002424ED7B0600C83B85 /* RunningOrderDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunningOrderDebug.entitlements; sourceTree = "<group>"; };
 		E83C002624ED7B0F00C83B85 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
@@ -379,9 +381,10 @@
 			isa = PBXGroup;
 			children = (
 				E8A9567B24D2B0E7009E0C28 /* Tag.swift */,
-				E81BBFE524CAD21100DB289A /* FocusableTextField.swift */,
+				E81BBFE524CAD21100DB289A /* StyledFocusableTextField.swift */,
 				E81BBFE724CB194B00DB289A /* RoundButton.swift */,
 				E8EB954824C5E23C00BC76E4 /* InlineEditableList.swift */,
+				18F6F6C625C9D029008078ED /* InlineButtonStyle.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -645,9 +648,10 @@
 				185277D52518AC8C0050F6C1 /* Space.swift in Sources */,
 				185277F52519F32E0050F6C1 /* WelcomeView.swift in Sources */,
 				1888AFC525271A4200D5C678 /* Colors+Extensions.swift in Sources */,
+				18F6F6C725C9D029008078ED /* InlineButtonStyle.swift in Sources */,
 				1862424024B489BB00A4A6CB /* Sprint.swift in Sources */,
 				18FF999624DC3472002A06FE /* SprintManager.swift in Sources */,
-				E81BBFE624CAD21100DB289A /* FocusableTextField.swift in Sources */,
+				E81BBFE624CAD21100DB289A /* StyledFocusableTextField.swift in Sources */,
 				18F7918424B61A5900FDCBEF /* Stories_Previews.swift in Sources */,
 				185277ED2519E74C0050F6C1 /* SpaceManager.swift in Sources */,
 				E8A4E4D324EE988000DBBCEA /* CKRecordable.swift in Sources */,

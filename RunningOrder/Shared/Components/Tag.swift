@@ -21,9 +21,10 @@ struct Tag: View {
     var body: some View {
         Text(text)
             .foregroundColor(Color.white)
-            .padding(.horizontal, 4)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 2)
             .background(color)
-            .clipShape(RoundedRectangle(cornerRadius: 2))
+            .clipShape(RoundedRectangle(cornerRadius: 4))
     }
 }
 

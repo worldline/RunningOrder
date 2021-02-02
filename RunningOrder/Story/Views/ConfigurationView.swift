@@ -13,11 +13,10 @@ struct ConfigurationView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
+            VStack(alignment: .leading, spacing: 15) {
                 Text("Configuration")
-                    .font(.subheadline)
-                    .bold()
-                    .padding(.horizontal, 10)
+                    .font(.title2)
+                    .padding(.leading, 10)
 
                 InlineEditableList(title: "Environments", values: $storyInformation.configuration.environments)
 
@@ -30,9 +29,9 @@ struct ConfigurationView: View {
                 InlineEditableList(title: "Identifier", values: $storyInformation.configuration.identifiers)
 
                 Text("Links")
-                    .font(.subheadline)
-                    .bold()
-                    .padding(.horizontal, 10)
+                    .font(.title2)
+                    .padding(.top, 20)
+                    .padding(.leading, 10)
 
                 InlineEditableList(
                     title: "Links",
@@ -44,7 +43,7 @@ struct ConfigurationView: View {
 
                 Spacer()
             }
-            .padding(.all, 5)
+            .padding(.horizontal, 10)
         }
     }
 }

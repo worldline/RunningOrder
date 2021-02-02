@@ -33,21 +33,24 @@ struct InlineEditableList: View {
         VStack(spacing: 0) {
             HStack {
                 Text(title)
-                    .foregroundColor(.gray)
-                    .padding(.all, 6)
+                    .font(.headline)
+                    .padding(.leading, 7)
+
                 Spacer()
+
                 if hovered {
-                    RoundButton(image: Image(nsImageName: NSImage.addTemplateName),
-                                color: Color.blue,
-                                action: addTextfieldValue)
-                        .frame(width: 17, height: 17)
-                        .padding(.horizontal, 10)
+                    Button(
+                        action: addTextfieldValue,
+                        label: { Image(systemName: "plus.circle.fill") }
+                    )
+                    .foregroundColor(.blue)
+                    .buttonStyle(InlineButtonStyle())
                 }
             }
 
             ForEach(values.indices, id: \.self) { index in
                 ZStack(alignment: .trailing) {
-                    FocusableTextField(placeholder, value: Binding(
+                    StyledFocusableTextField(placeholder, value: Binding(
                         get: { return values[index] },
                         set: { newValue in return self.values[index] = newValue }
                     ),
@@ -58,18 +61,23 @@ struct InlineEditableList: View {
                         }
                     })
                     if hovered {
-                        RoundButton(image: Image(nsImageName: NSImage.removeTemplateName),
-                                    color: Color.red,
-                                    action: { deleteTextfieldValue(at: index) })
-                            .frame(width: 17, height: 17)
-                            .padding(.horizontal, 10)
+                        Button(
+                            action: { deleteTextfieldValue(at: index) },
+                            label: { Image(systemName: "minus.circle.fill") }
+                        )
+                        .foregroundColor(.red)
+                        .buttonStyle(InlineButtonStyle())
                     }
                 }
+                .padding(.vertical, 4)
             }
         }
-        .padding(.all, 5)
-        .background(Color(identifier: .snowbank).opacity(hovered ? 1 : 0))
-        .cornerRadius(5)
+        .padding(5)
+        .background(
+            Color(identifier: .snowbank)
+                .opacity(hovered ? 1 : 0)
+                .cornerRadius(5)
+        )
         .onHover { isHovered in
             withAnimation(.easeIn) {
                 self.hovered = isHovered

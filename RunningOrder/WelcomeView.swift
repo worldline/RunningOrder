@@ -18,17 +18,31 @@ struct WelcomeView: View {
         VStack(alignment: .leading, spacing: 20) {
             Text("Welcome").font(.largeTitle)
             Text("You don't have yet your space, or joined a shared space")
-            HStack {
-                TextField("My Space Name", text: $newSpaceName)
-                    .overlay(Rectangle()
-                                .strokeBorder(Color.red, lineWidth: 2.0, antialiased: true)
-                                .opacity(hasErrorOnField ? 1 : 0))
-                    .animation(.default)
-                Button("Create") {
-                    hasErrorOnField = newSpaceName.isEmpty
-                    guard !hasErrorOnField else { return }
 
-                    space = Space(name: newSpaceName)
+            VStack(alignment: .leading, spacing: 0) {
+                HStack {
+                    TextField("My Space Name", text: $newSpaceName)
+                        .overlay(Rectangle()
+                                    .strokeBorder(Color.red, lineWidth: 2.0, antialiased: true)
+                                    .opacity(hasErrorOnField ? 1 : 0)
+                                    .animation(.default)
+                        )
+
+                    Button("Create") {
+                        withAnimation {
+                            self.hasErrorOnField = newSpaceName.isEmpty
+                        }
+
+                        guard !hasErrorOnField else { return }
+
+                        space = Space(name: newSpaceName)
+                    }
+                }
+
+                if hasErrorOnField {
+                    Text("Please enter a name for your work space")
+                        .foregroundColor(.red)
+                        .animation(.easeInOut)
                 }
             }
 

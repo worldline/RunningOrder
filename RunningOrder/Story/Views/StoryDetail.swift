@@ -18,11 +18,11 @@ struct StoryDetail: View {
     var informationBinding: Binding<StoryInformation> { storyInformationManager.informations(for: story.id) }
 
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 10) {
             StoryDetailHeader(story: story)
-                .padding(.all, 10)
+                .padding(10)
             Divider()
-                .padding(.all, 10)
+                .padding(10)
             HSplitView {
                 ConfigurationView(storyInformation: informationBinding)
                 StepsView(storyInformation: informationBinding)

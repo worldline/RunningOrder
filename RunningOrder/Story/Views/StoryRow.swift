@@ -13,18 +13,20 @@ struct StoryRow: View {
     let story: Story
 
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Tag(story.epic, color: Color(identifier: .holidayBlue))
-                    .font(.system(size: 10))
+                    .font(.caption2)
+
                 Spacer()
+
                 Text(story.ticketReference)
-                    .foregroundColor(.gray)
-                    .font(.system(size: 10))
+                    .foregroundColor(.secondary)
+                    .font(.caption2)
             }
             Text(story.name)
         }
-        .padding(.all, 5)
+        .padding(5)
     }
 }
 

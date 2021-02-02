@@ -1,5 +1,5 @@
 //
-//  FocusableTextField.swift
+//  StyledFocusableTextField.swift
 //  RunningOrder
 //
 //  Created by Lucas Barbero on 24/07/2020.
@@ -9,7 +9,7 @@
 import SwiftUI
 
 /// A styled focusable version of a Textfield based on NSTextField
-struct FocusableTextField: View {
+struct StyledFocusableTextField: View {
 
     let placeholder: String
 
@@ -31,22 +31,25 @@ struct FocusableTextField: View {
     }
 
     var body: some View {
-        FocusableNSTextFieldRepresentable(placeholder: placeholder, value: $value, isFocused: $isFocused, onCommit: onCommit)
-            .padding(.all, 5)
+        FocusableTextField(placeholder: placeholder, value: $value, isFocused: $isFocused, onCommit: onCommit)
+            .padding(5)
             // on focus background
             .background(RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(Color.white.opacity(borderOpacity)))
+                            .foregroundColor(Color.white.opacity(borderOpacity))
+                            .animation(.linear)
+            )
             // on focus border
             .overlay(RoundedRectangle(cornerRadius: 10)
                         .strokeBorder(Color.accentColor, lineWidth: 1.0, antialiased: true)
-                        .opacity(borderOpacity))
-            .animation(.easeIn)
+                        .opacity(borderOpacity)
+                        .animation(.easeInOut)
+            )
             .focusable()
     }
 }
 
 struct FocusableTextField_Previews: PreviewProvider {
     static var previews: some View {
-        FocusableTextField("Placeholder", value: .constant(""), onCommit: {})
+        StyledFocusableTextField("Placeholder", value: .constant(""), onCommit: {})
     }
 }
