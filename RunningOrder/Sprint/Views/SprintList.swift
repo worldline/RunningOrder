@@ -16,7 +16,7 @@ struct SprintList: View {
     @EnvironmentObject var sprintManager: SprintManager
     @EnvironmentObject var storyManager: StoryManager
     @EnvironmentObject var storyInformationManager: StoryInformationManager
-    @EnvironmentObject var toolbarManager: ToolbarManager
+//    @EnvironmentObject var toolbarManager: ToolbarManager
 
     let space: Space
 
@@ -41,7 +41,6 @@ struct SprintList: View {
                         NavigationLink(
                             destination: StoryList(sprint: sprint)
                                 .environmentObject(storyManager)
-                                .environmentObject(toolbarManager)
                                 .environmentObject(storyInformationManager),
                             label: {
                                 HStack {

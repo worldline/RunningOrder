@@ -13,8 +13,7 @@ extension Story: Identifiable {}
 struct StoryList: View {
 
     let sprint: Sprint
-
-    @EnvironmentObject var toolbarManager: ToolbarManager
+    @State private var isAddStoryViewDisplayed: Bool = false
 
     @EnvironmentObject var storyManager: StoryManager
     @EnvironmentObject var storyInformationManager: StoryInformationManager
@@ -68,16 +67,8 @@ struct StoryList: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color.white)
         }
-        .sheet(isPresented: $toolbarManager.isAddStoryButtonClicked) {
+        .sheet(isPresented: $isAddStoryViewDisplayed) {
             NewStoryView(sprintId: sprint.id, createdStory: createdStoryBinding)
-        }
-        .onAppear {
-            // enabling toolbar add story button
-            toolbarManager.isASprintSelected = true
-        }
-        .onDisappear {
-            // disabling toolbar add story button
-            toolbarManager.isASprintSelected = false
         }
     }
 
