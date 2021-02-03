@@ -13,13 +13,13 @@ extension Story: Identifiable {}
 struct StoryList: View {
 
     let sprint: Sprint
-
-    @EnvironmentObject var toolbarManager: ToolbarManager
+    @State private var isAddStoryViewDisplayed: Bool = false
 
     @EnvironmentObject var storyManager: StoryManager
     @EnvironmentObject var storyInformationManager: StoryInformationManager
 
     private let disposeBag = DisposeBag()
+    @State private var selected: Story?
 
     var createdStoryBinding: Binding<Story?> {
         return Binding<Story?>(
@@ -33,51 +33,42 @@ struct StoryList: View {
     }
 
     var body: some View {
-        NavigationView {
-            VStack(alignment: .leading, spacing: 0) {
-                Text("Sprint \(sprint.number) - \(sprint.name)")
-                    .font(.headline)
-                    .padding(13)
-                List {
-                    Divider()
-
-                    ForEach(storyManager.stories(for: sprint.id), id: \.self) { story in
-                        VStack {
-                            NavigationLink(
-                                destination: StoryDetail(story: story)
-                                    .environmentObject(storyInformationManager),
-                                label: { StoryRow(story: story) }
-                            )
-                            .contextMenu {
-                                Button(
-                                    action: { self.storyManager.delete(story: story) },
-                                    label: { Text("Delete Story") }
-                                )
-                            }
-                            Divider()
-                        }
-                    }
+        List(storyManager.stories(for: sprint.id), id: \.self, selection: $selected) { story in
+            VStack {
+                NavigationLink(
+                    destination: StoryDetail(story: story),
+                    label: { StoryRow(story: story) }
+                )
+                .contextMenu {
+                    Button(
+                        action: { self.storyManager.delete(story: story) },
+                        label: { Text("Delete Story") }
+                    )
                 }
-                .colorMultiply(Color(identifier: .concrete))
+
+                if story == selected {
+                    Divider()
+                        .hidden()
+                } else {
+                    Divider()
+                }
             }
-            .background(Color(identifier: .concrete))
-
-            .frame(minWidth: 100, maxWidth: 400)
-
-            Text("Select a Story")
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.white)
         }
-        .sheet(isPresented: $toolbarManager.isAddStoryButtonClicked) {
+        .navigationTitle("Sprint \(sprint.number) - \(sprint.name)")
+        .frame(minWidth: 100, idealWidth: 300)
+        .toolbar {
+            ToolbarItems.sidebarItem
+
+            ToolbarItem(placement: ToolbarItemPlacement.cancellationAction) {
+                Button {
+                    self.isAddStoryViewDisplayed = true
+                } label: {
+                    Image(systemName: "square.and.pencil")
+                }
+            }
+        }
+        .sheet(isPresented: $isAddStoryViewDisplayed) {
             NewStoryView(sprintId: sprint.id, createdStory: createdStoryBinding)
-        }
-        .onAppear {
-            // enabling toolbar add story button
-            toolbarManager.isASprintSelected = true
-        }
-        .onDisappear {
-            // disabling toolbar add story button
-            toolbarManager.isASprintSelected = false
         }
     }
 

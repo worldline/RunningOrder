@@ -8,20 +8,8 @@
 import AppKit
 import SwiftUI
 
-/// A focusable version of a NSTextField
-class FocusableNSTextField: NSTextField {
-    var onFocusChange: (Bool) -> Void = { _ in }
-
-    override func becomeFirstResponder() -> Bool {
-        let textView = window?.fieldEditor(true, for: nil) as? NSTextView
-        textView?.insertionPointColor = NSColor.controlAccentColor
-        onFocusChange(true)
-        return super.becomeFirstResponder()
-    }
-}
-
 /// The NSViewRepresentable of an NSFocusableTextField
-struct FocusableNSTextFieldRepresentable: NSViewRepresentable {
+struct FocusableTextField: NSViewRepresentable {
 
     let placeholder: String
 
@@ -47,14 +35,14 @@ struct FocusableNSTextFieldRepresentable: NSViewRepresentable {
         nsView.stringValue = value
     }
 
-    func makeCoordinator() -> FocusableNSTextFieldRepresentable.Coordinator {
+    func makeCoordinator() -> FocusableTextField.Coordinator {
         Coordinator(self)
     }
 
     class Coordinator: NSObject, NSTextFieldDelegate {
-        var parent: FocusableNSTextFieldRepresentable
+        var parent: FocusableTextField
 
-        init(_ textFieldContainer: FocusableNSTextFieldRepresentable) {
+        init(_ textFieldContainer: FocusableTextField) {
             self.parent = textFieldContainer
         }
 
@@ -66,6 +54,20 @@ struct FocusableNSTextFieldRepresentable: NSViewRepresentable {
         func controlTextDidEndEditing(_ obj: Notification) {
             self.parent.isFocused = false
             self.parent.onCommit()
+        }
+    }
+}
+
+extension FocusableTextField {
+    /// A focusable version of a NSTextField
+    class FocusableNSTextField: NSTextField {
+        var onFocusChange: (Bool) -> Void = { _ in }
+
+        override func becomeFirstResponder() -> Bool {
+            let textView = window?.fieldEditor(true, for: nil) as? NSTextView
+            textView?.insertionPointColor = NSColor.controlAccentColor
+            onFocusChange(true)
+            return super.becomeFirstResponder()
         }
     }
 }

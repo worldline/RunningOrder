@@ -11,7 +11,6 @@ import CloudKit
 import Combine
 import UserNotifications
 
-@NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     private var cancellables = Set<AnyCancellable>()

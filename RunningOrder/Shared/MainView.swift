@@ -49,6 +49,13 @@ struct MainView: View {
 
         case .noSpace:
             WelcomeView(space: createdSpaceBinding)
+                .frame(
+                    minWidth: 300,
+                    maxWidth: 500,
+                    minHeight: 200,
+                    maxHeight: 200,
+                    alignment: .leading
+                )
 
         case .spaceFound(let space):
             NavigationView {
@@ -57,8 +64,34 @@ struct MainView: View {
                     .frame(minWidth: 160)
 
                 Text("Select a Sprint")
+                    .frame(minWidth: 100, maxWidth: 400)
+                    .toolbar {
+                        ToolbarItems.sidebarItem
+                        ToolbarItem(placement: ToolbarItemPlacement.cancellationAction) {
+                            Button(action: {}) {
+                                Image(systemName: "square.and.pencil")
+                            }
+                            .disabled(true)
+                        }
+                    }
+
+                Text("Select a Story")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color.white)
+                    .toolbar {
+                        ToolbarItem {
+                            Spacer()
+                        }
+
+                        ToolbarItem(placement: ToolbarItemPlacement.cancellationAction) {
+                            Button(action: {}) {
+                                Image(systemName: "trash")
+                            }
+                            .disabled(true)
+                        }
+
+                        ToolbarItems.cloudSharingItem(for: CloudSharingHandler(spaceManager: spaceManager))
+                    }
             }
             .frame(
                 minWidth: 800,

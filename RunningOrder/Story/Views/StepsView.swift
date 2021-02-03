@@ -20,6 +20,8 @@ struct StepsView: View {
                         Text(choice.rawValue)
                     }
                 }
+                .padding()
+                .disabled(true)
                 .pickerStyle(SegmentedPickerStyle())
 
                 switch selectedMode {
