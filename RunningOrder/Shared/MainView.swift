@@ -89,8 +89,6 @@ struct MainView: View {
                             }
                             .disabled(true)
                         }
-
-                        ToolbarItems.cloudSharingItem(for: CloudSharingHandler(spaceManager: spaceManager))
                     }
             }
             .frame(

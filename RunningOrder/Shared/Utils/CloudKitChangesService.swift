@@ -40,7 +40,7 @@ final class CloudKitChangesService: ObservableObject {
 
         operation.fetchAllChanges = true
 
-        let (fetchRecordZoneChangesPublisher, recordPublisher, recordDeletedPublisher, tokenChangesPublisher, recordZoneFetchPublisher) = operation.publishers()
+        let (_, recordPublisher, recordDeletedPublisher, tokenChangesPublisher, recordZoneFetchPublisher) = operation.publishers()
 
         Publishers.CombineLatest(recordPublisher.collect(), recordDeletedPublisher.collect())
             .map { records, toDelete -> ([CKRecord.RecordType: ChangeInformation]) in
@@ -56,7 +56,19 @@ final class CloudKitChangesService: ObservableObject {
                 }
             }
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] updates in self?.handleUpdates(updates: updates) }
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    Logger.debug.log("call finished")
+                    if self.firstCallSpaceEmpty {
+                        self.spaceChangesPublisher.send((toUpdate: [], toDelete: []))
+                        self.firstCallSpaceEmpty = false
+                    }
+
+                case .failure(let error):
+                    Logger.error.log("error : \(error)") // TODO: Error handling
+                }
+            }, receiveValue: { [weak self] updates in self?.handleUpdates(updates: updates) })
             .store(in: &cancellables)
 
         let tokenChanged = tokenChangesPublisher
@@ -77,22 +89,6 @@ final class CloudKitChangesService: ObservableObject {
             .assign(to: \.currentChangeServerToken, onStrong: self)
             .store(in: &cancellables)
 
-        fetchRecordZoneChangesPublisher
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .finished:
-                    Logger.debug.log("call finished")
-                    if self.firstCallSpaceEmpty {
-                        self.spaceChangesPublisher.send((toUpdate: [], toDelete: []))
-                        self.firstCallSpaceEmpty = false
-                    }
-
-                case .failure(let error):
-                    Logger.error.log("error : \(error)") // TODO: Error handling
-                }
-            })
-            .store(in: &cancellables)
-
         Logger.debug.log("launch operation")
         container.currentDatabase.add(operation)
     }
@@ -102,7 +98,9 @@ final class CloudKitChangesService: ObservableObject {
     func handleUpdates(updates: [CKRecord.RecordType: ChangeInformation]) {
         for (key, changes) in updates {
             guard let type = RecordType(rawValue: key) else {
-                Logger.error.log("unrecognized record type \(key)")
+                if key != "cloudkit.share" {
+                    Logger.error.log("unrecognized record type \(key)")
+                }
                 continue
             }
 
@@ -116,7 +114,6 @@ final class CloudKitChangesService: ObservableObject {
             case .space:
                 self.spaceChangesPublisher.send(changes)
                 self.firstCallSpaceEmpty = false
-                break
             }
         }
     }

@@ -43,8 +43,6 @@ struct StoryDetail: View {
                     Image(systemName: "trash")
                 }
             }
-
-            ToolbarItems.cloudSharingItem(for: CloudSharingHandler(spaceManager: self.spaceManager))
         }
     }
 }

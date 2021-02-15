@@ -15,6 +15,14 @@ final class StoryManager: ObservableObject {
 
     @Published var stories: [Sprint.ID: [Story]] = [:]
 
+    var epics: Set<String> {
+        return stories
+            .values
+            .reduce(Set<String>()) { result, values in
+                result.union(values.map { $0.epic })
+            }
+    }
+
     var cancellables: Set<AnyCancellable> = []
 
     private let service: StoryService

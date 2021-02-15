@@ -32,12 +32,18 @@ struct StoryList: View {
         )
     }
 
+    func epicColor(for story: Story) -> Color.Identifier {
+        let epicIndex = (Array(storyManager.epics).sorted().firstIndex(of: story.epic) ?? 0) % Color.Identifier.epicColors.count
+
+        return Color.Identifier.epicColors[epicIndex]
+    }
+
     var body: some View {
         List(storyManager.stories(for: sprint.id), id: \.self, selection: $selected) { story in
             VStack {
                 NavigationLink(
                     destination: StoryDetail(story: story),
-                    label: { StoryRow(story: story) }
+                    label: { StoryRow(story: story, epicColor: epicColor(for: story)) }
                 )
                 .contextMenu {
                     Button(
