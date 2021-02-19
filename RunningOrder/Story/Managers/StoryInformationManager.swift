@@ -83,3 +83,7 @@ final class StoryInformationManager: ObservableObject {
         }
     }
 }
+
+extension StoryInformationManager {
+    static let preview = StoryInformationManager(service: StoryInformationService(), dataPublisher: Empty().eraseToAnyPublisher())
+}

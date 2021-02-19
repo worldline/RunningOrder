@@ -9,46 +9,32 @@
 import SwiftUI
 
 struct NewStoryView: View {
-
-    let sprintId: Sprint.ID
-
-    @State private var name = ""
-    @State private var ticketID = ""
-    @State private var epic = ""
-
-    private var areAllFieldsFilled: Bool {
-        return !ticketID.isEmpty && !name.isEmpty && !epic.isEmpty
-    }
-
-    @Binding var createdStory: Story?
-
+    @ObservedObject var logic: Logic
     @Environment(\.presentationMode) var presentationMode
+
+    init(sprintId: Sprint.ID, createdStory: Binding<Story?>) {
+        self.logic = Logic(sprintId: sprintId, createdStory: createdStory)
+    }
 
     var body: some View {
         VStack {
-            TextField("Story Name", text: $name)
-            TextField("Ticket ID", text: $ticketID)
-            TextField("Story EPIC", text: $epic, onEditingChanged: { _ in }, onCommit: createStory )
+            TextField("Story Name", text: $logic.name)
+            TextField("Ticket ID", text: $logic.ticketID)
+            TextField("Story EPIC", text: $logic.epic, onCommit: logic.createStory)
 
             HStack {
                 Button(action: dismiss) { Text("Cancel") }
                 Spacer()
-                Button(action: createStory) { Text("Create") }
-                    .disabled(!areAllFieldsFilled)
+                Button(action: logic.createStory) { Text("Create") }
+                    .disabled(!logic.areAllFieldsFilled)
             }
-        }.padding()
+        }
+        .padding()
+        .onReceive(logic.dismissSubject, perform: dismiss)
     }
 
     private func dismiss() {
         presentationMode.wrappedValue.dismiss()
-    }
-
-    private func createStory() {
-        guard areAllFieldsFilled else { return }
-
-        let newStory = Story(sprintId: sprintId, name: name, ticketReference: ticketID, epic: epic)
-        self.createdStory = newStory
-        dismiss()
     }
 }
 

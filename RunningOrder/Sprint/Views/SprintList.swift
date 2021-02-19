@@ -11,86 +11,75 @@ import Combine
 
 extension Sprint: Identifiable {}
 
-struct SprintList: View {
-    @State private var showNewSprintModal = false
-    @EnvironmentObject var sprintManager: SprintManager
-    @EnvironmentObject var storyManager: StoryManager
-    @EnvironmentObject var storyInformationManager: StoryInformationManager
-//    @EnvironmentObject var toolbarManager: ToolbarManager
+extension SprintList {
+    fileprivate struct InternalView: View {
+        @EnvironmentObject var sprintManager: SprintManager
+        @ObservedObject var logic: Logic
 
-    let space: Space
+        let space: Space
 
-    private let disposeBag = DisposeBag()
-
-    var createdSprintBinding: Binding<Sprint?> {
-        return Binding<Sprint?>(
-            get: { return nil },
-            set: { newValue in
-                if let sprint = newValue {
-                    addSprint(sprint: sprint)
-                }
-            }
-        )
-    }
-
-    var body: some View {
-        List {
-            Section(header: Text("Active Sprints")) {
-                ForEach(sprintManager.sprints, id: \.self) { sprint in
-                    NavigationLink(
-                        destination: StoryList(sprint: sprint),
-                        label: {
-                            HStack {
-                                SprintNumber(number: sprint.number, colorIdentifier: sprint.colorIdentifier)
-                                Text(sprint.name)
+        var body: some View {
+            List {
+                Section(header: Text("Active Sprints")) {
+                    ForEach(sprintManager.sprints, id: \.self) { sprint in
+                        NavigationLink(
+                            destination: StoryList(sprint: sprint),
+                            label: {
+                                HStack {
+                                    SprintNumber(
+                                        number: sprint.number,
+                                        colorIdentifier: sprint.colorIdentifier
+                                    )
+                                    Text(sprint.name)
+                                }
                             }
-                        }
-                    )
-                    .contextMenu {
-                        Button(
-                            action: { self.sprintManager.delete(sprint: sprint) },
-                            label: { Text("Delete Sprint") }
                         )
+                        .contextMenu {
+                            Button(
+                                action: { logic.deleteSprint(sprint) },
+                                label: { Text("Delete Sprint") }
+                            )
+                        }
                     }
                 }
+                Section(header: Text("Old Sprints")) {
+                    EmptyView()
+                }
             }
-            Section(header: Text("Old Sprints")) {
-                EmptyView()
+            .overlay(Button(action: self.logic.showNewSprintModal) {
+                HStack {
+                    Image(nsImageName: NSImage.addTemplateName)
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(.white)
+                        .background(Color.accentColor)
+                        .clipShape(Circle())
+                    Text("New Sprint")
+                        .foregroundColor(Color.accentColor)
+                        .font(.system(size: 12))
+                }
             }
-        }
-        .overlay(Button(action: { self.showNewSprintModal.toggle() }) {
-            HStack {
-                Image(nsImageName: NSImage.addTemplateName)
-                    .frame(width: 20, height: 20)
-                    .foregroundColor(.white)
-                    .background(Color.accentColor)
-                    .clipShape(Circle())
-                Text("New Sprint")
-                    .foregroundColor(Color.accentColor)
-                    .font(.system(size: 12))
+            .padding(.all, 20.0)
+            .buttonStyle(PlainButtonStyle()), alignment: .bottom)
+            .sheet(isPresented: $logic.isNewSprintModalPresented) {
+                NewSprintView(spaceId: space.id, createdSprint: self.logic.createdSprintBinding)
             }
-        }
-        .padding(.all, 20.0)
-        .buttonStyle(PlainButtonStyle()), alignment: .bottom)
-        .sheet(isPresented: $showNewSprintModal) {
-            NewSprintView(spaceId: space.id, createdSprint: self.createdSprintBinding)
         }
     }
+}
 
-    func addSprint(sprint: Sprint) {
-        sprintManager.add(sprint: sprint)
-            .ignoreOutput()
-            .sink(receiveFailure: { failure in
-                Logger.error.log(failure) // TODO error Handling
-            })
-            .store(in: &disposeBag.cancellables)
+struct SprintList: View {
+    @EnvironmentObject var sprintManager: SprintManager
+    let space: Space
+
+    var body: some View {
+        InternalView(logic: Logic(sprintManager: sprintManager), space: space)
     }
 }
 
 struct SprintList_Previews: PreviewProvider {
     static var previews: some View {
         SprintList(space: Space(name: "toto"))
-            .environmentObject(SprintManager(service: SprintService(), dataPublisher: changeInformationPreview))
+            .environmentObject(SprintManager.preview)
             .frame(width: 250)
     }
 }

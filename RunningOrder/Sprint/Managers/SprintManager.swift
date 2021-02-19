@@ -91,3 +91,7 @@ final class SprintManager: ObservableObject {
         }
     }
 }
+
+extension SprintManager {
+    static let preview = SprintManager(service: SprintService(), dataPublisher: Empty().eraseToAnyPublisher())
+}

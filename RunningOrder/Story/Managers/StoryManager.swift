@@ -126,3 +126,7 @@ final class StoryManager: ObservableObject {
         }
     }
 }
+
+extension StoryManager {
+    static let preview = StoryManager(service: StoryService(), dataPublisher: Empty().eraseToAnyPublisher())
+}

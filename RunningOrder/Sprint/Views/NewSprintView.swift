@@ -9,44 +9,31 @@
 import SwiftUI
 
 struct NewSprintView: View {
-    let spaceId: Space.ID
-    @State private var name: String = ""
-    @State private var number: Int?
-
-    private var areAllFieldsFilled: Bool {
-        return number != nil && !name.isEmpty
-    }
-
-    @Binding var createdSprint: Sprint?
+    @ObservedObject var logic: Logic
     @Environment(\.presentationMode) var presentationMode
+
+    init(spaceId: Space.ID, createdSprint: Binding<Sprint?>) {
+        self.logic = Logic(spaceId: spaceId, createdSprint: createdSprint)
+    }
 
     var body: some View {
         VStack {
-            TextField("Sprint Name", text: $name, onEditingChanged: { _ in }, onCommit: createSprint)
-            TextField("Sprint Number", value: $number, formatter: NumberFormatter(), onCommit: createSprint)
+            TextField("Sprint Name", text: $logic.name, onEditingChanged: { _ in }, onCommit: logic.createSprint)
+            TextField("Sprint Number", value: $logic.number, formatter: NumberFormatter(), onCommit: logic.createSprint)
 
             HStack {
                 Button(action: dismiss) { Text("Cancel") }
                 Spacer()
-                Button(action: createSprint) { Text("Create") }
-                    .disabled(!areAllFieldsFilled)
+                Button(action: logic.createSprint) { Text("Create") }
+                    .disabled(!logic.areAllFieldsFilled)
             }
-        }.padding()
+        }
+        .padding()
+        .onReceive(logic.dismissSubject, perform: dismiss)
     }
 
     private func dismiss() {
         presentationMode.wrappedValue.dismiss()
-    }
-
-    private func createSprint() {
-        guard areAllFieldsFilled else { return }
-        self.createdSprint = Sprint(
-            spaceId: spaceId,
-            number: number!,
-            name: name,
-            colorIdentifier: Color.Identifier.sprintColors.randomElement()!.rawValue
-        )
-        dismiss()
     }
 }
 
