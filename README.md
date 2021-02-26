@@ -1,5 +1,5 @@
 # Running Order
-A macOS SwiftUI app to help demonstrate sprint changes.
+A macOS SwiftUI app to help demonstrate developped User stories in a sprint.
 
 ![Image](Images/image1.png?)
 
