@@ -14,6 +14,7 @@ struct Configuration {
     var features: [String] = []
     var indicators: [String] = []
     var identifiers: [String] = []
+    var links: LinkEntity = LinkEntity()
 }
 
 extension Configuration: Equatable { }

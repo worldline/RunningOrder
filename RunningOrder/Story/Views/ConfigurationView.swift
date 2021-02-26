@@ -33,11 +33,14 @@ struct ConfigurationView: View {
                     .padding(.top, 20)
                     .padding(.leading, 10)
 
-                InlineEditableList(
-                    title: "Links",
-                    values: Binding<[String]>(
-                        get: { self.storyInformation.links.map { $0.label } },
-                        set: { values in self.storyInformation.links = values.map { Link(value: $0) } }
+                InlineEditableLink(
+                    values: Binding<LinkEntity>(
+                        get: { LinkEntity(label: self.storyInformation.configuration.links.label,
+                                          url: self.storyInformation.configuration.links.url)
+                        },
+                        set: { value in
+                            self.storyInformation.configuration.links = value
+                        }
                     )
                 )
 

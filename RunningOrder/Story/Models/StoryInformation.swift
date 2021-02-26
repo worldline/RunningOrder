@@ -13,7 +13,6 @@ struct StoryInformation {
     let storyId: Story.ID
 
     var configuration = Configuration()
-    var links: [Link] = []
 
     var steps: [String] = []
 
@@ -35,10 +34,9 @@ struct StoryInformation {
 
     private var videoExtension: String?
 
-    init(storyId: Story.ID, configuration: Configuration = Configuration(), links: [Link] = [], steps: [String] = [], videoUrl: URL? = nil) {
+    init(storyId: Story.ID, configuration: Configuration = Configuration(), steps: [String] = [], videoUrl: URL? = nil) {
         self.storyId = storyId
         self.configuration = configuration
-        self.links = links
         self.steps = steps
         self.videoUrl = videoUrl
         if let newExtension = videoUrl?.pathExtension, !newExtension.isEmpty {
@@ -100,15 +98,16 @@ extension StoryInformation: CKRecordable {
         let features: [String] = try record.property("features")
         let indicators: [String] = try record.property("indicators")
         let identifiers: [String] = try record.property("identifiers")
-        let linkLabels: [String] = try record.property("links")
+        let linkLabels: String = try record.property("linkLabel")
+        let linkURLs: String = try record.property("url")
 
         let videoAsset: CKAsset? = try? record.property("video")
         self.videoUrl = videoAsset?.fileURL
         self.videoExtension = try? record.property("videoExtension")
 
-        self.links = linkLabels.map { Link.init(value: $0) }
+        let links = LinkEntity(label: linkLabels, url: linkURLs) // peut être mock pour compiler
 
-        self.configuration = .init(environments: environments, mocks: mocks, features: features, indicators: indicators, identifiers: identifiers)
+        self.configuration = .init(environments: environments, mocks: mocks, features: features, indicators: indicators, identifiers: identifiers, links: links)
     }
 
     func encode(zoneId: CKRecordZone.ID) -> CKRecord {
@@ -128,7 +127,8 @@ extension StoryInformation: CKRecordable {
 
         // Links : for now as a link label is only the url string representation we can only store all the labels, will change in the future
 
-        storyInformationRecord["links"] = self.links.map { $0.label }
+        storyInformationRecord["linkLabel"] = self.configuration.links.label
+        storyInformationRecord["url"] = self.configuration.links.url
 
         if let videoUrl = self.videoUrl {
             storyInformationRecord["video"] = CKAsset(fileURL: videoUrl)

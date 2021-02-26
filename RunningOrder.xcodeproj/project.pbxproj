@@ -76,6 +76,7 @@
 		E8F4EEC624EE6BA300EC1CA2 /* Combine+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8F4EEC524EE6BA300EC1CA2 /* Combine+Extensions.swift */; };
 		E8F5501C24DD36060017582D /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8F5501B24DD36060017582D /* Configuration.swift */; };
 		E8F5501E24DD36100017582D /* Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8F5501D24DD36100017582D /* Link.swift */; };
+		FB88E12025E8F877008F2644 /* InlineEditableLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB88E11F25E8F877008F2644 /* InlineEditableLink.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -175,6 +176,7 @@
 		E8F4EEC524EE6BA300EC1CA2 /* Combine+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combine+Extensions.swift"; sourceTree = "<group>"; };
 		E8F5501B24DD36060017582D /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		E8F5501D24DD36100017582D /* Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Link.swift; sourceTree = "<group>"; };
+		FB88E11F25E8F877008F2644 /* InlineEditableLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineEditableLink.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -428,6 +430,7 @@
 				E81BBFE724CB194B00DB289A /* RoundButton.swift */,
 				E8EB954824C5E23C00BC76E4 /* InlineEditableList.swift */,
 				18F6F6C625C9D029008078ED /* InlineButtonStyle.swift */,
+				FB88E11F25E8F877008F2644 /* InlineEditableLink.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -676,6 +679,7 @@
 				E8AFA1F224F69BE300AA84D3 /* SprintService.swift in Sources */,
 				E8F5501C24DD36060017582D /* Configuration.swift in Sources */,
 				1862423D24B485E400A4A6CB /* StoryDetail.swift in Sources */,
+				FB88E12025E8F877008F2644 /* InlineEditableLink.swift in Sources */,
 				E8A264A124F4FE3D006B94EA /* StepsView.swift in Sources */,
 				E8AFA1F624F69D4900AA84D3 /* StoryService.swift in Sources */,
 				18F610B125FBB96700A94949 /* UserService.swift in Sources */,

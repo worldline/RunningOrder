@@ -8,15 +8,21 @@
 
 import Foundation
 
-struct Link {
+struct LinkEntity {
     var label: String
-    var url: URL?
+    var url: String
 
-    init(value: String) {
-        self.url = URL(string: value)
-        self.label = value
+    init(label: String = "", url: String = "") {
+        self.label = label
+        self.url = url
+    }
+
+    var formattedURL: URL? {
+        guard let url = URL(string: self.url) else { return nil }
+
+        return url
     }
 }
 
-extension Link: Equatable { }
-extension Link: Hashable { }
+extension LinkEntity: Equatable { }
+extension LinkEntity: Hashable { }
