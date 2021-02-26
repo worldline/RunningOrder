@@ -13,6 +13,7 @@
 		1837184D25DFE0BC00A3E3F9 /* NewStoryView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1837184C25DFE0BC00A3E3F9 /* NewStoryView+Logic.swift */; };
 		1837185225DFF2CC00A3E3F9 /* StoryList+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1837185125DFF2CC00A3E3F9 /* StoryList+Logic.swift */; };
 		1837185725DFF35500A3E3F9 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1837185625DFF35500A3E3F9 /* VideoView.swift */; };
+		1837186225E0108300A3E3F9 /* Binding+Callback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1837186125E0108300A3E3F9 /* Binding+Callback.swift */; };
 		183C0220251B765400EC09FD /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183C021F251B765400EC09FD /* Logger.swift */; };
 		185277D52518AC8C0050F6C1 /* Space.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185277D42518AC8C0050F6C1 /* Space.swift */; };
 		185277E72518D9990050F6C1 /* SpaceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185277E62518D9990050F6C1 /* SpaceService.swift */; };
@@ -94,6 +95,7 @@
 		1837184C25DFE0BC00A3E3F9 /* NewStoryView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewStoryView+Logic.swift"; sourceTree = "<group>"; };
 		1837185125DFF2CC00A3E3F9 /* StoryList+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StoryList+Logic.swift"; sourceTree = "<group>"; };
 		1837185625DFF35500A3E3F9 /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
+		1837186125E0108300A3E3F9 /* Binding+Callback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Callback.swift"; sourceTree = "<group>"; };
 		183C021F251B765400EC09FD /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		185277D42518AC8C0050F6C1 /* Space.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Space.swift; sourceTree = "<group>"; };
 		185277E62518D9990050F6C1 /* SpaceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceService.swift; sourceTree = "<group>"; };
@@ -318,6 +320,7 @@
 			isa = PBXGroup;
 			children = (
 				E8760DCE24DADFD8003A2766 /* Image+Extensions.swift */,
+				1837186125E0108300A3E3F9 /* Binding+Callback.swift */,
 				1888AFC425271A4200D5C678 /* Colors+Extensions.swift */,
 				1858275D24B4C38B008BE248 /* Sequence+Extensions.swift */,
 				E858997324EE68FB00BB65C8 /* Cloudkit+Extensions.swift */,
@@ -663,6 +666,7 @@
 				185277D52518AC8C0050F6C1 /* Space.swift in Sources */,
 				185277F52519F32E0050F6C1 /* WelcomeView.swift in Sources */,
 				1888AFC525271A4200D5C678 /* Colors+Extensions.swift in Sources */,
+				1837186225E0108300A3E3F9 /* Binding+Callback.swift in Sources */,
 				18F6F6C725C9D029008078ED /* InlineButtonStyle.swift in Sources */,
 				1862424024B489BB00A4A6CB /* Sprint.swift in Sources */,
 				18FF999624DC3472002A06FE /* SprintManager.swift in Sources */,
