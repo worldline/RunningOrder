@@ -26,4 +26,12 @@ enum ToolbarItems {
             })
         }
     }
+
+    static func deleteStory(storyManager: StoryManager, story: Story) -> some ToolbarContent {
+        ToolbarItem(placement: ToolbarItemPlacement.cancellationAction) {
+            Button(action: { storyManager.delete(story: story) }) {
+                Image(systemName: "trash")
+            }
+        }
+    }
 }

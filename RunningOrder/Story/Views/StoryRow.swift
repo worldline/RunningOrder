@@ -9,13 +9,13 @@
 import SwiftUI
 
 struct StoryRow: View {
-
     let story: Story
+    let epicColor: Color.Identifier
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Tag(story.epic, color: Color(identifier: .holidayBlue))
+                Tag(story.epic, color: Color(identifier: epicColor))
                     .font(.caption2)
 
                 Spacer()
@@ -32,6 +32,6 @@ struct StoryRow: View {
 
 struct StoryRow_Previews: PreviewProvider {
     static var previews: some View {
-        StoryRow(story: Story.Previews.stories[0])
+        StoryRow(story: Story.Previews.stories[0], epicColor: .emeraldGreen)
     }
 }

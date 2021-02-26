@@ -131,3 +131,7 @@ final class SpaceManager: ObservableObject {
             .store(in: &cancellables)
     }
 }
+
+extension SpaceManager {
+    static let preview = SpaceManager(service: SpaceService(), dataPublisher: Empty().eraseToAnyPublisher())
+}

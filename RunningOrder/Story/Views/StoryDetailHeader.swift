@@ -9,14 +9,13 @@
 import SwiftUI
 
 struct StoryDetailHeader: View {
-
     let story: Story
 
     var body: some View {
-            HStack {
-                Tag(story.ticketReference, color: Color.gray)
-                Tag(story.epic, color: Color(identifier: .holidayBlue))
-            }
+        HStack {
+            Tag(story.ticketReference, color: Color.gray)
+            Tag(story.epic, color: Color(identifier: .holidayBlue))
+        }
     }
 }
 

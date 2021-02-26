@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1837183E25DFCD8F00A3E3F9 /* MainView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1837183D25DFCD8F00A3E3F9 /* MainView+Logic.swift */; };
+		1837184325DFD52A00A3E3F9 /* NewSprintView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1837184225DFD52A00A3E3F9 /* NewSprintView+Logic.swift */; };
+		1837184825DFDE0400A3E3F9 /* SprintList+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1837184725DFDE0400A3E3F9 /* SprintList+Logic.swift */; };
+		1837184D25DFE0BC00A3E3F9 /* NewStoryView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1837184C25DFE0BC00A3E3F9 /* NewStoryView+Logic.swift */; };
+		1837185225DFF2CC00A3E3F9 /* StoryList+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1837185125DFF2CC00A3E3F9 /* StoryList+Logic.swift */; };
+		1837185725DFF35500A3E3F9 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1837185625DFF35500A3E3F9 /* VideoView.swift */; };
 		183C0220251B765400EC09FD /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183C021F251B765400EC09FD /* Logger.swift */; };
 		185277D52518AC8C0050F6C1 /* Space.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185277D42518AC8C0050F6C1 /* Space.swift */; };
 		185277E72518D9990050F6C1 /* SpaceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185277E62518D9990050F6C1 /* SpaceService.swift */; };
@@ -38,7 +44,6 @@
 		E81BBFE824CB194B00DB289A /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81BBFE724CB194B00DB289A /* RoundButton.swift */; };
 		E83C002724ED7B0F00C83B85 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E83C002624ED7B0F00C83B85 /* CloudKit.framework */; };
 		E858997424EE68FB00BB65C8 /* Cloudkit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E858997324EE68FB00BB65C8 /* Cloudkit+Extensions.swift */; };
-		E859371C24EEAFC500772BD2 /* StoryInformation+CloudKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E859371B24EEAFC500772BD2 /* StoryInformation+CloudKit.swift */; };
 		E8760DCF24DADFD8003A2766 /* Image+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8760DCE24DADFD8003A2766 /* Image+Extensions.swift */; };
 		E882F03424CF030F002D1591 /* NewStoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E882F03324CF030F002D1591 /* NewStoryView.swift */; };
 		E88CC8E424D0119C00E9F2DD /* StoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CC8E324D0119C00E9F2DD /* StoryRow.swift */; };
@@ -49,7 +54,6 @@
 		E8A4E4D024EE984A00DBBCEA /* Sprint+CloudKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A4E4CF24EE984A00DBBCEA /* Sprint+CloudKit.swift */; };
 		E8A4E4D324EE988000DBBCEA /* CKRecordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A4E4D224EE988000DBBCEA /* CKRecordable.swift */; };
 		E8A4E4D624EE996D00DBBCEA /* Story+CloudKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A4E4D524EE996D00DBBCEA /* Story+CloudKit.swift */; };
-		E8A4E4D924EEA43900DBBCEA /* DisposeBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A4E4D824EEA43900DBBCEA /* DisposeBag.swift */; };
 		E8A5BD1D24E3E8B200589452 /* StoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A5BD1C24E3E8B200589452 /* StoryManager.swift */; };
 		E8A5BD1F24E42A9B00589452 /* StoryInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A5BD1E24E42A9B00589452 /* StoryInformation.swift */; };
 		E8A5BD2324E433AD00589452 /* StoryInformationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A5BD2224E433AD00589452 /* StoryInformationManager.swift */; };
@@ -84,6 +88,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1837183D25DFCD8F00A3E3F9 /* MainView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainView+Logic.swift"; sourceTree = "<group>"; };
+		1837184225DFD52A00A3E3F9 /* NewSprintView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewSprintView+Logic.swift"; sourceTree = "<group>"; };
+		1837184725DFDE0400A3E3F9 /* SprintList+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SprintList+Logic.swift"; sourceTree = "<group>"; };
+		1837184C25DFE0BC00A3E3F9 /* NewStoryView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewStoryView+Logic.swift"; sourceTree = "<group>"; };
+		1837185125DFF2CC00A3E3F9 /* StoryList+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StoryList+Logic.swift"; sourceTree = "<group>"; };
+		1837185625DFF35500A3E3F9 /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
 		183C021F251B765400EC09FD /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		185277D42518AC8C0050F6C1 /* Space.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Space.swift; sourceTree = "<group>"; };
 		185277E62518D9990050F6C1 /* SpaceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceService.swift; sourceTree = "<group>"; };
@@ -125,7 +135,6 @@
 		E83C002424ED7B0600C83B85 /* RunningOrderDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunningOrderDebug.entitlements; sourceTree = "<group>"; };
 		E83C002624ED7B0F00C83B85 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		E858997324EE68FB00BB65C8 /* Cloudkit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cloudkit+Extensions.swift"; sourceTree = "<group>"; };
-		E859371B24EEAFC500772BD2 /* StoryInformation+CloudKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StoryInformation+CloudKit.swift"; sourceTree = "<group>"; };
 		E8760DCE24DADFD8003A2766 /* Image+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Extensions.swift"; sourceTree = "<group>"; };
 		E882F03324CF030F002D1591 /* NewStoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewStoryView.swift; sourceTree = "<group>"; };
 		E88CC8E324D0119C00E9F2DD /* StoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryRow.swift; sourceTree = "<group>"; };
@@ -136,7 +145,6 @@
 		E8A4E4CF24EE984A00DBBCEA /* Sprint+CloudKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sprint+CloudKit.swift"; sourceTree = "<group>"; };
 		E8A4E4D224EE988000DBBCEA /* CKRecordable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKRecordable.swift; sourceTree = "<group>"; };
 		E8A4E4D524EE996D00DBBCEA /* Story+CloudKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Story+CloudKit.swift"; sourceTree = "<group>"; };
-		E8A4E4D824EEA43900DBBCEA /* DisposeBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisposeBag.swift; sourceTree = "<group>"; };
 		E8A5BD1C24E3E8B200589452 /* StoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryManager.swift; sourceTree = "<group>"; };
 		E8A5BD1E24E42A9B00589452 /* StoryInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryInformation.swift; sourceTree = "<group>"; };
 		E8A5BD2224E433AD00589452 /* StoryInformationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryInformationManager.swift; sourceTree = "<group>"; };
@@ -288,6 +296,7 @@
 				18FE758D24A23E670003C76E /* AppDelegate.swift */,
 				188595BA25C9682400E7B3FD /* RunningOrderApp.swift */,
 				18FE758F24A23E670003C76E /* MainView.swift */,
+				1837183D25DFCD8F00A3E3F9 /* MainView+Logic.swift */,
 				188595CE25C9726000E7B3FD /* ToolbarItems.swift */,
 				188595D325C97C2A00E7B3FD /* CloudSharingHandler.swift */,
 				E85D872724ED2C3900837346 /* Components */,
@@ -341,7 +350,9 @@
 			children = (
 				E8EB954424C5CA0D00BC76E4 /* SprintNumber.swift */,
 				1862424624B48E9900A4A6CB /* NewSprintView.swift */,
+				1837184225DFD52A00A3E3F9 /* NewSprintView+Logic.swift */,
 				1862423824B4859300A4A6CB /* SprintList.swift */,
+				1837184725DFDE0400A3E3F9 /* SprintList+Logic.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -351,11 +362,14 @@
 			children = (
 				E88CC8E324D0119C00E9F2DD /* StoryRow.swift */,
 				E882F03324CF030F002D1591 /* NewStoryView.swift */,
+				1837184C25DFE0BC00A3E3F9 /* NewStoryView+Logic.swift */,
 				E896ADBE24E1375500D82952 /* StoryDetailHeader.swift */,
 				1862423C24B485E400A4A6CB /* StoryDetail.swift */,
 				1862423A24B485BA00A4A6CB /* StoryList.swift */,
+				1837185125DFF2CC00A3E3F9 /* StoryList+Logic.swift */,
 				E8A2649E24F4FD58006B94EA /* ConfigurationView.swift */,
 				E8A264A024F4FE3D006B94EA /* StepsView.swift */,
+				1837185625DFF35500A3E3F9 /* VideoView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -409,7 +423,6 @@
 			isa = PBXGroup;
 			children = (
 				E8A4E4D524EE996D00DBBCEA /* Story+CloudKit.swift */,
-				E859371B24EEAFC500772BD2 /* StoryInformation+CloudKit.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -417,7 +430,6 @@
 		E8A4E4D724EEA42F00DBBCEA /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				E8A4E4D824EEA43900DBBCEA /* DisposeBag.swift */,
 				E8AFA1F324F69C1900AA84D3 /* CloudKitContainer.swift */,
 				1890DCC1252B705400D236B6 /* CloudKitChangesService.swift */,
 				183C021F251B765400EC09FD /* Logger.swift */,
@@ -608,24 +620,25 @@
 			files = (
 				E8A4E4D624EE996D00DBBCEA /* Story+CloudKit.swift in Sources */,
 				E8C7384924C98C2B0018AAEA /* FocusableNSTextField.swift in Sources */,
+				1837185725DFF35500A3E3F9 /* VideoView.swift in Sources */,
 				E8A9567C24D2B0E7009E0C28 /* Tag.swift in Sources */,
 				E8A5BD1D24E3E8B200589452 /* StoryManager.swift in Sources */,
 				188595CF25C9726000E7B3FD /* ToolbarItems.swift in Sources */,
 				E8A2649F24F4FD58006B94EA /* ConfigurationView.swift in Sources */,
 				1862424324B48A8600A4A6CB /* Story.swift in Sources */,
+				1837185225DFF2CC00A3E3F9 /* StoryList+Logic.swift in Sources */,
 				E8AFA1F424F69C1900AA84D3 /* CloudKitContainer.swift in Sources */,
 				183C0220251B765400EC09FD /* Logger.swift in Sources */,
 				188595D425C97C2A00E7B3FD /* CloudSharingHandler.swift in Sources */,
 				E8A5BD2324E433AD00589452 /* StoryInformationManager.swift in Sources */,
+				1837184825DFDE0400A3E3F9 /* SprintList+Logic.swift in Sources */,
 				E8F5501E24DD36100017582D /* Link.swift in Sources */,
 				E858997424EE68FB00BB65C8 /* Cloudkit+Extensions.swift in Sources */,
 				E8A4E4D024EE984A00DBBCEA /* Sprint+CloudKit.swift in Sources */,
-				E859371C24EEAFC500772BD2 /* StoryInformation+CloudKit.swift in Sources */,
 				1858275E24B4C38B008BE248 /* Sequence+Extensions.swift in Sources */,
 				E88CC8E424D0119C00E9F2DD /* StoryRow.swift in Sources */,
 				E8AFA1F824F69D5200AA84D3 /* StoryInformationService.swift in Sources */,
 				E8AFA1F224F69BE300AA84D3 /* SprintService.swift in Sources */,
-				E8A4E4D924EEA43900DBBCEA /* DisposeBag.swift in Sources */,
 				E8F5501C24DD36060017582D /* Configuration.swift in Sources */,
 				1862423D24B485E400A4A6CB /* StoryDetail.swift in Sources */,
 				E8A264A124F4FE3D006B94EA /* StepsView.swift in Sources */,
@@ -639,9 +652,11 @@
 				18FE759024A23E670003C76E /* MainView.swift in Sources */,
 				E8760DCF24DADFD8003A2766 /* Image+Extensions.swift in Sources */,
 				E8A5BD1F24E42A9B00589452 /* StoryInformation.swift in Sources */,
+				1837184D25DFE0BC00A3E3F9 /* NewStoryView+Logic.swift in Sources */,
 				1862423924B4859300A4A6CB /* SprintList.swift in Sources */,
 				E8A264A324F4FF31006B94EA /* ProgressIndicator.swift in Sources */,
 				18FE758E24A23E670003C76E /* AppDelegate.swift in Sources */,
+				1837184325DFD52A00A3E3F9 /* NewSprintView+Logic.swift in Sources */,
 				E8EB954524C5CA0D00BC76E4 /* SprintNumber.swift in Sources */,
 				188595BB25C9682400E7B3FD /* RunningOrderApp.swift in Sources */,
 				1890DCC2252B705400D236B6 /* CloudKitChangesService.swift in Sources */,
@@ -652,6 +667,7 @@
 				1862424024B489BB00A4A6CB /* Sprint.swift in Sources */,
 				18FF999624DC3472002A06FE /* SprintManager.swift in Sources */,
 				E81BBFE624CAD21100DB289A /* StyledFocusableTextField.swift in Sources */,
+				1837183E25DFCD8F00A3E3F9 /* MainView+Logic.swift in Sources */,
 				18F7918424B61A5900FDCBEF /* Stories_Previews.swift in Sources */,
 				185277ED2519E74C0050F6C1 /* SpaceManager.swift in Sources */,
 				E8A4E4D324EE988000DBBCEA /* CKRecordable.swift in Sources */,

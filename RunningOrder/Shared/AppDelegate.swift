@@ -17,7 +17,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     let cloudkitContainer = CloudKitContainer.shared
     var spaceManager: SpaceManager?
-    var changesService: CloudKitChangesService?
+    weak var changesService: CloudKitChangesService?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         registerForPushNotification()

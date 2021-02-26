@@ -17,11 +17,13 @@ struct RoundButton: View {
 
     var body: some View {
         Button(action: self.action) {
-            image
-                .resizable()
-                .padding(5)
-                .background(color)
-                .clipShape(Circle())
+            GeometryReader(content: { geometry in
+                image
+                    .resizable()
+                    .padding(geometry.size.width * 0.2)
+                    .background(color)
+                    .clipShape(Circle())
+            })
         }
         .foregroundColor(.white)
         .buttonStyle(PlainButtonStyle())

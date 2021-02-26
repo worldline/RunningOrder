@@ -12,6 +12,8 @@ let changesService = CloudKitChangesService(container: CloudKitContainer.shared)
 
 @main
 struct RunningOrderApp: App {
+    // Not adapted to SwiftUI Lifecycle
+    // swiftlint:disable:next weak_delegate
     @NSApplicationDelegateAdaptor private var appDelegate: AppDelegate
 
     @StateObject var spaceManager = SpaceManager(
@@ -48,6 +50,11 @@ struct RunningOrderApp: App {
                 }
         }
         .commands {
+            CommandGroup(replacing: CommandGroupPlacement.newItem) {
+                Button(action: CloudSharingHandler(spaceManager: spaceManager).performCloudSharing, label: {
+                    Label("Partager l'espace de travail", systemImage: "person.crop.circle.badge.plus")
+                })
+            }
             ToolbarCommands()
             SidebarCommands()
         }

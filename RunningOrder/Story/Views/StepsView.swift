@@ -10,7 +10,7 @@ import SwiftUI
 
 struct StepsView: View {
     @Binding var storyInformation: StoryInformation
-    @State private var selectedMode = DisplayMode.steps
+    @State private var selectedMode = DisplayMode.video
 
     var body: some View {
         ScrollView {
@@ -21,7 +21,6 @@ struct StepsView: View {
                     }
                 }
                 .padding()
-                .disabled(true)
                 .pickerStyle(SegmentedPickerStyle())
 
                 switch selectedMode {
@@ -29,7 +28,7 @@ struct StepsView: View {
                     InlineEditableList(title: "Steps", placeholder: "A step to follow", values: self.$storyInformation.steps)
 
                 case .video:
-                    Text(selectedMode.rawValue)
+                    VideoView(storyInformation: $storyInformation)
                 }
                 Spacer()
             }
