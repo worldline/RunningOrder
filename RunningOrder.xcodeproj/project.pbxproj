@@ -44,7 +44,6 @@
 		E81BBFE824CB194B00DB289A /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81BBFE724CB194B00DB289A /* RoundButton.swift */; };
 		E83C002724ED7B0F00C83B85 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E83C002624ED7B0F00C83B85 /* CloudKit.framework */; };
 		E858997424EE68FB00BB65C8 /* Cloudkit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E858997324EE68FB00BB65C8 /* Cloudkit+Extensions.swift */; };
-		E859371C24EEAFC500772BD2 /* StoryInformation+CloudKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E859371B24EEAFC500772BD2 /* StoryInformation+CloudKit.swift */; };
 		E8760DCF24DADFD8003A2766 /* Image+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8760DCE24DADFD8003A2766 /* Image+Extensions.swift */; };
 		E882F03424CF030F002D1591 /* NewStoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E882F03324CF030F002D1591 /* NewStoryView.swift */; };
 		E88CC8E424D0119C00E9F2DD /* StoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CC8E324D0119C00E9F2DD /* StoryRow.swift */; };
@@ -136,7 +135,6 @@
 		E83C002424ED7B0600C83B85 /* RunningOrderDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunningOrderDebug.entitlements; sourceTree = "<group>"; };
 		E83C002624ED7B0F00C83B85 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		E858997324EE68FB00BB65C8 /* Cloudkit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cloudkit+Extensions.swift"; sourceTree = "<group>"; };
-		E859371B24EEAFC500772BD2 /* StoryInformation+CloudKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StoryInformation+CloudKit.swift"; sourceTree = "<group>"; };
 		E8760DCE24DADFD8003A2766 /* Image+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Extensions.swift"; sourceTree = "<group>"; };
 		E882F03324CF030F002D1591 /* NewStoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewStoryView.swift; sourceTree = "<group>"; };
 		E88CC8E324D0119C00E9F2DD /* StoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryRow.swift; sourceTree = "<group>"; };
@@ -425,7 +423,6 @@
 			isa = PBXGroup;
 			children = (
 				E8A4E4D524EE996D00DBBCEA /* Story+CloudKit.swift */,
-				E859371B24EEAFC500772BD2 /* StoryInformation+CloudKit.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -638,7 +635,6 @@
 				E8F5501E24DD36100017582D /* Link.swift in Sources */,
 				E858997424EE68FB00BB65C8 /* Cloudkit+Extensions.swift in Sources */,
 				E8A4E4D024EE984A00DBBCEA /* Sprint+CloudKit.swift in Sources */,
-				E859371C24EEAFC500772BD2 /* StoryInformation+CloudKit.swift in Sources */,
 				1858275E24B4C38B008BE248 /* Sequence+Extensions.swift in Sources */,
 				E88CC8E424D0119C00E9F2DD /* StoryRow.swift in Sources */,
 				E8AFA1F824F69D5200AA84D3 /* StoryInformationService.swift in Sources */,

@@ -32,6 +32,7 @@ struct StoryInformation {
             }
         }
     }
+
     private var videoExtension: String?
 
     init(storyId: Story.ID, configuration: Configuration = Configuration(), links: [Link] = [], steps: [String] = [], videoUrl: URL? = nil) {
@@ -86,6 +87,7 @@ extension StoryInformation {
 
 import CloudKit
 
+// Extension here to access to a private property of the struct.
 extension StoryInformation: CKRecordable {
 
     init(from record: CKRecord) throws {
