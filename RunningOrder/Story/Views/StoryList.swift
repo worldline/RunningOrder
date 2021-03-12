@@ -23,8 +23,9 @@ extension StoryList {
             List(storyManager.stories(for: sprint.id), id: \.self, selection: $selected) { story in
                 VStack {
                     NavigationLink(
-                        destination: StoryDetail(story: story),
-                        label: { StoryRow(story: story, epicColor: logic.epicColor(for: story)) }
+                        destination: StoryDetail(story: story)
+                            .epicColor(Color(identifier: logic.epicColor(for: story))),
+                        label: { StoryRow(story: story) }
                     )
                     .contextMenu {
                         Button(
@@ -32,6 +33,7 @@ extension StoryList {
                             label: { Text("Delete Story") }
                         )
                     }
+                    .epicColor(Color(identifier: logic.epicColor(for: story)))
 
                     if story == selected {
                         Divider()
