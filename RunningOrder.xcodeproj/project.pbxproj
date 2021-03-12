@@ -32,6 +32,7 @@
 		1888AFC525271A4200D5C678 /* Colors+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1888AFC425271A4200D5C678 /* Colors+Extensions.swift */; };
 		1890DCC2252B705400D236B6 /* CloudKitChangesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1890DCC1252B705400D236B6 /* CloudKitChangesService.swift */; };
 		18CDCDD624B4A49200043E1D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 18CDCDD824B4A49200043E1D /* Localizable.strings */; };
+		18F6109F25FBA79700A94949 /* TextfieldEditingStringHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F6109E25FBA79700A94949 /* TextfieldEditingStringHandler.swift */; };
 		18F6F6C725C9D029008078ED /* InlineButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F6F6C625C9D029008078ED /* InlineButtonStyle.swift */; };
 		18F7918224B619B600FDCBEF /* Sprints_Previews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F7918124B619B600FDCBEF /* Sprints_Previews.swift */; };
 		18F7918424B61A5900FDCBEF /* Stories_Previews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F7918324B61A5900FDCBEF /* Stories_Previews.swift */; };
@@ -115,6 +116,7 @@
 		1890DCC1252B705400D236B6 /* CloudKitChangesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitChangesService.swift; sourceTree = "<group>"; };
 		18CDCDD724B4A49200043E1D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		18CDCDDA24B4A4A500043E1D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		18F6109E25FBA79700A94949 /* TextfieldEditingStringHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldEditingStringHandler.swift; sourceTree = "<group>"; };
 		18F6F6C625C9D029008078ED /* InlineButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineButtonStyle.swift; sourceTree = "<group>"; };
 		18F7918124B619B600FDCBEF /* Sprints_Previews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sprints_Previews.swift; sourceTree = "<group>"; };
 		18F7918324B61A5900FDCBEF /* Stories_Previews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stories_Previews.swift; sourceTree = "<group>"; };
@@ -418,6 +420,7 @@
 			isa = PBXGroup;
 			children = (
 				E8A4E4D224EE988000DBBCEA /* CKRecordable.swift */,
+				18F6109E25FBA79700A94949 /* TextfieldEditingStringHandler.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -661,6 +664,7 @@
 				18FE758E24A23E670003C76E /* AppDelegate.swift in Sources */,
 				1837184325DFD52A00A3E3F9 /* NewSprintView+Logic.swift in Sources */,
 				E8EB954524C5CA0D00BC76E4 /* SprintNumber.swift in Sources */,
+				18F6109F25FBA79700A94949 /* TextfieldEditingStringHandler.swift in Sources */,
 				188595BB25C9682400E7B3FD /* RunningOrderApp.swift in Sources */,
 				1890DCC2252B705400D236B6 /* CloudKitChangesService.swift in Sources */,
 				185277D52518AC8C0050F6C1 /* Space.swift in Sources */,

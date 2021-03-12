@@ -18,8 +18,18 @@ struct NewSprintView: View {
 
     var body: some View {
         VStack {
-            TextField("Sprint Name", text: $logic.name, onEditingChanged: { _ in }, onCommit: logic.createSprint)
-            TextField("Sprint Number", value: $logic.number, formatter: NumberFormatter(), onCommit: logic.createSprint)
+            TextField(
+                "Sprint Name",
+                text: $logic.name,
+                onEditingChanged: logic.fieldEditingChanged(valueKeyPath: \.name),
+                onCommit: logic.createSprint
+            )
+            TextField(
+                "Sprint Number",
+                value: $logic.number,
+                formatter: NumberFormatter(),
+                onCommit: logic.createSprint
+            )
 
             HStack {
                 Button(action: dismiss) { Text("Cancel") }

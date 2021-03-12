@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 
 extension NewStoryView {
-    final class Logic: ObservableObject {
+    final class Logic: ObservableObject, TextfieldEditingStringHandler {
         let sprintId: Sprint.ID
         @Binding var createdStory: Story?
 
