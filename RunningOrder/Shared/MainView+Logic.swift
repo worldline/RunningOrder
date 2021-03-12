@@ -14,16 +14,7 @@ extension MainView {
         private var cancellables = Set<AnyCancellable>()
         private unowned var spaceManager: SpaceManager
 
-        var createdSpaceBinding: Binding<Space?> {
-            return Binding<Space?>(
-                get: { return nil },
-                set: { newValue in
-                    if let space = newValue {
-                        self.addSpace(space)
-                    }
-                }
-            )
-        }
+        var createdSpaceBinding: Binding<Space?> { Binding(callback: self.addSpace(_:)) }
 
         init(spaceManager: SpaceManager) {
             self.spaceManager = spaceManager

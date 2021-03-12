@@ -28,11 +28,24 @@ struct VideoView: View {
     var body: some View {
         videoView
             .animation(.none)
-            .border(Color.red, width: isVideoDropTargeted ? 2 : 0)
+            .border(Color.green, width: isVideoDropTargeted ? 4 : 0)
             .animation(.default)
-            .onDrop(of: [.quickTimeMovie], isTargeted: $isVideoDropTargeted, perform: { itemProviders in
+            .onDrop(of: [.fileURL], isTargeted: $isVideoDropTargeted, perform: { itemProviders in
                 guard let item = itemProviders.first else { return false }
 
+                item.loadDataRepresentation(forTypeIdentifier: UTType.fileURL.identifier) { data, error in
+                    if let data = data,
+                       let string = String(data: data, encoding: .utf8),
+                       let url = URL(string: string),
+                       let fileType = UTType(filenameExtension: url.pathExtension),
+                       fileType.conforms(to: .movie) {
+                        storyInformation.videoUrl = url
+                    } else if let error = error {
+                        Logger.error.log(error)
+                    } else {
+                        Logger.debug.log("file not conforming to needs")
+                    }
+                }
                 return true
             })
             .padding()

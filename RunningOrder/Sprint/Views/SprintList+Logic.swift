@@ -17,16 +17,7 @@ extension SprintList {
 
         @Published var isNewSprintModalPresented = false
 
-        var createdSprintBinding: Binding<Sprint?> {
-            return Binding<Sprint?>(
-                get: { return nil },
-                set: { newValue in
-                    if let sprint = newValue {
-                        self.addSprint(sprint)
-                    }
-                }
-            )
-        }
+        var createdSprintBinding: Binding<Sprint?> { Binding(callback: self.addSprint(_:)) }
 
         init(sprintManager: SprintManager) {
             self.sprintManager = sprintManager

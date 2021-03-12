@@ -16,16 +16,7 @@ extension StoryList {
 
         @Published var isAddStoryViewDisplayed: Bool = false
 
-        var createdStoryBinding: Binding<Story?> {
-            return Binding<Story?>(
-                get: { return nil },
-                set: { newValue in
-                    if let story = newValue {
-                        self.addStory(story)
-                    }
-                }
-            )
-        }
+        var createdStoryBinding: Binding<Story?> { Binding(callback: self.addStory(_:)) }
 
         init(storyManager: StoryManager) {
             self.storyManager = storyManager
