@@ -26,9 +26,11 @@ final class StoryManager: ObservableObject {
     var cancellables: Set<AnyCancellable> = []
 
     private let service: StoryService
+    private let userService: UserService
 
-    init(service: StoryService, dataPublisher: AnyPublisher<ChangeInformation, Never>) {
+    init(service: StoryService, userService: UserService, dataPublisher: AnyPublisher<ChangeInformation, Never>) {
         self.service = service
+        self.userService = userService
 
         dataPublisher.sink(receiveValue: { [weak self] informations in
             self?.updateData(with: informations.toUpdate)
@@ -92,6 +94,17 @@ final class StoryManager: ObservableObject {
         return nil
     }
 
+    func getUser(creatorOf story: Story) -> AnyPublisher<User, Error> {
+        guard let reference = story.creatorReference else {
+            return Fail(outputType: User.self, failure: BasicError.noValue).eraseToAnyPublisher()
+        }
+
+        return userService
+            .fetch(userReference: reference)
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+
     func delete(story: Story) {
         guard let (sprintId, index) = findExistingStory(for: CKRecord.ID(recordName: story.id)) else {
             Logger.error.log("couldn't find index of story in stored stories")
@@ -128,5 +141,5 @@ final class StoryManager: ObservableObject {
 }
 
 extension StoryManager {
-    static let preview = StoryManager(service: StoryService(), dataPublisher: Empty().eraseToAnyPublisher())
+    static let preview = StoryManager(service: StoryService(), userService: UserService(), dataPublisher: Empty().eraseToAnyPublisher())
 }

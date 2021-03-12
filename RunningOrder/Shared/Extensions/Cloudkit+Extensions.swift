@@ -203,6 +203,47 @@ extension CKFetchRecordZoneChangesOperation {
     }
 }
 
+extension CKContainer {
+    func status(forApplicationPermission applicationPermission: CKContainer_Application_Permissions) -> AnyPublisher<CKContainer_Application_PermissionStatus, Error> {
+        Future { promise in
+            self.status(forApplicationPermission: applicationPermission) { status, error in
+                if let error = error {
+                    promise(.failure(error))
+                } else {
+                    promise(.success(status))
+                }
+            }
+        }.eraseToAnyPublisher()
+    }
+
+    func requestApplicationPermission(applicationPermission: CKContainer_Application_Permissions) -> AnyPublisher<CKContainer_Application_PermissionStatus, Error> {
+        Future { promise in
+            self.requestApplicationPermission(applicationPermission, completionHandler: { status, error in
+                if let error = error {
+                    promise(.failure(error))
+                } else {
+                    promise(.success(status))
+                }
+            })
+        }.eraseToAnyPublisher()
+    }
+
+    func discoverUserIdentity(withUserRecordID recordID: CKRecord.ID) -> AnyPublisher<CKUserIdentity, Error> {
+        Future { promise in
+            self.discoverUserIdentity(withUserRecordID: recordID, completionHandler: { identity, error in
+                switch (error, identity) {
+                case (.some(let error), _):
+                    promise(.failure(error))
+                case (nil, nil):
+                    promise(.failure(BasicError.noValue))
+                case (nil, .some(let identity)):
+                    promise(.success(identity))
+                }
+            })
+        }.eraseToAnyPublisher()
+    }
+}
+
 // MARK: -
 
 extension CKRecord {

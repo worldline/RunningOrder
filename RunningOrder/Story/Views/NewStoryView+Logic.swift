@@ -32,7 +32,13 @@ extension NewStoryView {
         func createStory() {
             guard areAllFieldsFilled else { return }
 
-            let newStory = Story(sprintId: sprintId, name: name, ticketReference: ticketID, epic: epic)
+            let newStory = Story(
+                sprintId: sprintId,
+                name: name,
+                ticketReference: ticketID,
+                epic: epic,
+                creatorReference: nil
+            )
             self.createdStory = newStory
             dismissSubject.send(())
         }
