@@ -16,11 +16,10 @@ extension StoryList {
 
         @ObservedObject var logic: Logic
         @EnvironmentObject var storyManager: StoryManager
-
         @State private var selected: Story?
 
         var body: some View {
-            List(storyManager.stories(for: sprint.id), id: \.self, selection: $selected) { story in
+            List(storyManager.stories(for: sprint.id) , id: \.self, selection: $selected) { story in
                 VStack {
                     NavigationLink(
                         destination: StoryDetail(story: story)
@@ -48,17 +47,18 @@ extension StoryList {
             .toolbar {
                 ToolbarItems.sidebarItem
 
-                ToolbarItem(placement: ToolbarItemPlacement.cancellationAction) {
-                    Button(action: logic.showAddStoryView) {
-                        Image(systemName: "square.and.pencil")
-                    }
+                ToolbarItemGroup(placement: ToolbarItemPlacement.cancellationAction) {
+
+                        Button(action: logic.showAddStoryView) {
+                            Image(systemName: "square.and.pencil")
+                        }
                 }
             }
             .sheet(isPresented: $logic.isAddStoryViewDisplayed) {
                 NewStoryView(sprintId: sprint.id, createdStory: logic.createdStoryBinding)
             }
-        }
     }
+}
 }
 
 struct StoryList: View {

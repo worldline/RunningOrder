@@ -48,6 +48,10 @@
 		18FE759524A23E680003C76E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18FE759424A23E680003C76E /* Preview Assets.xcassets */; };
 		18FE75A424A23E680003C76E /* RunningOrderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FE75A324A23E680003C76E /* RunningOrderTests.swift */; };
 		18FF999624DC3472002A06FE /* SprintManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FF999524DC3472002A06FE /* SprintManager.swift */; };
+		5D0BD844260E5909000CB61C /* SearchBarSuggestions+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0BD843260E5909000CB61C /* SearchBarSuggestions+Logic.swift */; };
+		5D43A078260D1997008A186A /* SearchBarSuggestions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D43A077260D1997008A186A /* SearchBarSuggestions.swift */; };
+		5DC7FC31260DDCAA004275A7 /* SuggestionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC7FC30260DDCAA004275A7 /* SuggestionRow.swift */; };
+		5DEE02672607A61C005AA87E /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEE02662607A61C005AA87E /* SearchBarView.swift */; };
 		E81BBFE624CAD21100DB289A /* StyledFocusableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81BBFE524CAD21100DB289A /* StyledFocusableTextField.swift */; };
 		E81BBFE824CB194B00DB289A /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81BBFE724CB194B00DB289A /* RoundButton.swift */; };
 		E83C002724ED7B0F00C83B85 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E83C002624ED7B0F00C83B85 /* CloudKit.framework */; };
@@ -151,6 +155,10 @@
 		18FE75AE24A23E680003C76E /* RunningOrderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningOrderUITests.swift; sourceTree = "<group>"; };
 		18FE75B024A23E680003C76E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		18FF999524DC3472002A06FE /* SprintManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintManager.swift; sourceTree = "<group>"; };
+		5D0BD843260E5909000CB61C /* SearchBarSuggestions+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchBarSuggestions+Logic.swift"; sourceTree = "<group>"; };
+		5D43A077260D1997008A186A /* SearchBarSuggestions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarSuggestions.swift; sourceTree = "<group>"; };
+		5DC7FC30260DDCAA004275A7 /* SuggestionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionRow.swift; sourceTree = "<group>"; };
+		5DEE02662607A61C005AA87E /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		E81BBFE524CAD21100DB289A /* StyledFocusableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyledFocusableTextField.swift; sourceTree = "<group>"; };
 		E81BBFE724CB194B00DB289A /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		E83C002424ED7B0600C83B85 /* RunningOrderDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunningOrderDebug.entitlements; sourceTree = "<group>"; };
@@ -325,6 +333,17 @@
 			path = RunningOrderUITests;
 			sourceTree = "<group>";
 		};
+		5DC7FC42260E4A38004275A7 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				5DEE02662607A61C005AA87E /* SearchBarView.swift */,
+				5D43A077260D1997008A186A /* SearchBarSuggestions.swift */,
+				5DC7FC30260DDCAA004275A7 /* SuggestionRow.swift */,
+				5D0BD843260E5909000CB61C /* SearchBarSuggestions+Logic.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
 		E83C001F24ED4CF100C83B85 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
@@ -433,6 +452,7 @@
 		E85D872724ED2C3900837346 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5DC7FC42260E4A38004275A7 /* Search */,
 				E8A9567B24D2B0E7009E0C28 /* Tag.swift */,
 				E81BBFE524CAD21100DB289A /* StyledFocusableTextField.swift */,
 				E81BBFE724CB194B00DB289A /* RoundButton.swift */,
@@ -687,9 +707,11 @@
 				E858997424EE68FB00BB65C8 /* Cloudkit+Extensions.swift in Sources */,
 				E8A4E4D024EE984A00DBBCEA /* Sprint+CloudKit.swift in Sources */,
 				1858275E24B4C38B008BE248 /* Sequence+Extensions.swift in Sources */,
+				5DEE02672607A61C005AA87E /* SearchBarView.swift in Sources */,
 				E88CC8E424D0119C00E9F2DD /* StoryRow.swift in Sources */,
 				E8AFA1F824F69D5200AA84D3 /* StoryInformationService.swift in Sources */,
 				E8AFA1F224F69BE300AA84D3 /* SprintService.swift in Sources */,
+				5DC7FC31260DDCAA004275A7 /* SuggestionRow.swift in Sources */,
 				E8F5501C24DD36060017582D /* Configuration.swift in Sources */,
 				1862423D24B485E400A4A6CB /* StoryDetail.swift in Sources */,
 				FB88E12025E8F877008F2644 /* InlineEditableLink.swift in Sources */,
@@ -715,12 +737,14 @@
 				18FE758E24A23E670003C76E /* AppDelegate.swift in Sources */,
 				1837184325DFD52A00A3E3F9 /* NewSprintView+Logic.swift in Sources */,
 				18F610AC25FBB8AE00A94949 /* UserReference.swift in Sources */,
+				5D43A078260D1997008A186A /* SearchBarSuggestions.swift in Sources */,
 				E8EB954524C5CA0D00BC76E4 /* SprintNumber.swift in Sources */,
 				18F6109F25FBA79700A94949 /* TextfieldEditingStringHandler.swift in Sources */,
 				188595BB25C9682400E7B3FD /* RunningOrderApp.swift in Sources */,
 				1890DCC2252B705400D236B6 /* CloudKitChangesService.swift in Sources */,
 				185277D52518AC8C0050F6C1 /* Space.swift in Sources */,
 				185277F52519F32E0050F6C1 /* WelcomeView.swift in Sources */,
+				5D0BD844260E5909000CB61C /* SearchBarSuggestions+Logic.swift in Sources */,
 				1888AFC525271A4200D5C678 /* Colors+Extensions.swift in Sources */,
 				1837186225E0108300A3E3F9 /* Binding+Callback.swift in Sources */,
 				18F6F6C725C9D029008078ED /* InlineButtonStyle.swift in Sources */,

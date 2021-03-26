@@ -23,3 +23,34 @@ extension Sprint {
 
 extension Sprint: Equatable { }
 extension Sprint: Hashable { }
+
+struct SearchSection: Identifiable {
+    var id: UUID { return UUID() }
+    var name: String
+    var items: [SearchItem]
+}
+
+extension SearchSection {
+    enum Name: String {
+        case story // Jira reference + storyname
+        case epic // epic name
+        case people // story's creator name
+
+        var iconName: String {
+            switch self {
+            case .story:
+                return "list.bullet.rectangle"
+            case .epic:
+                return "folder.fill"
+            case .people:
+                return "person.circle"
+            }
+        }
+    }
+}
+
+struct SearchItem: Identifiable {
+    var id: UUID { return UUID() }
+    var name: String
+    var icon: String
+}

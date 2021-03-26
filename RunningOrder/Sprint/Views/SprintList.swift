@@ -14,13 +14,16 @@ extension Sprint: Identifiable {}
 extension SprintList {
     fileprivate struct InternalView: View {
         @EnvironmentObject var sprintManager: SprintManager
+        @EnvironmentObject var storyManager: StoryManager
         @ObservedObject var logic: Logic
-
+        @State private var searchText: String = ""
+        var searchSections: [SearchSection] = []
         let space: Space
 
         var body: some View {
             List {
                 Section(header: Text("Active Sprints")) {
+                    // show view
                     ForEach(sprintManager.sprints, id: \.self) { sprint in
                         NavigationLink(
                             destination: StoryList(sprint: sprint),

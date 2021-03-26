@@ -12,6 +12,7 @@ extension MainView {
     private struct InternalView: View {
         @EnvironmentObject var spaceManager: SpaceManager
         @ObservedObject var logic: Logic
+        @State private var searchText: String = ""
 
         init(logic: Logic) {
             self.logic = logic
@@ -66,11 +67,13 @@ extension MainView {
                                 Spacer()
                             }
 
-                            ToolbarItem(placement: ToolbarItemPlacement.cancellationAction) {
+                            ToolbarItemGroup(placement: ToolbarItemPlacement.cancellationAction) {
                                 Button(action: {}) {
                                     Image(systemName: "trash")
                                 }
                                 .disabled(true)
+
+                                SearchBarView(inputText: $searchText)
                             }
                         }
                 }

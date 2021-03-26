@@ -40,8 +40,11 @@ final class StoryManager: ObservableObject {
 
     /// Returns the stories of a specific sprintId
     /// - Parameter sprintId: The id of the sprint
-    func stories(for sprintId: Sprint.ID) -> [Story] {
-        return stories[sprintId] ?? []
+    func stories(for sprintId: Sprint.ID, filter: String? = nil) -> [Story] {
+        stories[sprintId]?.filter { story -> Bool in
+            guard let input = filter?.lowercased() else { return true }
+            return story.name.lowercased().contains(input) || story.epic.lowercased().contains(input) || story.ticketReference.lowercased().contains(input)
+        } ?? []
     }
 
     func add(story: Story) -> AnyPublisher<Story, Error> {
