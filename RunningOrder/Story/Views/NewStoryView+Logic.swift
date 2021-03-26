@@ -32,6 +32,9 @@ extension NewStoryView {
         func createStory() {
             guard areAllFieldsFilled else { return }
 
+            // No need of creator reference as it is added by cloudkit.
+            // When this record is created, it is sent to cloudkit, that updates it. With the notification subscription, we receive the new record, and update this story with the user reference.
+            // TLDR; no need to set the creatorReference ourselves.
             let newStory = Story(
                 sprintId: sprintId,
                 name: name,
