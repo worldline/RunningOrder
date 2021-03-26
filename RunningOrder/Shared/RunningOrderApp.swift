@@ -28,6 +28,7 @@ struct RunningOrderApp: App {
 
     @StateObject var storyManager = StoryManager(
         service: StoryService(),
+        userService: UserService(),
         dataPublisher: changesService.storyChangesPublisher.eraseToAnyPublisher()
     )
 

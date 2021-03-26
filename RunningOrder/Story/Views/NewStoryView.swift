@@ -18,9 +18,22 @@ struct NewStoryView: View {
 
     var body: some View {
         VStack {
-            TextField("Story Name", text: $logic.name)
-            TextField("Ticket ID", text: $logic.ticketID)
-            TextField("Story EPIC", text: $logic.epic, onCommit: logic.createStory)
+            TextField(
+                "Story Name",
+                text: $logic.name,
+                onEditingChanged: logic.fieldEditingChanged(valueKeyPath: \.name)
+            )
+            TextField(
+                "Ticket ID",
+                text: $logic.ticketID,
+                onEditingChanged: logic.fieldEditingChanged(valueKeyPath: \.ticketID)
+            )
+            TextField(
+                "Story EPIC",
+                text: $logic.epic,
+                onEditingChanged: logic.fieldEditingChanged(valueKeyPath: \.epic),
+                onCommit: logic.createStory
+            )
 
             HStack {
                 Button(action: dismiss) { Text("Cancel") }

@@ -18,6 +18,12 @@ extension Story: CKRecordable {
 
         let sprintReference: CKRecord.Reference = try record.property("sprintId")
         self.sprintId = sprintReference.recordID.recordName
+
+        if let id = record.creatorUserRecordID {
+            self.creatorReference = UserReference(recordId: id)
+        } else {
+            self.creatorReference = nil
+        }
     }
 
     func encode(zoneId: CKRecordZone.ID) -> CKRecord {

@@ -78,6 +78,7 @@ class CloudKitContainer {
 
             if mode.isOwner != oldValue.isOwner {
                 enableNotificationsIfNeeded()
+                askPermissionForDiscoverabilityIfNeeded()
             }
         }
     }
@@ -93,6 +94,7 @@ class CloudKitContainer {
 
         createCustomZoneIfNeeded()
         enableNotificationsIfNeeded()
+        askPermissionForDiscoverabilityIfNeeded()
     }
 
     private func createCustomZoneIfNeeded() {
@@ -161,6 +163,29 @@ class CloudKitContainer {
             .filter { $0.isEmpty }
             .flatMap { [weak self] _ in return self?.createSubscriptions(for: database) ?? Empty(completeImmediately: true, outputType: Never.self, failureType: Error.self).eraseToAnyPublisher() }
             .sink(receiveFailure: { error in Logger.error.log(error) })
+            .store(in: &cancellables)
+    }
+
+    func askPermissionForDiscoverabilityIfNeeded() {
+        container.status(forApplicationPermission: .userDiscoverability)
+            .filter { $0 == .initialState }
+            .flatMap { _ in self.container.requestApplicationPermission(applicationPermission: .userDiscoverability) }
+            .sink(receiveFailure: { error in
+                Logger.error.log("error at requesting permission : \(error)")
+            }, receiveValue: { status in
+                switch status {
+                case .couldNotComplete:
+                    Logger.error.log("error when requesting permission for discoverability")
+                case .granted:
+                    Logger.debug.log("Discoverability granted")
+                case .denied:
+                    Logger.debug.log("Discoverability denied :'(")
+                case .initialState:
+                    fallthrough
+                @unknown default:
+                    break
+                }
+            })
             .store(in: &cancellables)
     }
 

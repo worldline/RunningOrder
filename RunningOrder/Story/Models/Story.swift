@@ -13,6 +13,8 @@ struct Story {
     let name: String
     let ticketReference: String
     let epic: String
+
+    let creatorReference: UserReference?
 }
 
 extension Story {

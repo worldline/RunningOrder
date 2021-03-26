@@ -39,6 +39,7 @@ struct StoryDetail: View {
 
             ToolbarItems.deleteStory(storyManager: storyManager, story: story)
         }
+        .onAppear { storyManager.getUser(creatorOf: story) }
     }
 }
 

@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 
 extension NewSprintView {
-    final class Logic: ObservableObject {
+    final class Logic: ObservableObject, TextfieldEditingStringHandler {
         let spaceId: Space.ID
         @Binding var createdSprint: Sprint?
 
