@@ -31,8 +31,8 @@ struct SearchSection: Identifiable {
 }
 
 extension SearchSection {
-    enum Name: String {
-        case story // Jira reference + storyname
+    enum SectionType: String {
+        case story // Jira reference + story's name
         case epic // epic name
         case people // story's creator name
 
@@ -49,8 +49,14 @@ extension SearchSection {
     }
 }
 
-struct SearchItem: Identifiable {
+struct SearchItem: Identifiable, Hashable {
+    static func == (lhs: SearchItem, rhs: SearchItem) -> Bool {
+        lhs.name == rhs.name
+    }
+
     var id: UUID { return UUID() }
     var name: String
     var icon: String
+    var type: SearchSection.SectionType
+    var relatedStory: Story?
 }

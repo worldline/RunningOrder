@@ -11,11 +11,15 @@ import SwiftUI
 struct SearchBarView: View {
     @Binding var inputText: String
     @State private var isFocused = false
+    @EnvironmentObject var searchManager: SearchManager
 
     var body: some View {
         HStack {
             TextField("Search story", text: $inputText) { editing in
                 isFocused = editing
+                if editing {
+                    searchManager.selectedSearchItem = nil
+                }
             }
             .overlay(
                 HStack {
@@ -27,6 +31,7 @@ struct SearchBarView: View {
                     if inputText.count > 0 {
                         Button(action: {
                             self.inputText = ""
+                            searchManager.selectedSearchItem = nil
                         }) {
                             Image(systemName: "multiply.circle.fill")
                                 .foregroundColor(.gray)
@@ -40,8 +45,9 @@ struct SearchBarView: View {
             .frame(width: 300)
             .textFieldStyle(RoundedBorderTextFieldStyle())
         }
-        .popover(isPresented: $isFocused) {
-            SearchBarSuggestions(input: $inputText)
+        .popover(isPresented: Binding(get: { isFocused && (searchManager.selectedSearchItem == nil)},
+                                      set: { _ in})) {
+            SearchBarSuggestions(searchText: $inputText)
         }
 
         //        HStack(alignment: .center, spacing: 0) {

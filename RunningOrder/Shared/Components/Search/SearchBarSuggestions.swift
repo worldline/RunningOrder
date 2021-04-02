@@ -9,53 +9,46 @@
 import SwiftUI
 
 struct SearchBarSuggestions: View {
-    @Binding var input: String
     @EnvironmentObject var storyManager: StoryManager
     @EnvironmentObject var sprintManager: SprintManager
+    @EnvironmentObject var searchManager: SearchManager
 
-    func stories(filter: String) -> [Story] {
-        var wholeStories: [Story] = []
-        for sprint in sprintManager.sprints {
-            let storiesPerId = storyManager.stories[sprint.id] ?? []
-            wholeStories.append(contentsOf: storiesPerId)
-        }
-
-        return wholeStories.filter { story -> Bool in
-            let input = filter.lowercased()
-            return story.name.lowercased().contains(input) || story.epic.lowercased().contains(input) || story.ticketReference.lowercased().contains(input)
-        }
-    }
-
+    @Binding var searchText: String
     var body: some View {
-            // Search in specific sprint
-            let allStories = stories(filter: input.lowercased())
-            let formattedStories = allStories.compactMap {"\($0.ticketReference) \($0.name)"}.map { SearchItem(name: $0, icon: SearchSection.Name.story.iconName)}
+        InternalView(logic: Logic(input: $searchText, storyManager: storyManager, sprintManager: sprintManager, searchManager: searchManager))
+    }
+}
 
-            let filteredEpics = allStories.compactMap {"\($0.epic)"}.map {
-                SearchItem(name: $0, icon: SearchSection.Name.epic.iconName)}
+extension SearchBarSuggestions {
+    fileprivate struct InternalView: View {
+        @ObservedObject var logic: Logic
 
-            let sections = [SearchSection(name: SearchSection.Name.story.rawValue.uppercased(),
-                                          items: formattedStories),
-                            SearchSection(name: SearchSection.Name.epic.rawValue.uppercased(),
-                                          items: filteredEpics)]
-        ScrollView {
-            VStack(alignment: .leading) {
-                ForEach(sections, id: \.id) { section in
-                    Section(header: Text(section.name).font(.headline).bold()) {
-                            Group {
+        var body: some View {
+            ScrollView {
+                VStack(alignment: .leading) {
+                    if !logic.filteredStories.isEmpty {
+                        ForEach(logic.filteredSearchSections, id: \.id) { section in
+                            Section(header: Text(section.name).font(.headline).bold()) {
                                 ForEach(section.items) { item in
                                     SuggestionRow(imageName: item.icon, suggestion: item.name)
+                                        .onTapGesture {
+                                            logic.searchManager.selectedSearchItem = item
+                                        }
                                 }
                             }
                         }
+                    } else {
+                        Label("No matching stories, epics found", systemImage: "magnifyingglass")
+                            .padding()
                     }
-            }.padding(8)
-        }.frame(width: 300, height: 300)
+                }.padding(8)
+            }.frame(width: 300, height: 300)
+        }
     }
 }
 
 struct SearchBarSuggestions_Previews: PreviewProvider {
     static var previews: some View {
-        SearchBarSuggestions(input: .constant(""))
+        SearchBarSuggestions(searchText: .constant(""))
     }
 }

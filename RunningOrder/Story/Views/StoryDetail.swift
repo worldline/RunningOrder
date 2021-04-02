@@ -13,6 +13,7 @@ struct StoryDetail: View {
 
     @EnvironmentObject var storyInformationManager: StoryInformationManager
     @EnvironmentObject var storyManager: StoryManager
+    @State private var searchText: String = ""
 
     var informationBinding: Binding<StoryInformation> { storyInformationManager.informations(for: story.id) }
 
@@ -35,6 +36,7 @@ struct StoryDetail: View {
                     .fontWeight(.semibold)
 
                 Spacer()
+                SearchBarView(inputText: $searchText)
             }
 
             ToolbarItems.deleteStory(storyManager: storyManager, story: story)

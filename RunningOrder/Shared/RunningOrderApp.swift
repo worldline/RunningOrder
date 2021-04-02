@@ -15,6 +15,7 @@ struct RunningOrderApp: App {
     // Not adapted to SwiftUI Lifecycle
     // swiftlint:disable:next weak_delegate
     @NSApplicationDelegateAdaptor private var appDelegate: AppDelegate
+    @StateObject var searchManager = SearchManager()
 
     @StateObject var spaceManager = SpaceManager(
         service: SpaceService(),
@@ -44,6 +45,7 @@ struct RunningOrderApp: App {
                 .environmentObject(sprintManager)
                 .environmentObject(storyManager)
                 .environmentObject(storyInformationManager)
+                .environmentObject(searchManager)
                 .onAppear {
                     appDelegate.changesService = changesService
                     appDelegate.spaceManager = spaceManager

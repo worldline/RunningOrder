@@ -12,7 +12,6 @@ import CloudKit
 
 ///The class responsible of managing the Story data, this is the only source of truth
 final class StoryManager: ObservableObject {
-
     @Published var stories: [Sprint.ID: [Story]] = [:]
 
     var epics: Set<String> {
@@ -38,14 +37,6 @@ final class StoryManager: ObservableObject {
         }).store(in: &cancellables)
     }
 
-    /// Returns the stories of a specific sprintId
-    /// - Parameter sprintId: The id of the sprint
-    func stories(for sprintId: Sprint.ID, filter: String? = nil) -> [Story] {
-        stories[sprintId]?.filter { story -> Bool in
-            guard let input = filter?.lowercased() else { return true }
-            return story.name.lowercased().contains(input) || story.epic.lowercased().contains(input) || story.ticketReference.lowercased().contains(input)
-        } ?? []
-    }
 
     func add(story: Story) -> AnyPublisher<Story, Error> {
         let saveStoryPublisher = service.save(story: story)
