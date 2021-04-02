@@ -11,13 +11,6 @@ import Combine
 import CloudKit
 
 extension SpaceManager {
-    enum State {
-        case loading
-        case error(Swift.Error)
-        case noSpace
-        case spaceFound(Space)
-    }
-
     enum Error: Swift.Error {
         case noSpaceAvailable
     }
@@ -28,72 +21,79 @@ final class SpaceManager: ObservableObject {
 
     var cancellables = Set<AnyCancellable>()
 
-    @Published var state: State = .loading
-
-    var space: Space? {
-        guard case State.spaceFound(let space) = state else { return nil }
-
-        return space
-    }
+    @Published var availableSpaces: [Space] = []
 
     init(service: SpaceService, dataPublisher: AnyPublisher<ChangeInformation, Never>) {
         self.spaceService = service
 
         dataPublisher
-            .map(updateState(with:))
-            .assign(to: \.state, onStrong: self)
+            .sink(receiveValue: updateState(with:))
             .store(in: &cancellables)
     }
 
-    private func updateState(with information: ChangeInformation) -> State {
+    private func updateState(with information: ChangeInformation) {
         Logger.debug.log(information)
-        if !information.toDelete.isEmpty, case .spaceFound(let space) = state, information.toDelete.contains(where: { $0.recordName == space.id }) {
-            // current space will be deleted
-            spaceService.delete(space: space)
-                .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { completion in
-                    switch completion {
-                    case .failure(let error):
-                        Logger.error.log(error) // TODO: error handling
-                    case .finished:
-                        self.state = .noSpace
-                    }
-                })
-                .store(in: &cancellables)
-        }
+        // Si je récupère la suppression du space
+        // je resupprime derriere ? (en cas de suppression d'un espace partagé par son possesseur, il faut que je supprime ici aussi)
+        deleteData(recordIds: information.toDelete)
 
-        if let record = information.toUpdate.last {
-            return .spaceFound(Space(underlyingRecord: record))
-        } else {
-            return .noSpace
+        // je récupère les spaces a mettre à jour
+        // j'update la liste des spaces actuels (j'ajoute si ils existent pas, ou je remplace les existants)
+        updateData(with: information.toUpdate)
+    }
+
+    private func updateData(with updatedRecords: [CKRecord]) {
+        for updatedRecord in updatedRecords {
+            let updatedSpace = Space(underlyingRecord: updatedRecord)
+            if let index = availableSpaces.firstIndex(where: { $0.id == updatedSpace.id }) {
+                DispatchQueue.main.async {
+                    self.availableSpaces[index] = updatedSpace
+                }
+            } else {
+                Logger.verbose.log("space with id \(updatedRecord.recordID.recordName) not found, so appending it to existing space list")
+                DispatchQueue.main.async {
+                    self.availableSpaces.append(updatedSpace)
+                }
+            }
         }
     }
 
-    func fetchFromShared(_ recordId: CKRecord.ID) {
+    private func deleteData(recordIds: [CKRecord.ID]) {
+        for recordId in recordIds {
+            guard let index = availableSpaces.firstIndex(where: { $0.id == recordId.recordName }) else {
+                Logger.warning.log("space not found when deleting \(recordId.recordName)")
+                return
+            }
+            DispatchQueue.main.async {
+                self.availableSpaces.remove(at: index)
+            }
+        }
+    }
+
+    private func fetchFromShared(_ recordId: CKRecord.ID) {
         Logger.verbose.log("try to fetch from shared")
         spaceService.fetchShared(recordId)
-            .map { State.spaceFound($0) }
-            .catch { Just(State.error($0)) }
-            .replaceEmpty(with: State.error(Error.noSpaceAvailable))
-            .receive(on: DispatchQueue.main)
-            .assign(to: \.state, onStrong: self)
+            .catchAndExit { error in Logger.error.log(error) }
+            .append(to: \.availableSpaces, onStrong: self)
             .store(in: &cancellables)
     }
 
     func create(space: Space) -> AnyPublisher<Space, Swift.Error> {
-        let spaceResult = spaceService.save(space: space).share().receive(on: DispatchQueue.main)
+        let spaceResult = spaceService.save(space: space)
+            .share()
+            .receive(on: DispatchQueue.main)
 
+        // TODO: check id of created space before adding it
         spaceResult
-            .map { State.spaceFound($0) }
-            .catch { Just(State.error($0)) }
-            .assign(to: \.state, onStrong: self)
+            .catchAndExit({ _ in })
+            .append(to: \.availableSpaces, onStrong: self)
             .store(in: &cancellables)
 
         return spaceResult.eraseToAnyPublisher()
     }
 
-    func deleteCurrentSpace() {
-        guard case SpaceManager.State.spaceFound(let space) = self.state else { return }
+    func delete(space: Space) {
+        guard let index = self.availableSpaces.firstIndex(where: { $0.id == space.id }) else { return }
 
         spaceService.delete(space: space)
             .receive(on: DispatchQueue.main)
@@ -102,24 +102,17 @@ final class SpaceManager: ObservableObject {
                 case .failure(let error):
                     Logger.error.log(error)
                 case .finished:
-                    self.state = .noSpace
+                    self.availableSpaces.remove(at: index)
                 }
             })
             .store(in: &cancellables)
     }
 
-    func saveAndShare() -> AnyPublisher<CKShare, Swift.Error> {
-        guard let space = self.space else {
-            return Fail(outputType: CKShare.self, failure: Error.noSpaceAvailable).eraseToAnyPublisher()
-        }
-
+    func saveAndShare(_ space: Space) -> AnyPublisher<CKShare, Swift.Error> {
         return self.spaceService.saveAndShare(space: space)
     }
 
-    func getShare() -> AnyPublisher<CKShare, Swift.Error> {
-        guard let space = self.space else {
-            return Fail(outputType: CKShare.self, failure: Error.noSpaceAvailable).eraseToAnyPublisher()
-        }
+    func getShare(_ space: Space) -> AnyPublisher<CKShare, Swift.Error> {
         return self.spaceService.getShare(for: space)
     }
 
@@ -127,7 +120,9 @@ final class SpaceManager: ObservableObject {
         self.spaceService.acceptShare(metadata: metadata)
             .sink(
                 receiveFailure: { error in Logger.error.log("error : \(error)") },
-                receiveValue: { [weak self] updatedMetadata in self?.fetchFromShared(updatedMetadata.rootRecordID) })
+                receiveValue: { [weak self] updatedMetadata in self?.fetchFromShared(updatedMetadata.rootRecordID)
+                }
+            )
             .store(in: &cancellables)
     }
 }

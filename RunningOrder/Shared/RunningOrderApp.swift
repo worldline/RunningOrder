@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Combine
 
 let changesService = CloudKitChangesService(container: CloudKitContainer.shared)
 
@@ -38,6 +39,21 @@ struct RunningOrderApp: App {
         dataPublisher: changesService.storyInformationChangesPublisher.eraseToAnyPublisher()
     )
 
+    @StateObject var appStateManager = AppStateManager()
+
+    /// **Warning** This binding can't be used without an active space selection
+    var selectedSpace: Binding<Space> {
+        Binding {
+            if case .spaceSelected(let space) = appStateManager.currentState {
+                return space
+            } else {
+                fatalError()
+            }
+        } set: { newSelection in
+            appStateManager.currentState = .spaceSelected(newSelection)
+        }
+    }
+
     var body: some Scene {
         WindowGroup {
             MainView()
@@ -46,17 +62,36 @@ struct RunningOrderApp: App {
                 .environmentObject(storyManager)
                 .environmentObject(storyInformationManager)
                 .environmentObject(searchManager)
+                .environmentObject(appStateManager)
                 .onAppear {
                     appDelegate.changesService = changesService
                     appDelegate.spaceManager = spaceManager
-                    changesService.fetchChanges()
+                    changesService.initialFetch()
+                    appStateManager.fetchFirstSpace(in: spaceManager)
                 }
         }
         .commands {
-            CommandGroup(replacing: CommandGroupPlacement.newItem) {
-                Button(action: CloudSharingHandler(spaceManager: spaceManager).performCloudSharing, label: {
-                    Label("Partager l'espace de travail", systemImage: "person.crop.circle.badge.plus")
-                })
+            CommandMenu("Espace de travail") {
+                Button("Nouveau") {
+                    appStateManager.currentState = .spaceCreation
+                }
+
+                if case .spaceSelected(let currentSpace) = appStateManager.currentState {
+                    Button("Supprimer") {
+                        spaceManager.delete(space: currentSpace)
+                    }
+
+                    if spaceManager.availableSpaces.count > 1 {
+                        Picker("Changer d'espace", selection: selectedSpace) {
+                            ForEach(spaceManager.availableSpaces, id: \.id) { space in
+                                Text(space.name)
+                                    .tag(space)
+                            }
+                        }
+                    }
+                } else {
+                    Text("Pas d'espace de travail courant")
+                }
             }
             ToolbarCommands()
             SidebarCommands()

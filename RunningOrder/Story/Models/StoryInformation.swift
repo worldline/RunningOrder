@@ -12,10 +12,10 @@ import UniformTypeIdentifiers
 struct StoryInformation {
     let storyId: Story.ID
 
-    var configuration = Configuration()
-    var links: [Link] = []
+    var configuration: Configuration
+    var links: [Link]
 
-    var steps: [String] = []
+    var steps: [String]
 
     var videoUrl: URL? {
         didSet {
@@ -35,11 +35,15 @@ struct StoryInformation {
 
     private var videoExtension: String?
 
-    init(storyId: Story.ID, configuration: Configuration = Configuration(), steps: [String] = [], videoUrl: URL? = nil) {
+    var zoneId: CKRecordZone.ID
+
+    init(storyId: Story.ID, zoneId: CKRecordZone.ID, configuration: Configuration = Configuration(), links: [Link] = [], steps: [String] = [], videoUrl: URL? = nil) {
         self.storyId = storyId
         self.configuration = configuration
+        self.links = links
         self.steps = steps
         self.videoUrl = videoUrl
+        self.zoneId = zoneId
         if let newExtension = videoUrl?.pathExtension, !newExtension.isEmpty {
             self.videoExtension = videoUrl?.pathExtension
         }
@@ -108,10 +112,12 @@ extension StoryInformation: CKRecordable {
         self.videoUrl = videoAsset?.fileURL
         self.videoExtension = try? record.property("videoExtension")
 
+        self.zoneId = record.recordID.zoneID
+
         self.configuration = .init(environments: environments, mocks: mocks, features: features, indicators: indicators, identifiers: identifiers)
     }
 
-    func encode(zoneId: CKRecordZone.ID) -> CKRecord {
+    func encode() -> CKRecord {
         let storyInformationRecord = CKRecord(recordType: RecordType.storyInformation.rawValue, recordID: recordId(zoneId: zoneId))
 
         storyInformationRecord["storyId"] = CKRecord.Reference(recordID: storyRecordId(zoneId: zoneId), action: .deleteSelf)

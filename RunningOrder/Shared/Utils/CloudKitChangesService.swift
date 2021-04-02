@@ -14,7 +14,7 @@ typealias ChangeInformation = (toUpdate: [CKRecord], toDelete: [CKRecord.ID])
 
 final class CloudKitChangesService: ObservableObject {
     private unowned let container: CloudKitContainer
-    private var currentChangeServerToken: CKServerChangeToken?
+    private var currentChangeServerTokens: [CKRecordZone.ID: CKServerChangeToken] = [:]
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -27,11 +27,17 @@ final class CloudKitChangesService: ObservableObject {
         self.container = container
     }
 
-    func fetchChanges() {
-        let zoneId = container.sharedZoneId
+    func initialFetch() {
+        self.fetchChanges(on: container.ownedZoneId)
+        container.owners
+            .forEach(self.fetchChanges(on:))
+    }
+
+    func fetchChanges(on zoneId: CKRecordZone.ID) {
+        let token = currentChangeServerTokens[zoneId]
         let operation = CKFetchRecordZoneChangesOperation(
             recordZoneIDs: [zoneId],
-            configurationsByRecordZoneID: [zoneId: .init(previousServerChangeToken: currentChangeServerToken)]
+            configurationsByRecordZoneID: [zoneId: .init(previousServerChangeToken: token)]
         )
 
         operation.qualityOfService = .userInteractive
@@ -78,17 +84,16 @@ final class CloudKitChangesService: ObservableObject {
             .map(\.serverToken)
             .catchAndExit { [weak self] error in
                 if let error = error as? CKError, error.code == .changeTokenExpired {
-                    self?.currentChangeServerToken = nil
-                    self?.fetchChanges()
+                    self?.currentChangeServerTokens[zoneId] = nil
+                    self?.fetchChanges(on: zoneId)
                 }
                 Logger.error.log(error) // TODO: Error handling
             }
             .merge(with: tokenChanged)
-            .assign(to: \.currentChangeServerToken, onStrong: self)
+            .assign(to: \.currentChangeServerTokens[zoneId], onStrong: self)
             .store(in: &cancellables)
 
-        Logger.debug.log("launch operation")
-        container.currentDatabase.add(operation)
+        container.database(for: zoneId).add(operation)
     }
 
     private var firstCallSpaceEmpty = true

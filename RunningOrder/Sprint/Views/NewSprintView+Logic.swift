@@ -11,7 +11,7 @@ import Combine
 
 extension NewSprintView {
     final class Logic: ObservableObject, TextfieldEditingStringHandler {
-        let spaceId: Space.ID
+        let space: Space
         @Binding var createdSprint: Sprint?
 
         @Published var name: String = ""
@@ -21,18 +21,19 @@ extension NewSprintView {
 
         var areAllFieldsFilled: Bool { number != nil && !name.isEmpty }
 
-        init(spaceId: Space.ID, createdSprint: Binding<Sprint?>) {
-            self.spaceId = spaceId
+        init(space: Space, createdSprint: Binding<Sprint?>) {
+            self.space = space
             self._createdSprint = createdSprint
         }
 
         func createSprint() {
             guard areAllFieldsFilled else { return }
             self.createdSprint = Sprint(
-                spaceId: spaceId,
+                spaceId: space.id,
                 number: number!,
                 name: name,
-                colorIdentifier: Color.Identifier.sprintColors.randomElement()!.rawValue
+                colorIdentifier: Color.Identifier.sprintColors.randomElement()!.rawValue,
+                zoneId: space.zoneId
             )
             dismissSubject.send(())
         }

@@ -7,12 +7,15 @@
 //
 
 import Foundation
+import CloudKit.CKRecordZone
 
 struct Sprint {
     let spaceId: Space.ID
     let number: Int
     let name: String
     let colorIdentifier: String
+
+    var zoneId: CKRecordZone.ID
 }
 
 extension Sprint {

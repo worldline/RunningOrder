@@ -48,12 +48,12 @@ final class StoryInformationManager: ObservableObject {
             .store(in: &cancellables)
     }
 
-    func informations(for storyId: Story.ID) -> Binding<StoryInformation> {
+    func informations(for story: Story) -> Binding<StoryInformation> {
         return Binding {
-            self.storyInformations[storyId] ?? StoryInformation(storyId: storyId)
+            self.storyInformations[story.id] ?? StoryInformation(storyId: story.id, zoneId: story.zoneId)
         } set: { newValue in
-            self.storyInformations[storyId] = newValue
-            self.storyInformationsBuffer[storyId] = newValue
+            self.storyInformations[story.id] = newValue
+            self.storyInformationsBuffer[story.id] = newValue
         }
     }
 

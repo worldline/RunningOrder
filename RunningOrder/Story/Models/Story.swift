@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CloudKit.CKRecordZone
 
 struct Story {
     let sprintId: Sprint.ID
@@ -15,6 +16,7 @@ struct Story {
     let epic: String
 
     let creatorReference: UserReference?
+    let zoneId: CKRecordZone.ID
 }
 
 extension Story {

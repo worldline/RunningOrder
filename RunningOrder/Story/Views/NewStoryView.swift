@@ -12,8 +12,8 @@ struct NewStoryView: View {
     @ObservedObject var logic: Logic
     @Environment(\.presentationMode) var presentationMode
 
-    init(sprintId: Sprint.ID, createdStory: Binding<Story?>) {
-        self.logic = Logic(sprintId: sprintId, createdStory: createdStory)
+    init(sprint: Sprint, createdStory: Binding<Story?>) {
+        self.logic = Logic(sprint: sprint, createdStory: createdStory)
     }
 
     var body: some View {
@@ -53,6 +53,6 @@ struct NewStoryView: View {
 
 struct NewStoryView_Previews: PreviewProvider {
     static var previews: some View {
-        NewStoryView(sprintId: Sprint.Previews.sprints[0].id, createdStory: .constant(nil))
+        NewStoryView(sprint: Sprint.Previews.sprints[0], createdStory: .constant(nil))
     }
 }

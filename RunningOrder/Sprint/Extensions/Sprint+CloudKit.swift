@@ -16,9 +16,10 @@ extension Sprint: CKRecordable {
         self.name = try record.property("name")
         self.number = try record.property("number")
         self.colorIdentifier = try record.property("colorIdentifier")
+        self.zoneId = record.recordID.zoneID
     }
 
-    func encode(zoneId: CKRecordZone.ID) -> CKRecord {
+    func encode() -> CKRecord {
         let sprintRecord = CKRecord(recordType: RecordType.sprint.rawValue, recordID: recordId(zoneId: zoneId))
 
         sprintRecord["spaceId"] = CKRecord.Reference(recordID: spaceRecordId(zoneId: zoneId), action: .deleteSelf)

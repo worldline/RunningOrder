@@ -15,7 +15,12 @@ class StoryInformationService {
     let cloudkitContainer = CloudKitContainer.shared
 
     func save(storyInformations: [StoryInformation]) -> AnyPublisher<[StoryInformation], Swift.Error> {
-        let storyInformationRecords = storyInformations.map { $0.encode(zoneId: cloudkitContainer.sharedZoneId) }
+        guard !storyInformations.isEmpty else {
+            return Fail(error: BasicError.noValue)
+                .eraseToAnyPublisher()
+        }
+
+        let storyInformationRecords = storyInformations.map { $0.encode() }
 
         let saveOperation = CKModifyRecordsOperation()
         saveOperation.recordsToSave = storyInformationRecords
@@ -26,7 +31,7 @@ class StoryInformationService {
         saveOperation.configuration = configuration
         saveOperation.savePolicy = .allKeys // save policy to handle update
 
-        cloudkitContainer.currentDatabase.add(saveOperation)
+        cloudkitContainer.database(for: storyInformations.first!.zoneId).add(saveOperation)
 
         return saveOperation.publishers().perRecord
             .tryMap { try StoryInformation.init(from: $0) }

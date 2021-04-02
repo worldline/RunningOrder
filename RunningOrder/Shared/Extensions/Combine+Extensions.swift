@@ -37,6 +37,12 @@ extension Publisher {
             }
         }, receiveValue: receiveValue)
     }
+
+    func unwrap<Element>() -> Publishers.Map<Publishers.Filter<Self>, Element> where Output == Element? {
+        return self
+            .filter { $0 != nil }
+            .map(\.unsafelyUnwrapped)
+    }
 }
 
 extension Publisher where Self.Failure == Never {

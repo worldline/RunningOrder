@@ -9,114 +9,11 @@
 import Foundation
 import CloudKit
 import Combine
+import struct SwiftUI.AppStorage
 
-extension CloudKitContainer {
-    enum Mode {
-        case owner
-        case shared(ownerName: String)
-
-        var isOwner: Bool {
-            switch self {
-            case .shared:
-                return false
-            case .owner:
-                return true
-            }
-        }
-    }
-}
-
-class CloudKitContainer {
-    private static let createdCustomZoneKey = "CloudKitCreatedSharedZone"
-    private static var createdCustomZone: Bool {
-        get { return UserDefaults.standard.bool(forKey: createdCustomZoneKey) }
-        set { UserDefaults.standard.set(newValue, forKey: createdCustomZoneKey) }
-    }
-
-    private static let sharedOwnerNameKey = "CloudKitSharedOwnerName"
-    private static var sharedOwnerName: String? {
-        get { return UserDefaults.standard.string(forKey: sharedOwnerNameKey) }
-        set { UserDefaults.standard.set(newValue, forKey: sharedOwnerNameKey) }
-    }
-
-    private static let zoneName = "SharedZone"
-
-    private let ownedZoneId = CKRecordZone.ID(zoneName: CloudKitContainer.zoneName, ownerName: CKCurrentUserDefaultName)
-
-    private var cancellables = Set<AnyCancellable>()
-
-    static let shared = CloudKitContainer() // singleton
-
-    let container = CKContainer(identifier: "iCloud.com.worldline.RunningOrder")
-
-    var sharedZoneId: CKRecordZone.ID {
-        switch mode {
-        case .owner:
-            return ownedZoneId
-        case .shared(let ownerName):
-            return CKRecordZone.ID(zoneName: CloudKitContainer.zoneName, ownerName: ownerName)
-        }
-    }
-
-    var currentDatabase: CKDatabase {
-        switch mode {
-        case .owner:
-            return container.privateCloudDatabase
-        case .shared:
-            return container.sharedCloudDatabase
-        }
-    }
-
-    var mode: Mode {
-        didSet {
-            switch mode {
-            case .owner:
-                Self.sharedOwnerName = nil
-            case .shared(let ownerName):
-                Self.sharedOwnerName = ownerName
-            }
-
-            if mode.isOwner != oldValue.isOwner {
-                enableNotificationsIfNeeded()
-                askPermissionForDiscoverabilityIfNeeded()
-            }
-        }
-    }
-
-    // MARK: -
-
-    init() {
-        if let sharedOwnerName = CloudKitContainer.sharedOwnerName {
-            mode = .shared(ownerName: sharedOwnerName)
-        } else {
-            mode = .owner
-        }
-
-        createCustomZoneIfNeeded()
-        enableNotificationsIfNeeded()
-        askPermissionForDiscoverabilityIfNeeded()
-    }
-
-    private func createCustomZoneIfNeeded() {
-        guard mode.isOwner && !CloudKitContainer.createdCustomZone else { return }
-
-        Logger.verbose.log("shared zone creation")
-        let sharedZone = CKRecordZone(zoneID: ownedZoneId)
-        let zoneOperation = CKModifyRecordZonesOperation()
-        zoneOperation.recordZonesToSave = [sharedZone]
-
-        zoneOperation.modifyRecordZonesCompletionBlock = { _, _, error in
-            if let error = error {
-                Logger.error.log("error while creating custom zone : \(error)")
-            } else {
-                CloudKitContainer.createdCustomZone = true
-            }
-        }
-        container.privateCloudDatabase.add(zoneOperation)
-    }
-
-    private func subscriptionId(for database: CKDatabase) -> CKSubscription.ID {
-        switch database.databaseScope {
+fileprivate extension CKDatabase {
+    var subscriptionId: CKSubscription.ID {
+        switch self.databaseScope {
         case .private:
             return "privateDBSubscription"
         case .public:
@@ -124,12 +21,27 @@ class CloudKitContainer {
         case .shared:
             return "sharedDBSubscription"
         @unknown default:
-            fatalError("unknown case \(database.databaseScope)")
+            fatalError("unknown case \(self.databaseScope)")
         }
     }
+}
 
-    private func createSubscriptions(for database: CKDatabase) -> AnyPublisher<Never, Error> {
-        let subscription = CKDatabaseSubscription(subscriptionID: subscriptionId(for: database))
+final class CloudKitContainer {
+    @AppStorage("CloudKitCreatedSharedZone") private static var createdCustomZone: Bool = false
+
+    private static let zoneName = "SharedZone"
+
+    let ownedZoneId = CKRecordZone.ID(
+        zoneName: CloudKitContainer.zoneName,
+        ownerName: CKCurrentUserDefaultName
+    )
+
+    let cloudContainer = CKContainer(identifier: "iCloud.com.worldline.RunningOrder")
+
+    private var cancellables = Set<AnyCancellable>()
+
+    private static func createSubscriptions(for database: CKDatabase) -> AnyPublisher<Never, Error> {
+        let subscription = CKDatabaseSubscription(subscriptionID: database.subscriptionId)
         let notificationInfo = CKSubscription.NotificationInfo()
         notificationInfo.shouldSendContentAvailable = true
         subscription.notificationInfo = notificationInfo
@@ -148,28 +60,10 @@ class CloudKitContainer {
             .eraseToAnyPublisher()
     }
 
-    // MARK: -
-
-    func resetModeIfNeeded() {
-        if !self.mode.isOwner {
-            self.mode = .owner
-        }
-    }
-
-    func enableNotificationsIfNeeded() {
-        let database = currentDatabase
-
-        return database.fetchAllSubscriptions()
-            .filter { $0.isEmpty }
-            .flatMap { [weak self] _ in return self?.createSubscriptions(for: database) ?? Empty(completeImmediately: true, outputType: Never.self, failureType: Error.self).eraseToAnyPublisher() }
-            .sink(receiveFailure: { error in Logger.error.log(error) })
-            .store(in: &cancellables)
-    }
-
-    func askPermissionForDiscoverabilityIfNeeded() {
+    private static func askPermissionForDiscoverabilityIfNeeded(in container: CKContainer) -> AnyCancellable {
         container.status(forApplicationPermission: .userDiscoverability)
             .filter { $0 == .initialState }
-            .flatMap { _ in self.container.requestApplicationPermission(applicationPermission: .userDiscoverability) }
+            .flatMap { _ in container.requestApplicationPermission(applicationPermission: .userDiscoverability) }
             .sink(receiveFailure: { error in
                 Logger.error.log("error at requesting permission : \(error)")
             }, receiveValue: { status in
@@ -186,13 +80,90 @@ class CloudKitContainer {
                     break
                 }
             })
+    }
+
+    private func createCustomZoneIfNeeded() {
+        guard !CloudKitContainer.createdCustomZone else { return }
+
+        Logger.verbose.log("shared zone creation")
+        let sharedZone = CKRecordZone(zoneID: ownedZoneId)
+        let zoneOperation = CKModifyRecordZonesOperation()
+        zoneOperation.recordZonesToSave = [sharedZone]
+
+        zoneOperation.modifyRecordZonesCompletionBlock = { _, _, error in
+            if let error = error {
+                Logger.error.log("error while creating custom zone : \(error)")
+            } else {
+                CloudKitContainer.createdCustomZone = true
+            }
+        }
+        cloudContainer.privateCloudDatabase.add(zoneOperation)
+    }
+
+    func database(for zoneId: CKRecordZone.ID) -> CKDatabase {
+        let scope: CKDatabase.Scope = zoneId.ownerName == CKCurrentUserDefaultName ? .private : .shared
+        return cloudContainer.database(with: scope)
+    }
+
+    func enableNotificationsIfNeeded(for zoneId: CKRecordZone.ID) {
+        let databaseToEnable = database(for: zoneId)
+        databaseToEnable.fetchAllSubscriptions()
+            .filter { $0.isEmpty }
+            .flatMap { _ in Self.createSubscriptions(for: databaseToEnable) }
+            .sink(receiveFailure: { error in Logger.error.log(error) })
             .store(in: &cancellables)
     }
 
-    func validateNotification(_ userInfo: [String: Any]) -> Bool {
-        guard let notification = CKNotification(fromRemoteNotificationDictionary: userInfo) else { return false }
+    static var shared: CloudKitContainer = .init()
 
-        return notification.subscriptionID == subscriptionId(for: currentDatabase)
+    private init() {
+        createCustomZoneIfNeeded()
+
+        Self.askPermissionForDiscoverabilityIfNeeded(in: cloudContainer)
+            .store(in: &cancellables)
+    }
+
+    // resultats possible : pas validé, valide database privé, valide database shared
+    func validateNotification(_ userInfo: [String: Any]) -> Bool {
+        guard CKNotification(fromRemoteNotificationDictionary: userInfo) != nil else { return false }
+
+//        if self.cloudContainer.privateCloudDatabase.subscriptionId == notification.subscriptionID {
+//
+//        }
+        return true
+    }
+
+    @Stored(fileName: "owners", directory: FileManager.SearchPathDirectory.applicationSupportDirectory) private var ownerData: Data?
+
+    private var ownerNames: Set<String> {
+        get {
+            guard let data = ownerData else { return .init() }
+
+            do {
+                return try JSONDecoder().decode(Set<String>.self, from: data)
+            } catch {
+                Logger.error.log(error)
+                return .init()
+            }
+        }
+
+        set {
+            do {
+                ownerData = try JSONEncoder().encode(newValue)
+            } catch {
+                Logger.error.log(error)
+            }
+        }
+    }
+
+    var owners: [CKRecordZone.ID] {
+        ownerNames.map {
+            CKRecordZone.ID(zoneName: Self.zoneName, ownerName: $0)
+        }
+    }
+
+    func saveOwnerName(_ ownerName: String) {
+        ownerNames.insert(ownerName)
     }
 }
 

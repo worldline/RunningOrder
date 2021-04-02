@@ -54,7 +54,7 @@ extension StoryList {
                 }
             }
             .sheet(isPresented: $logic.isAddStoryViewDisplayed) {
-                NewStoryView(sprintId: sprint.id, createdStory: logic.createdStoryBinding)
+                NewStoryView(sprint: sprint, createdStory: logic.createdStoryBinding)
             }
         }
     }

@@ -21,7 +21,7 @@ extension SprintList {
         var body: some View {
             List {
                 Section(header: Text("Active Sprints")) {
-                    ForEach(sprintManager.sprints, id: \.self) { sprint in
+                    ForEach(sprintManager.sprints(for: space.id), id: \.self) { sprint in
                         NavigationLink(
                             destination: StoryList(sprint: sprint),
                             label: {
@@ -61,7 +61,7 @@ extension SprintList {
             .padding(.all, 20.0)
             .buttonStyle(PlainButtonStyle()), alignment: .bottom)
             .sheet(isPresented: $logic.isNewSprintModalPresented) {
-                NewSprintView(spaceId: space.id, createdSprint: self.logic.createdSprintBinding)
+                NewSprintView(space: space, createdSprint: self.logic.createdSprintBinding)
             }
         }
     }
@@ -78,7 +78,7 @@ struct SprintList: View {
 
 struct SprintList_Previews: PreviewProvider {
     static var previews: some View {
-        SprintList(space: Space(name: "toto"))
+        SprintList(space: Space(name: "toto", zoneId: CKRecordZone.ID()))
             .environmentObject(SprintManager.preview)
             .frame(width: 250)
     }

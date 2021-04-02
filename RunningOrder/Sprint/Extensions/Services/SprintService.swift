@@ -15,7 +15,7 @@ class SprintService {
     let cloudkitContainer = CloudKitContainer.shared
 
     func save(sprint: Sprint) -> AnyPublisher<Sprint, Swift.Error> {
-        let sprintRecord = sprint.encode(zoneId: cloudkitContainer.sharedZoneId)
+        let sprintRecord = sprint.encode()
 
         let saveOperation = CKModifyRecordsOperation()
         saveOperation.recordsToSave = [sprintRecord]
@@ -25,7 +25,7 @@ class SprintService {
 
         saveOperation.configuration = configuration
 
-        cloudkitContainer.currentDatabase.add(saveOperation)
+        cloudkitContainer.database(for: sprint.zoneId).add(saveOperation)
 
         return saveOperation.publishers().perRecord
             .tryMap { try Sprint.init(from: $0) }
@@ -33,7 +33,7 @@ class SprintService {
     }
 
     func delete(sprint: Sprint) -> AnyPublisher<Never, Swift.Error> {
-        let record = sprint.encode(zoneId: cloudkitContainer.sharedZoneId)
+        let record = sprint.encode()
         let deleteOperation = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: [record.recordID])
 
         let configuration = CKOperation.Configuration()
@@ -41,7 +41,7 @@ class SprintService {
 
         deleteOperation.configuration = configuration
 
-        cloudkitContainer.currentDatabase.add(deleteOperation)
+        cloudkitContainer.database(for: sprint.zoneId).add(deleteOperation)
 
         return deleteOperation.publishers()
             .completion

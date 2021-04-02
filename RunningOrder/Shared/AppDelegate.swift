@@ -46,17 +46,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSApplication.shared.registerForRemoteNotifications()
     }
 
-    @IBAction func deleteSpace(sender: Any) {
-        guard let spaceManager = spaceManager else { return }
-
-        spaceManager.deleteCurrentSpace()
-        // TODO: delete local cache
-        cloudkitContainer.resetModeIfNeeded()
-    }
-
     func application(_ application: NSApplication, didReceiveRemoteNotification userInfo: [String: Any]) {
+        // TODO: re do this
         guard cloudkitContainer.validateNotification(userInfo) else { return }
 
-        changesService?.fetchChanges()
+        // how to fetch the recordZoneId ??
+//        changesService?.fetchChanges(on: )
     }
 }

@@ -15,7 +15,7 @@ class StoryService {
     let cloudkitContainer = CloudKitContainer.shared
 
     func save(story: Story) -> AnyPublisher<Story, Swift.Error> {
-        let storyRecord = story.encode(zoneId: cloudkitContainer.sharedZoneId)
+        let storyRecord = story.encode()
 
         let saveOperation = CKModifyRecordsOperation()
         saveOperation.recordsToSave = [storyRecord]
@@ -25,7 +25,7 @@ class StoryService {
 
         saveOperation.configuration = configuration
 
-        cloudkitContainer.currentDatabase.add(saveOperation)
+        cloudkitContainer.database(for: story.zoneId).add(saveOperation)
 
         return saveOperation.publishers().perRecord
             .tryMap { try Story.init(from: $0) }
@@ -33,7 +33,7 @@ class StoryService {
     }
 
     func delete(story: Story) -> AnyPublisher<Never, Swift.Error> {
-        let record = story.encode(zoneId: cloudkitContainer.sharedZoneId)
+        let record = story.encode()
         let deleteOperation = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: [record.recordID])
 
         let configuration = CKOperation.Configuration()
@@ -41,7 +41,7 @@ class StoryService {
 
         deleteOperation.configuration = configuration
 
-        cloudkitContainer.currentDatabase.add(deleteOperation)
+        cloudkitContainer.database(for: story.zoneId).add(deleteOperation)
 
         return deleteOperation.publishers()
             .completion

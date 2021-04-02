@@ -13,11 +13,18 @@ extension MainView {
     final class Logic: ObservableObject {
         private var cancellables = Set<AnyCancellable>()
         private unowned var spaceManager: SpaceManager
+        private unowned var appStateManager: AppStateManager
 
-        var createdSpaceBinding: Binding<Space?> { Binding(callback: self.addSpace(_:)) }
+        var createdSpaceBinding: Binding<Space?> {
+            Binding(callback: { newSpace in
+                self.addSpace(newSpace)
+                self.appStateManager.currentState = .spaceSelected(newSpace)
+            })
+        }
 
-        init(spaceManager: SpaceManager) {
+        init(spaceManager: SpaceManager, appStateManager: AppStateManager) {
             self.spaceManager = spaceManager
+            self.appStateManager = appStateManager
         }
 
         private func addSpace(_ space: Space) {

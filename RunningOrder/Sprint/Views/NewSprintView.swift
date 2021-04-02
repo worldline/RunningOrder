@@ -12,8 +12,8 @@ struct NewSprintView: View {
     @ObservedObject var logic: Logic
     @Environment(\.presentationMode) var presentationMode
 
-    init(spaceId: Space.ID, createdSprint: Binding<Sprint?>) {
-        self.logic = Logic(spaceId: spaceId, createdSprint: createdSprint)
+    init(space: Space, createdSprint: Binding<Sprint?>) {
+        self.logic = Logic(space: space, createdSprint: createdSprint)
     }
 
     var body: some View {
@@ -49,6 +49,6 @@ struct NewSprintView: View {
 
 struct NewSprintView_Previews: PreviewProvider {
     static var previews: some View {
-        NewSprintView(spaceId: "", createdSprint: .constant(nil))
+        NewSprintView(space: Space(name: "", zoneId: CKRecordZone.ID()), createdSprint: .constant(nil))
     }
 }

@@ -18,6 +18,7 @@ extension Story: CKRecordable {
 
         let sprintReference: CKRecord.Reference = try record.property("sprintId")
         self.sprintId = sprintReference.recordID.recordName
+        self.zoneId = record.recordID.zoneID
 
         if let id = record.creatorUserRecordID {
             self.creatorReference = UserReference(recordId: id)
@@ -26,7 +27,7 @@ extension Story: CKRecordable {
         }
     }
 
-    func encode(zoneId: CKRecordZone.ID) -> CKRecord {
+    func encode() -> CKRecord {
         let storyRecord = CKRecord(recordType: RecordType.story.rawValue, recordID: recordId(zoneId: zoneId))
 
         storyRecord["name"] = self.name

@@ -14,7 +14,7 @@ struct StoryDetail: View {
     @EnvironmentObject var storyInformationManager: StoryInformationManager
     @EnvironmentObject var storyManager: StoryManager
 
-    var informationBinding: Binding<StoryInformation> { storyInformationManager.informations(for: story.id) }
+    var informationBinding: Binding<StoryInformation> { storyInformationManager.informations(for: story) }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -43,7 +43,6 @@ struct StoryDetail: View {
 
             ToolbarItems.deleteStory(storyManager: storyManager, story: story)
         }
-        .onAppear { storyManager.getUser(creatorOf: story) }
     }
 }
 

@@ -43,6 +43,6 @@ private enum DisplayMode: LocalizedStringKey, CaseIterable {
 
 struct ConfigurationView_Previews: PreviewProvider {
     static var previews: some View {
-        StepsView(storyInformation: .constant(StoryInformation(storyId: "")))
+        StepsView(storyInformation: .constant(StoryInformation(storyId: "", zoneId: CKRecordZone.ID())))
     }
 }

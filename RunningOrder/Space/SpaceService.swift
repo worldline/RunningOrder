@@ -23,7 +23,7 @@ class SpaceService {
 
     func fetchShared(_ id: CKRecord.ID) -> AnyPublisher<Space, Swift.Error> {
         let operation = CKFetchRecordsOperation(recordIDs: [id])
-        cloudkitContainer.container.sharedCloudDatabase.add(operation)
+        cloudkitContainer.cloudContainer.sharedCloudDatabase.add(operation)
 
         return operation.publishers()
             .perRecord
@@ -45,7 +45,7 @@ class SpaceService {
 
         saveOperation.configuration = configuration
 
-        cloudkitContainer.currentDatabase.add(saveOperation)
+        cloudkitContainer.database(for: space.zoneId).add(saveOperation)
 
         return saveOperation.publishers().perRecord
             .tryMap { Space(underlyingRecord: $0) }
@@ -58,7 +58,7 @@ class SpaceService {
         }
 
         let operation = CKFetchRecordsOperation(recordIDs: [existingShareReference.recordID])
-        cloudkitContainer.currentDatabase.add(operation)
+        cloudkitContainer.database(for: space.zoneId).add(operation)
         return operation.publishers()
             .completion
             .compactMap { $0?[existingShareReference.recordID] as? CKShare }
@@ -77,7 +77,7 @@ class SpaceService {
 
         saveOperation.configuration = configuration
 
-        cloudkitContainer.currentDatabase.add(saveOperation)
+        cloudkitContainer.database(for: space.zoneId).add(saveOperation)
 
         return saveOperation.publishers()
             .completion
@@ -88,7 +88,8 @@ class SpaceService {
     func delete(space: Space) -> AnyPublisher<Never, Swift.Error> {
         let deleteOperation = CKModifyRecordsOperation()
         let recordIdToDelete: CKRecord.ID
-        if cloudkitContainer.mode.isOwner {
+
+        if space.underlyingRecord.recordID.zoneID.ownerName == CKCurrentUserDefaultName {
             recordIdToDelete = space.underlyingRecord.recordID
         } else {
             if let shareId = space.underlyingRecord.share?.recordID {
@@ -97,7 +98,6 @@ class SpaceService {
                 Logger.error.log("couldn't find the id of the share this way")
                 return Fail(error: Error.noShareFound).eraseToAnyPublisher()
             }
-
         }
         deleteOperation.recordIDsToDelete = [recordIdToDelete]
 
@@ -106,7 +106,7 @@ class SpaceService {
 
         deleteOperation.configuration = configuration
 
-        cloudkitContainer.currentDatabase.add(deleteOperation)
+        cloudkitContainer.database(for: space.zoneId).add(deleteOperation)
 
         return deleteOperation.publishers()
             .completion
@@ -121,12 +121,8 @@ class SpaceService {
 
         pub.sink(
             receiveFailure: { _ in },
-            receiveValue: { [weak self] updatedMetadata in
-                if let ownerId = updatedMetadata.ownerIdentity.userRecordID?.recordName {
-                    self?.cloudkitContainer.mode = .shared(ownerName: ownerId)
-                } else {
-                    Logger.error.log("no owner !")
-                }
+            receiveValue: { [weak cloudkitContainer = self.cloudkitContainer] updatedMetadata in
+                cloudkitContainer?.saveOwnerName(updatedMetadata.rootRecordID.zoneID.ownerName)
             })
             .store(in: &cancellables)
 

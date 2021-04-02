@@ -39,6 +39,6 @@ struct ConfigurationView: View {
 
 struct StepsView_Previews: PreviewProvider {
     static var previews: some View {
-        ConfigurationView(storyInformation: .constant(StoryInformation(storyId: "")))
+        ConfigurationView(storyInformation: .constant(StoryInformation(storyId: "", zoneId: CKRecordZone.ID())))
     }
 }

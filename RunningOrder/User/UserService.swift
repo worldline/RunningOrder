@@ -15,7 +15,7 @@ class UserService {
     let cloudkitContainer = CloudKitContainer.shared
 
     func fetch(userReference: UserReference) -> AnyPublisher<User, Swift.Error> {
-        cloudkitContainer.container.discoverUserIdentity(withUserRecordID: userReference.recordId)
+        cloudkitContainer.cloudContainer.discoverUserIdentity(withUserRecordID: userReference.recordId)
             .map { identity in
                 if let components = identity.nameComponents {
                     Logger.debug.log(components)

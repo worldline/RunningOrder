@@ -9,6 +9,8 @@
 import SwiftUI
 
 struct WelcomeView: View {
+    @EnvironmentObject var appStateManager: AppStateManager
+    @EnvironmentObject var spaceManager: SpaceManager
 
     @Binding var space: Space?
     @State private var newSpaceName = ""
@@ -35,7 +37,7 @@ struct WelcomeView: View {
 
                         guard !hasErrorOnField else { return }
 
-                        space = Space(name: newSpaceName)
+                        space = Space(name: newSpaceName, zoneId: CloudKitContainer.shared.ownedZoneId)
                     }
                 }
 
@@ -51,6 +53,18 @@ struct WelcomeView: View {
                             .padding(.horizontal, 10)
                             .background(Color(NSColor.controlBackgroundColor)))
             Text("Just open a link from your team to access this space")
+
+            if let backSpace = spaceManager.availableSpaces.last {
+                Divider()
+
+                HStack {
+                    Spacer()
+
+                    Button("Go back to previous space") {
+                        appStateManager.currentState = .spaceSelected(backSpace)
+                    }
+                }
+            }
         }
         .padding()
         .background(Color(NSColor.controlBackgroundColor))

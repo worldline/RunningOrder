@@ -11,7 +11,7 @@ import Combine
 
 extension NewStoryView {
     final class Logic: ObservableObject, TextfieldEditingStringHandler {
-        let sprintId: Sprint.ID
+        let sprint: Sprint
         @Binding var createdStory: Story?
 
         @Published var name = ""
@@ -24,8 +24,8 @@ extension NewStoryView {
             return !ticketID.isEmpty && !name.isEmpty && !epic.isEmpty
         }
 
-        init(sprintId: Sprint.ID, createdStory: Binding<Story?>) {
-            self.sprintId = sprintId
+        init(sprint: Sprint, createdStory: Binding<Story?>) {
+            self.sprint = sprint
             self._createdStory = createdStory
         }
 
@@ -36,11 +36,12 @@ extension NewStoryView {
             // When this record is created, it is sent to cloudkit, that updates it. With the notification subscription, we receive the new record, and update this story with the user reference.
             // TLDR; no need to set the creatorReference ourselves.
             let newStory = Story(
-                sprintId: sprintId,
+                sprintId: sprint.id,
                 name: name,
                 ticketReference: ticketID,
                 epic: epic,
-                creatorReference: nil
+                creatorReference: nil,
+                zoneId: sprint.zoneId
             )
             self.createdStory = newStory
             dismissSubject.send(())

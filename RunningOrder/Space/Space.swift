@@ -27,7 +27,11 @@ struct Space {
     }
 
     private(set) var underlyingRecord: CKRecord
+
+    var zoneId: CKRecordZone.ID { underlyingRecord.recordID.zoneID }
 }
+
+extension Space: Hashable {}
 
 extension Space {
     // swiftlint:disable:next type_name
@@ -35,9 +39,14 @@ extension Space {
 }
 
 extension Space {
-    init(name: String) {
-        let id = CKRecord.ID(recordName: UUID().uuidString, zoneID: CloudKitContainer.shared.sharedZoneId)
-        let record = CKRecord(recordType: RecordType.space.rawValue, recordID: id)
+    init(name: String, zoneId: CKRecordZone.ID) {
+        let record = CKRecord(
+            recordType: RecordType.space.rawValue,
+            recordID: CKRecord.ID(
+                recordName: UUID().uuidString,
+                zoneID: zoneId
+            )
+        )
         record["name"] = name
         self.underlyingRecord = record
     }
