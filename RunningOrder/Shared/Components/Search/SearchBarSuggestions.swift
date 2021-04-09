@@ -29,6 +29,8 @@ extension SearchBarSuggestions {
                     if !logic.filteredStories.isEmpty {
                         ForEach(logic.filteredSearchSections, id: \.id) { section in
                             Section(header: Text(section.name).font(.headline).bold()) {
+                                Divider()
+
                                 ForEach(section.items) { item in
                                     SuggestionRow(imageName: item.icon, suggestion: item.name)
                                         .onTapGesture {

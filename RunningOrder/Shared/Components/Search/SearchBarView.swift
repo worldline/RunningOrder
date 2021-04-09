@@ -11,16 +11,23 @@ import SwiftUI
 struct SearchBarView: View {
     @Binding var inputText: String
     @State private var isFocused = false
+    @State private var showSelectedView = false
     @EnvironmentObject var searchManager: SearchManager
 
     var body: some View {
         HStack {
-            TextField("Search story", text: $inputText) { editing in
-                isFocused = editing
-                if editing {
-                    searchManager.selectedSearchItem = nil
+            ZStack(alignment: .leading) {
+                if let selected = searchManager.selectedSearchItem?.name {
+                    Text("\(selected)").onAppear(perform: {
+                        inputText = ""
+                    }).padding().foregroundColor(.red)
+                    TextField(searchManager.isItemSelected ? "" : "Search", text: $inputText)
+
+                } else {
+                    TextField(searchManager.isItemSelected ? "" : "Search", text: $inputText)
                 }
             }
+
             .overlay(
                 HStack {
 //                    Image(systemName: "magnifyingglass")
@@ -28,7 +35,7 @@ struct SearchBarView: View {
 //                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 //                        .padding(.leading, 8)
                     Spacer()
-                    if inputText.count > 0 {
+                    if !inputText.isEmpty {
                         Button(action: {
                             self.inputText = ""
                             searchManager.selectedSearchItem = nil
@@ -42,10 +49,9 @@ struct SearchBarView: View {
                     }
                 }
             )
-            .frame(width: 300)
             .textFieldStyle(RoundedBorderTextFieldStyle())
         }
-        .popover(isPresented: Binding(get: { isFocused && (searchManager.selectedSearchItem == nil)},
+        .popover(isPresented: Binding(get: { !inputText.isEmpty && !(searchManager.isItemSelected)},
                                       set: { _ in})) {
             SearchBarSuggestions(searchText: $inputText)
         }
@@ -78,3 +84,15 @@ struct SearchBarView_Previews: PreviewProvider {
         SearchBarView(inputText: .constant(""))
     }
 }
+
+extension Binding {
+    func onChange(_ handler: @escaping (Value) -> Void) -> Binding<Value> {
+        Binding { () -> Value in
+            self.wrappedValue
+        } set: { newValue in
+            self.wrappedValue = newValue
+            handler(newValue)
+        }
+    }
+}
+

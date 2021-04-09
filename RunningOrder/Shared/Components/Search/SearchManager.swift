@@ -8,7 +8,12 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 final class SearchManager: ObservableObject {
     @Published var selectedSearchItem: SearchItem?
+
+    var isItemSelected: Bool {
+        selectedSearchItem != nil
+    }
 }

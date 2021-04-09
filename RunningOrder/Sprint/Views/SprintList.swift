@@ -22,6 +22,8 @@ extension SprintList {
 
         var body: some View {
             List {
+                SearchBarView(inputText: $searchText)
+
                 Section(header: Text("Active Sprints")) {
                     // show view
                     ForEach(sprintManager.sprints, id: \.self) { sprint in

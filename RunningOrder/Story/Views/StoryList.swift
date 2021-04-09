@@ -42,7 +42,7 @@ extension StoryList {
                         }
                     }
                 }
-                .navigationTitle("Sprint \(sprint.number) - \(sprint.name)")
+            .navigationTitle(logic.isSearchFound ? "Searching" : "Sprint \(sprint.number) - \(sprint.name)")
                 .frame(minWidth: 100, idealWidth: 300)
                 .toolbar {
                     ToolbarItems.sidebarItem

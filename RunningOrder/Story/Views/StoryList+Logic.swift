@@ -21,7 +21,7 @@ extension StoryList {
         var createdStoryBinding: Binding<Story?> { Binding(callback: self.addStory(_:)) }
 
         var isSearchFound: Bool {
-            searchManager.selectedSearchItem != nil
+            searchManager.isItemSelected
         }
 
         init(storyManager: StoryManager, searchManager: SearchManager, sprintManager: SprintManager) {

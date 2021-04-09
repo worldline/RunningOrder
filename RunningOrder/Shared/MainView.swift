@@ -12,7 +12,6 @@ extension MainView {
     private struct InternalView: View {
         @EnvironmentObject var spaceManager: SpaceManager
         @ObservedObject var logic: Logic
-        @State private var searchText: String = ""
 
         init(logic: Logic) {
             self.logic = logic
@@ -72,8 +71,6 @@ extension MainView {
                                     Image(systemName: "trash")
                                 }
                                 .disabled(true)
-
-                                SearchBarView(inputText: $searchText)
                             }
                         }
                 }
