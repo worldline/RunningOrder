@@ -36,8 +36,13 @@ extension MainView {
                         alignment: .center
                     )
             case .error(let error):
-                Text("error : \(error)" as String)
-                    .padding()
+                VStack {
+                    Text("error : \(error)" as String)
+                    Button("Ressayer") {
+                        appStateManager.fetchFirstSpace(in: spaceManager)
+                    }
+                }
+                .padding()
 
             case .spaceCreation:
                 WelcomeView(space: logic.createdSpaceBinding)

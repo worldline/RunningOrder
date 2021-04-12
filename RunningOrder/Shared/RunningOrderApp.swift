@@ -76,6 +76,8 @@ struct RunningOrderApp: App {
                     appStateManager.currentState = .spaceCreation
                 }
 
+                Divider()
+
                 if case .spaceSelected(let currentSpace) = appStateManager.currentState {
                     Button("Supprimer") {
                         spaceManager.delete(space: currentSpace)
@@ -89,8 +91,17 @@ struct RunningOrderApp: App {
                             }
                         }
                     }
+
+                    Divider()
+                    Text("Espace actuel : \(currentSpace.name)")
                 } else {
                     Text("Pas d'espace de travail courant")
+                }
+            }
+
+            CommandMenu("DEBUG") {
+                Button("Delete Subscription") {
+                    CloudKitContainer.shared.removeSubscriptions()
                 }
             }
             ToolbarCommands()

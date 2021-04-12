@@ -24,62 +24,66 @@ extension Data: Storable {
     }
 }
 
+enum StoreError: Error {
+    case fileNotCreated(URL)
+}
+
 @propertyWrapper struct Stored<StoredType: Storable> {
+    let fileManager: FileManager
     let fileName: String
     let directory: FileManager.SearchPathDirectory
 
     var wrappedValue: StoredType? {
-        get { get() }
+        get {
+            guard let fileURL = fileURL else { return nil }
+
+            do {
+                let data = try Data(contentsOf: fileURL)
+
+                return try StoredType.decodeData(storedData: data)
+            } catch {
+                Logger.warning.log("\(StoredType.self) are missing or corrupted\n\(error)")
+
+                return nil
+            }
+        }
 
         set {
-            if let newValue = newValue {
-                set(newValue)
-            } else {
-                delete()
+            guard let fileURL = fileURL else {
+                Logger.error.log("\(StoredType.self) are missing a proper url")
+                return
+            }
+
+            do {
+                if let newValue = newValue {
+                    let data = try newValue.encodeToData()
+
+                    if !fileManager.fileExists(atPath: fileURL.path) {
+                        let creationSucceed = fileManager.createFile(atPath: fileURL.path, contents: data, attributes: nil)
+                        if !creationSucceed {
+                            throw StoreError.fileNotCreated(fileURL)
+                        }
+                    } else {
+                        try data.write(to: fileURL)
+                    }
+                } else {
+                    try fileManager.removeItem(at: fileURL)
+                }
+            } catch {
+                Logger.warning.log("\(StoredType.self) set failed\n\(error)")
             }
         }
     }
 
     private var fileURL: URL? {
-        FileManager.default.urls(for: directory, in: .userDomainMask)
+        fileManager.urls(for: directory, in: .userDomainMask)
             .first?
-            .appendingPathComponent(Bundle.main.bundleIdentifier ?? "")
             .appendingPathComponent(fileName)
     }
 
-    private func get() -> StoredType? {
-        guard let fileURL = fileURL else { return nil }
-
-        do {
-            let data = try Data(contentsOf: fileURL)
-
-            return try StoredType.decodeData(storedData: data)
-        } catch {
-            Logger.warning.log("\(StoredType.self) are missing or corrupted\n\(error)")
-
-            return nil
-        }
-    }
-
-    private func set(_ value: StoredType) {
-        guard let fileURL = fileURL else { return }
-
-        do {
-            let data = try value.encodeToData()
-
-            try data.write(to: fileURL)
-        } catch {
-            Logger.warning.log("\(StoredType.self) encoding failed\n\(error)")
-        }
-    }
-
-    private func delete() {
-        guard let fileURL = fileURL else { return }
-
-        do {
-            try FileManager.default.removeItem(at: fileURL)
-        } catch {
-            Logger.warning.log("\(StoredType.self) deleting failed\n\(error)")
-        }
+    init(fileManager: FileManager = .default, fileName: String, directory: FileManager.SearchPathDirectory) {
+        self.fileName = fileName
+        self.directory = directory
+        self.fileManager = fileManager
     }
 }

@@ -18,6 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let cloudkitContainer = CloudKitContainer.shared
     var spaceManager: SpaceManager?
     weak var changesService: CloudKitChangesService?
+    var appStateManager: AppStateManager?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         registerForPushNotification()
@@ -25,6 +26,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func application(_ application: NSApplication, userDidAcceptCloudKitShareWith metadata: CKShare.Metadata) {
         spaceManager?.acceptShare(metadata: metadata)
+            .sink(
+                receiveFailure: { error in Logger.error.log(error) },
+                receiveValue: { [weak self] space in
+                    self?.cloudkitContainer.enableNotificationsIfNeeded(for: metadata.rootRecordID.zoneID)
+                    self?.changesService?.fetchChanges(on: metadata.rootRecordID.zoneID)
+                    self?.appStateManager?.currentState = .spaceSelected(space)
+                }
+            )
+            .store(in: &cancellables)
     }
 
     func application(_ application: NSApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
@@ -47,10 +57,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func application(_ application: NSApplication, didReceiveRemoteNotification userInfo: [String: Any]) {
-        // TODO: re do this
-        guard cloudkitContainer.validateNotification(userInfo) else { return }
+        guard let zoneId = cloudkitContainer.zoneIdForNotification(userInfo) else { return }
 
-        // how to fetch the recordZoneId ??
-//        changesService?.fetchChanges(on: )
+        changesService?.fetchChanges(on: zoneId)
     }
 }

@@ -70,12 +70,20 @@ final class SpaceManager: ObservableObject {
         }
     }
 
-    private func fetchFromShared(_ recordId: CKRecord.ID) {
+    private func fetchFromShared(_ recordId: CKRecord.ID) -> AnyPublisher<Space, Swift.Error> {
         Logger.verbose.log("try to fetch from shared")
-        spaceService.fetchShared(recordId)
-            .catchAndExit { error in Logger.error.log(error) }
+        let spaceResult = spaceService.fetchShared(recordId)
+            .share()
+            .print()
+            .receive(on: DispatchQueue.main)
+
+        spaceResult
+            .catchAndExit({ error in Logger.error.log(error) })
+            .filter { !self.availableSpaces.contains($0)}
             .append(to: \.availableSpaces, onStrong: self)
             .store(in: &cancellables)
+
+        return spaceResult.eraseToAnyPublisher()
     }
 
     func create(space: Space) -> AnyPublisher<Space, Swift.Error> {
@@ -83,9 +91,9 @@ final class SpaceManager: ObservableObject {
             .share()
             .receive(on: DispatchQueue.main)
 
-        // TODO: check id of created space before adding it
         spaceResult
             .catchAndExit({ _ in })
+            .filter { !self.availableSpaces.contains($0)}
             .append(to: \.availableSpaces, onStrong: self)
             .store(in: &cancellables)
 
@@ -116,14 +124,11 @@ final class SpaceManager: ObservableObject {
         return self.spaceService.getShare(for: space)
     }
 
-    func acceptShare(metadata: CKShare.Metadata) {
+    func acceptShare(metadata: CKShare.Metadata) -> AnyPublisher<Space, Swift.Error> {
         self.spaceService.acceptShare(metadata: metadata)
-            .sink(
-                receiveFailure: { error in Logger.error.log("error : \(error)") },
-                receiveValue: { [weak self] updatedMetadata in self?.fetchFromShared(updatedMetadata.rootRecordID)
-                }
-            )
-            .store(in: &cancellables)
+            .map(\.rootRecordID)
+            .flatMap(self.fetchFromShared)
+            .eraseToAnyPublisher()
     }
 }
 
