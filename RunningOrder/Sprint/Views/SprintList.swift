@@ -58,6 +58,7 @@ extension SprintList {
                         .font(.system(size: 12))
                 }
             }
+            .keyboardShortcut(KeyEquivalent("n"), modifiers: .command)
             .padding(.all, 20.0)
             .buttonStyle(PlainButtonStyle()), alignment: .bottom)
             .sheet(isPresented: $logic.isNewSprintModalPresented) {

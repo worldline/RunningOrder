@@ -75,6 +75,7 @@ struct RunningOrderApp: App {
                 Button("Nouveau") {
                     appStateManager.currentState = .spaceCreation
                 }
+                .keyboardShortcut(KeyEquivalent("n"), modifiers: [.command, .shift, .option])
 
                 Divider()
 
@@ -91,6 +92,11 @@ struct RunningOrderApp: App {
                             }
                         }
                     }
+
+                    Button(action: CloudSharingHandler(spaceManager: spaceManager, space: currentSpace).performCloudSharing, label: {
+                        Label("Partager", systemImage: "person.crop.circle")
+                    })
+                    .keyboardShortcut(KeyEquivalent("s"), modifiers: [.command, .shift])
 
                     Divider()
                     Text("Espace actuel : \(currentSpace.name)")

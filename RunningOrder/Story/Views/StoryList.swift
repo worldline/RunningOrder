@@ -51,6 +51,8 @@ extension StoryList {
                     Button(action: logic.showAddStoryView) {
                         Image(systemName: "square.and.pencil")
                     }
+                    .keyboardShortcut(KeyEquivalent("n"), modifiers: [.command, .shift])
+
                 }
             }
             .sheet(isPresented: $logic.isAddStoryViewDisplayed) {
