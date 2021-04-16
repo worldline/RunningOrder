@@ -61,7 +61,6 @@ extension MainView {
 
                     Text("Select a Story")
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(Color.white)
                         .toolbar {
                             ToolbarItem {
                                 Spacer()

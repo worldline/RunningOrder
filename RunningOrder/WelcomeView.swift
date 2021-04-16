@@ -49,16 +49,20 @@ struct WelcomeView: View {
             Divider()
                 .overlay(Text("Or")
                             .padding(.horizontal, 10)
-                            .background(Color.white))
+                            .background(Color(NSColor.controlBackgroundColor)))
             Text("Just open a link from your team to access this space")
         }
         .padding()
-        .background(Color.white)
+        .background(Color(NSColor.controlBackgroundColor))
     }
 }
 
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
         WelcomeView(space: .constant(nil))
+            .preferredColorScheme(.dark)
+
+        WelcomeView(space: .constant(nil))
+            .preferredColorScheme(.light)
     }
 }

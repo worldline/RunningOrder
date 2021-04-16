@@ -27,7 +27,7 @@ struct StoryDetail: View {
                 StepsView(storyInformation: informationBinding)
             }
         }
-        .background(Color.white)
+        .background(Color(NSColor.controlBackgroundColor))
         .toolbar {
             ToolbarItemGroup {
                 Text(story.name)

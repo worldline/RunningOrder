@@ -35,7 +35,7 @@ struct StyledFocusableTextField: View {
             .padding(5)
             // on focus background
             .background(RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(Color.white.opacity(borderOpacity))
+                            .foregroundColor(Color(NSColor.textBackgroundColor).opacity(borderOpacity))
                             .animation(.linear)
             )
             // on focus border
