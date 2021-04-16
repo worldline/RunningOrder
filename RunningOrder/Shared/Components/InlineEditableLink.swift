@@ -30,12 +30,8 @@ struct InlineEditableLink: View {
             HStack {
                 if isEditing {
                     VStack {
-                        StyledFocusableTextField("Label",
-                                                 value: $value.label,
-                                                 onCommit: {})
-                        StyledFocusableTextField("Url",
-                                                 value: $value.url,
-                                                 onCommit: {})
+                        BorderedTextField(placeholder: "Label", value: $value.label)
+                        BorderedTextField(placeholder: "Url", value: $value.url)
                     }
                     Spacer()
                     Button(action: {
@@ -50,20 +46,23 @@ struct InlineEditableLink: View {
                     .foregroundColor(.accentColor)
                     .disabled(isFieldsEmpty)
                 } else {
-                    if let url = value.formattedURL {
-                        Link(value.label,
-                             destination: url)
-                        Spacer()
-                        if hovered {
-                            Button(action: {
-                                self.isEditing = true
-                            }, label: {
-                                Text("Edit")
-                            })
-                            .buttonStyle(PlainButtonStyle())
-                            .foregroundColor(.accentColor)
+                    HStack {
+                        if let url = value.formattedURL {
+                            Link(value.label,
+                                 destination: url)
+                            Spacer()
+                            if hovered {
+                                Button(action: {
+                                    self.isEditing = true
+                                }, label: {
+                                    Text("Edit")
+                                })
+                                .buttonStyle(PlainButtonStyle())
+                                .foregroundColor(.accentColor)
+                            }
                         }
                     }
+                    .padding(5)
                 }
             }
         }

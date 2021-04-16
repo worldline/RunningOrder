@@ -10,14 +10,13 @@ import SwiftUI
 
 struct ConfigurationView: View {
     @Binding var storyInformation: StoryInformation
-//    @Binding var links: [LinkEntity]
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 15) {
                 Text("Configuration")
                     .font(.title2)
-                    .padding(.leading, 10)
+                    .padding(.leading, 12)
 
                 InlineEditableList(title: "Environments", values: $storyInformation.configuration.environments)
 
@@ -29,12 +28,7 @@ struct ConfigurationView: View {
 
                 InlineEditableList(title: "Identifier", values: $storyInformation.configuration.identifiers)
 
-                Text("Links")
-                    .font(.title2)
-                    .padding(.top, 20)
-                    .padding(.leading, 10)
-
-                InlineEditableLinkList(title: "Add a link", values: $storyInformation.configuration.links)
+                InlineEditableLinkList(title: "Link", values: $storyInformation.configuration.links)
 
                 Spacer()
             }

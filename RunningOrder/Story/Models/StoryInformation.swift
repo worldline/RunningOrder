@@ -98,14 +98,15 @@ extension StoryInformation: CKRecordable {
         let features: [String] = try record.property("features")
         let indicators: [String] = try record.property("indicators")
         let identifiers: [String] = try record.property("identifiers")
+
+        let links: [LinkEntity]
         let linksData: Data = try record.property("links")
+        let decoder: JSONDecoder = JSONDecoder()
+        links = try decoder.decode([LinkEntity].self, from: linksData)
 
         let videoAsset: CKAsset? = try? record.property("video")
         self.videoUrl = videoAsset?.fileURL
         self.videoExtension = try? record.property("videoExtension")
-
-        let decoder: JSONDecoder = JSONDecoder()
-        let links = try decoder.decode([LinkEntity].self, from: linksData)
 
         self.configuration = .init(environments: environments, mocks: mocks, features: features, indicators: indicators, identifiers: identifiers, links: links)
     }
@@ -132,6 +133,7 @@ extension StoryInformation: CKRecordable {
         do {
             storyInformationRecord["links"] = try encoder.encode(self.configuration.links)
         } catch {
+            storyInformationRecord["links"] = try? encoder.encode([LinkEntity]())
             Logger.error.log(error)
         }
 

@@ -13,7 +13,7 @@ struct StyledFocusableTextField: View {
 
     let placeholder: String
 
-    @State private var isFocused = false
+    @State private var isFocused: Bool
     @Binding var value: String
 
     private var borderOpacity: Double { isFocused ? 1 : 0 }
@@ -24,10 +24,11 @@ struct StyledFocusableTextField: View {
     ///   - placeholder: the textfield placeholder
     ///   - value: the binding to the textfield value
     ///   - onCommit: the action to perform when the user hits the return key or when the component looses the focus
-    init(_ placeholder: String, value: Binding<String>, onCommit: @escaping () -> Void) {
+    init(_ placeholder: String, value: Binding<String>, initialFocus: Bool = false, onCommit: @escaping () -> Void) {
         self.placeholder = placeholder
         self._value = value
         self.onCommit = onCommit
+        self._isFocused = State(initialValue: initialFocus)
     }
 
     var body: some View {

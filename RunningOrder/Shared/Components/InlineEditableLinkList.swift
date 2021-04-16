@@ -10,47 +10,48 @@ import SwiftUI
 
 struct InlineEditableLinkList: View {
     let title: LocalizedStringKey
-    @Binding var values: [LinkEntity]
 
     @State private var hovered = false
+    @ObservedObject var logic: Logic
 
     init(title: LocalizedStringKey, values: Binding<[LinkEntity]>) {
         self.title = title
-        self._values = values
+        self.logic = Logic(values: values)
     }
 
     var body: some View {
         VStack(spacing: 0) {
             HStack {
                 Text(title)
-                    .font(.headline)
+                    .font(.title2)
                     .padding(.leading, 7)
 
                 Spacer()
 
-                if hovered {
-                    Button(
-                        action: addLinkTextField,
-                        label: { Image(systemName: "plus.circle.fill") }
+                Button(
+                    action: logic.addLinkTextField,
+                    label: { Image(systemName: "plus.circle.fill") }
+                )
+                .foregroundColor(.blue)
+                .buttonStyle(InlineButtonStyle())
+            }
+            .padding(.bottom, 10)
+
+            ForEach(logic.values.indices, id: \.self) { index in
+                HStack {
+                    InlineEditableLink(
+                        value: Binding(
+                            get: { return logic.values[index] },
+                            set: { newValue in return self.logic.values[index] = newValue }
+                        )
                     )
-                    .foregroundColor(.blue)
+                    Button(
+                        action: { logic.deleteTextField(at: index) },
+                        label: { Image(systemName: "minus.circle.fill") }
+                    )
+                    .foregroundColor(.red)
                     .buttonStyle(InlineButtonStyle())
                 }
-            }
-
-            ForEach(values) { value in
-                InlineEditableLink(
-                    value: Binding<LinkEntity>(
-                        get: { LinkEntity(label: value.label,
-                                          url: value.url)
-                        },
-                        set: { value in
-                            if let index = self.values.firstIndex(of: value) {
-                                return self.values[index] = value
-                            }
-                        }
-                    )
-                )
             }
         }
         .padding(5)
@@ -59,17 +60,6 @@ struct InlineEditableLinkList: View {
                 .opacity(hovered ? 1 : 0)
                 .cornerRadius(5)
         )
-        .onHover { isHovered in
-            withAnimation(.easeIn) {
-                self.hovered = isHovered
-            }
-        }
-    }
-
-    private func addLinkTextField() {
-        withAnimation {
-            values.append(LinkEntity(label: "", url: ""))
-        }
     }
 }
 
