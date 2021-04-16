@@ -76,6 +76,7 @@
 		E8F4EEC624EE6BA300EC1CA2 /* Combine+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8F4EEC524EE6BA300EC1CA2 /* Combine+Extensions.swift */; };
 		E8F5501C24DD36060017582D /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8F5501B24DD36060017582D /* Configuration.swift */; };
 		E8F5501E24DD36100017582D /* Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8F5501D24DD36100017582D /* Link.swift */; };
+		FB70027D261F32570088DBF0 /* InlineEditableLinkList.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB70027C261F32570088DBF0 /* InlineEditableLinkList.swift */; };
 		FB88E12025E8F877008F2644 /* InlineEditableLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB88E11F25E8F877008F2644 /* InlineEditableLink.swift */; };
 /* End PBXBuildFile section */
 
@@ -176,6 +177,7 @@
 		E8F4EEC524EE6BA300EC1CA2 /* Combine+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combine+Extensions.swift"; sourceTree = "<group>"; };
 		E8F5501B24DD36060017582D /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		E8F5501D24DD36100017582D /* Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Link.swift; sourceTree = "<group>"; };
+		FB70027C261F32570088DBF0 /* InlineEditableLinkList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineEditableLinkList.swift; sourceTree = "<group>"; };
 		FB88E11F25E8F877008F2644 /* InlineEditableLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineEditableLink.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -429,6 +431,7 @@
 				E81BBFE524CAD21100DB289A /* StyledFocusableTextField.swift */,
 				E81BBFE724CB194B00DB289A /* RoundButton.swift */,
 				E8EB954824C5E23C00BC76E4 /* InlineEditableList.swift */,
+				FB70027C261F32570088DBF0 /* InlineEditableLinkList.swift */,
 				18F6F6C625C9D029008078ED /* InlineButtonStyle.swift */,
 				FB88E11F25E8F877008F2644 /* InlineEditableLink.swift */,
 			);
@@ -694,6 +697,7 @@
 				E8760DCF24DADFD8003A2766 /* Image+Extensions.swift in Sources */,
 				E8A5BD1F24E42A9B00589452 /* StoryInformation.swift in Sources */,
 				1837184D25DFE0BC00A3E3F9 /* NewStoryView+Logic.swift in Sources */,
+				FB70027D261F32570088DBF0 /* InlineEditableLinkList.swift in Sources */,
 				1862423924B4859300A4A6CB /* SprintList.swift in Sources */,
 				E8A264A324F4FF31006B94EA /* ProgressIndicator.swift in Sources */,
 				18FE758E24A23E670003C76E /* AppDelegate.swift in Sources */,

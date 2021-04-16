@@ -9,23 +9,20 @@
 import SwiftUI
 
 struct InlineEditableLink: View {
-    let placeholder: String
-
-    @Binding var values: LinkEntity
+    @Binding var value: LinkEntity
     @State private var hovered = false
-    @State private var isEditing = false
+    @State private var isEditing: Bool
     @State private var isDoneButtonEnabled = true
 
     /// - Parameters:
-    ///   - placeholder: The placeholder to put in every items
-    ///   - values: A binding to a Link Entity which referers to the Link url and label
-    init(placeholder: String = "", values: Binding<LinkEntity>) {
-        self._values = values
-        self.placeholder = placeholder
+    ///   - value: A binding to a Link Entity which referers to the Link url and label
+    init(value: Binding<LinkEntity>) {
+        self._value = value
+        self._isEditing = State(initialValue: value.wrappedValue.label.isEmpty)
     }
 
     var isFieldsEmpty: Bool {
-        return values.url.isEmpty || values.label.isEmpty
+        return value.url.isEmpty || value.label.isEmpty
     }
 
     var body: some View {
@@ -33,22 +30,18 @@ struct InlineEditableLink: View {
             HStack {
                 if isEditing {
                     VStack {
-                        StyledFocusableTextField(placeholder,
-                                                 value: $values.label,
-                                                 onCommit: {
-//                                                    if values.url.isEmpty && values.label.isEmpty {
-//                                                        self.isDoneButtonEnabled = false
-//                                                    }
-                                                 })
-                        StyledFocusableTextField(placeholder,
-                                                 value: $values.url,
+                        StyledFocusableTextField("Label",
+                                                 value: $value.label,
+                                                 onCommit: {})
+                        StyledFocusableTextField("Url",
+                                                 value: $value.url,
                                                  onCommit: {})
                     }
                     Spacer()
                     Button(action: {
                         if !isFieldsEmpty {
                             self.isEditing = false
-                            values.url = formatURL(content: values.url)
+                            value.url = formatURL(content: value.url)
                         }
                     }, label: {
                         Text("Done")
@@ -57,8 +50,8 @@ struct InlineEditableLink: View {
                     .foregroundColor(.accentColor)
                     .disabled(isFieldsEmpty)
                 } else {
-                    if let url = values.formattedURL {
-                        Link(values.label,
+                    if let url = value.formattedURL {
+                        Link(value.label,
                              destination: url)
                         Spacer()
                         if hovered {
@@ -89,15 +82,16 @@ struct InlineEditableLink: View {
 
     private func formatURL(content: String) -> String {
         var url = content
-        if !values.url.contains("https://") && !values.url.contains("http://") {
-            url.insert(contentsOf: "https://", at: values.url.startIndex)
+        if !value.url.contains("https://") && !value.url.contains("http://") {
+            url.insert(contentsOf: "https://", at: value.url.startIndex)
         }
         return url
     }
 }
 
-struct InlineEditableLinkList_Previews: PreviewProvider {
+struct InlineEditableLink_Previews: PreviewProvider {
     static var previews: some View {
-        InlineEditableLink(values: .constant(LinkEntity(label: "", url: "")))
+        InlineEditableLink(value: .constant(LinkEntity(label: "", url: "")))
+        InlineEditableLink(value: .constant(LinkEntity(label: "Label", url: "url")))
     }
 }

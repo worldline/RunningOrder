@@ -98,14 +98,14 @@ extension StoryInformation: CKRecordable {
         let features: [String] = try record.property("features")
         let indicators: [String] = try record.property("indicators")
         let identifiers: [String] = try record.property("identifiers")
-        let linkLabels: String = try record.property("linkLabel")
-        let linkURLs: String = try record.property("url")
+        let linksData: Data = try record.property("links")
 
         let videoAsset: CKAsset? = try? record.property("video")
         self.videoUrl = videoAsset?.fileURL
         self.videoExtension = try? record.property("videoExtension")
 
-        let links = LinkEntity(label: linkLabels, url: linkURLs) // peut être mock pour compiler
+        let decoder: JSONDecoder = JSONDecoder()
+        let links = try decoder.decode([LinkEntity].self, from: linksData)
 
         self.configuration = .init(environments: environments, mocks: mocks, features: features, indicators: indicators, identifiers: identifiers, links: links)
     }
@@ -127,8 +127,13 @@ extension StoryInformation: CKRecordable {
 
         // Links : for now as a link label is only the url string representation we can only store all the labels, will change in the future
 
-        storyInformationRecord["linkLabel"] = self.configuration.links.label
-        storyInformationRecord["url"] = self.configuration.links.url
+        let encoder: JSONEncoder = JSONEncoder()
+
+        do {
+            storyInformationRecord["links"] = try encoder.encode(self.configuration.links)
+        } catch {
+            Logger.error.log(error)
+        }
 
         if let videoUrl = self.videoUrl {
             storyInformationRecord["video"] = CKAsset(fileURL: videoUrl)

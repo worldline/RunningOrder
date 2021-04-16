@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ConfigurationView: View {
     @Binding var storyInformation: StoryInformation
+//    @Binding var links: [LinkEntity]
 
     var body: some View {
         ScrollView {
@@ -33,16 +34,7 @@ struct ConfigurationView: View {
                     .padding(.top, 20)
                     .padding(.leading, 10)
 
-                InlineEditableLink(
-                    values: Binding<LinkEntity>(
-                        get: { LinkEntity(label: self.storyInformation.configuration.links.label,
-                                          url: self.storyInformation.configuration.links.url)
-                        },
-                        set: { value in
-                            self.storyInformation.configuration.links = value
-                        }
-                    )
-                )
+                InlineEditableLinkList(title: "Add a link", values: $storyInformation.configuration.links)
 
                 Spacer()
             }
