@@ -32,7 +32,7 @@ final class SpaceManager: ObservableObject {
     }
 
     private func updateState(with information: ChangeInformation) {
-        Logger.debug.log(information)
+//        Logger.debug.log(information)
         // Si je récupère la suppression du space
         // je resupprime derriere ? (en cas de suppression d'un espace partagé par son possesseur, il faut que je supprime ici aussi)
         deleteData(recordIds: information.toDelete)
@@ -43,19 +43,23 @@ final class SpaceManager: ObservableObject {
     }
 
     private func updateData(with updatedRecords: [CKRecord]) {
+        var currentSpaces = availableSpaces
         for updatedRecord in updatedRecords {
             let updatedSpace = Space(underlyingRecord: updatedRecord)
-            if let index = availableSpaces.firstIndex(where: { $0.id == updatedSpace.id }) {
-                DispatchQueue.main.async {
-                    self.availableSpaces[index] = updatedSpace
-                }
+            if let index = currentSpaces.firstIndex(where: { $0.id == updatedSpace.id }) {
+                currentSpaces[index] = updatedSpace
             } else {
                 Logger.verbose.log("space with id \(updatedRecord.recordID.recordName) not found, so appending it to existing space list")
-                DispatchQueue.main.async {
-                    self.availableSpaces.append(updatedSpace)
-                }
+                currentSpaces.append(updatedSpace)
             }
         }
+        availableSpaces = currentSpaces
+
+//        // If we receive an empty update and we already have no spaces, then we are before creation of space, or subscription to a space.
+//        // We need to notify AppStateManager that we received no space in order to display Welcome screen
+//        if updatedRecords.isEmpty && availableSpaces.isEmpty {
+//            availableSpaces = []
+//        }
     }
 
     private func deleteData(recordIds: [CKRecord.ID]) {
@@ -74,7 +78,7 @@ final class SpaceManager: ObservableObject {
         Logger.verbose.log("try to fetch from shared")
         let spaceResult = spaceService.fetchShared(recordId)
             .share()
-            .print()
+            .print(in: .debug)
             .receive(on: DispatchQueue.main)
 
         spaceResult

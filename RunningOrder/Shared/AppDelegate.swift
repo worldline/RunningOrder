@@ -57,8 +57,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func application(_ application: NSApplication, didReceiveRemoteNotification userInfo: [String: Any]) {
-        guard let zoneId = cloudkitContainer.zoneIdForNotification(userInfo) else { return }
+        Logger.debug.log("notif : \(userInfo)")
+        guard let scope = cloudkitContainer.databaseScopeForNotification(userInfo) else { return }
 
-        changesService?.fetchChanges(on: zoneId)
+        changesService?.fetchDatabaseChanges(in: scope)
     }
 }

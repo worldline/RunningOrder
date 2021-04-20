@@ -72,7 +72,7 @@ final class CloudKitContainer {
     // MARK: - Setup methods
 
     private static func createSubscriptions(for database: CKDatabase, zoneId: CKRecordZone.ID) -> AnyPublisher<Never, Error> {
-        let subscription = CKRecordZoneSubscription(zoneID: zoneId, subscriptionID: database.subscriptionId)
+        let subscription = CKDatabaseSubscription(subscriptionID: database.subscriptionId)
         let notificationInfo = CKSubscription.NotificationInfo()
         notificationInfo.shouldSendContentAvailable = true
         subscription.notificationInfo = notificationInfo
@@ -87,6 +87,7 @@ final class CloudKitContainer {
         database.add(operation)
 
         return operation.publisher()
+            .print(in: Logger.debug)
             .ignoreOutput()
             .eraseToAnyPublisher()
     }
@@ -135,6 +136,12 @@ final class CloudKitContainer {
         createCustomZoneIfNeeded()
         enableNotificationsIfNeeded(for: ownedZoneId)
 
+        if let owners = CloudKitContainer.ownerNames {
+            for owner in owners {
+                enableNotificationsIfNeeded(for: CKRecordZone.ID(zoneName: CloudKitContainer.zoneName, ownerName: owner))
+            }
+        }
+
         Self.askPermissionForDiscoverabilityIfNeeded(in: cloudContainer)
             .store(in: &cancellables)
     }
@@ -168,10 +175,11 @@ final class CloudKitContainer {
         return cloudContainer.database(with: scope)
     }
 
-    func zoneIdForNotification(_ userInfo: [String: Any]) -> CKRecordZone.ID? {
-        guard let notification = CKNotification(fromRemoteNotificationDictionary: userInfo) as? CKRecordZoneNotification else { return nil }
+    func databaseScopeForNotification(_ userInfo: [String: Any]) -> CKDatabase.Scope? {
+        Logger.debug.log("receive Notification : \(userInfo)")
+        guard let notification = CKNotification(fromRemoteNotificationDictionary: userInfo) as? CKDatabaseNotification else { return nil }
 
-        return notification.recordZoneID
+        return notification.databaseScope
     }
 
     func saveOwnerName(_ ownerName: String) {

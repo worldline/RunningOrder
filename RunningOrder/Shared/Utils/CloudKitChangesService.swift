@@ -15,6 +15,7 @@ typealias ChangeInformation = (toUpdate: [CKRecord], toDelete: [CKRecord.ID])
 final class CloudKitChangesService: ObservableObject {
     private unowned let container: CloudKitContainer
     private var currentChangeServerTokens: [CKRecordZone.ID: CKServerChangeToken] = [:]
+    private var databaseChangesServerToken: CKServerChangeToken?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -33,6 +34,38 @@ final class CloudKitChangesService: ObservableObject {
             .forEach(self.fetchChanges(on:))
     }
 
+    func fetchDatabaseChanges(in scope: CKDatabase.Scope) {
+        let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: databaseChangesServerToken)
+
+        let (fetchDatabaseChangesCompletion, changeTokenUpdated, recordZoneWithIDChanged, _, _) = operation.publishers()
+
+        // update the token
+        fetchDatabaseChangesCompletion
+            .catchAndExit { [weak self] error in
+                if let error = error as? CKError, error.code == .changeTokenExpired {
+                    self?.databaseChangesServerToken = nil
+                    self?.fetchDatabaseChanges(in: scope)
+                }
+                Logger.error.log(error) // TODO: Error handling
+            }
+            .map(\.token)
+            .compactMap { $0 }
+            .merge(with: changeTokenUpdated)
+            .assign(to: \.databaseChangesServerToken, onStrong: self)
+            .store(in: &cancellables)
+
+        recordZoneWithIDChanged
+            .collect()
+            .sink { [weak self] zoneIds in
+                for zoneId in zoneIds {
+                    self?.fetchChanges(on: zoneId)
+                }
+            }
+            .store(in: &cancellables)
+
+        container.cloudContainer.database(with: scope).add(operation)
+    }
+
     func fetchChanges(on zoneId: CKRecordZone.ID) {
         let token = currentChangeServerTokens[zoneId]
         let operation = CKFetchRecordZoneChangesOperation(
@@ -41,8 +74,6 @@ final class CloudKitChangesService: ObservableObject {
         )
 
         operation.qualityOfService = .userInteractive
-
-        operation.fetchAllChanges = true
 
         let (_, recordPublisher, recordDeletedPublisher, tokenChangesPublisher, recordZoneFetchPublisher) = operation.publishers()
 

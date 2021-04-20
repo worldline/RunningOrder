@@ -41,6 +41,10 @@ struct RunningOrderApp: App {
 
     @StateObject var appStateManager = AppStateManager()
 
+    let bugReportURL = URL(string: "https://github.com/worldline/RunningOrder/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBUG%5D")!
+
+    @Environment(\.openURL) var openURL
+
     /// **Warning** This binding can't be used without an active space selection
     var selectedSpace: Binding<Space> {
         Binding {
@@ -68,9 +72,15 @@ struct RunningOrderApp: App {
                     appDelegate.spaceManager = spaceManager
                     changesService.initialFetch()
                     appStateManager.fetchFirstSpace(in: spaceManager)
+                    Logger.disabledLevels = [.verbose]
                 }
         }
         .commands {
+            CommandGroup(before: CommandGroupPlacement.appSettings) {
+                Button("Report a bug") {
+                    openURL(bugReportURL)
+                }
+            }
             CommandMenu("Espace de travail") {
                 Button("Nouveau") {
                     appStateManager.currentState = .spaceCreation

@@ -203,6 +203,54 @@ extension CKFetchRecordZoneChangesOperation {
     }
 }
 
+extension CKFetchDatabaseChangesOperation {
+    func publishers() -> (fetchDatabaseChangesCompletion: AnyPublisher<(token: CKServerChangeToken?, moreComing: Bool), Error>, changeTokenUpdated: AnyPublisher<CKServerChangeToken, Never>, recordZoneWithIDChanged: AnyPublisher<CKRecordZone.ID, Never>, recordZoneWithIDWasDeleted: AnyPublisher<CKRecordZone.ID, Never>, recordZoneWithIDWasPurged: AnyPublisher<CKRecordZone.ID, Never>) {
+
+        let changeTokenUpdated = PassthroughSubject<CKServerChangeToken, Never>()
+        self.changeTokenUpdatedBlock = { token in
+            changeTokenUpdated.send(token)
+        }
+
+        let recordZoneWithIDChanged = PassthroughSubject<CKRecordZone.ID, Never>()
+        self.recordZoneWithIDChangedBlock = { id in
+            recordZoneWithIDChanged.send(id)
+        }
+
+        let recordZoneWithIDWasDeleted = PassthroughSubject<CKRecordZone.ID, Never>()
+        self.recordZoneWithIDWasDeletedBlock = { id in
+            recordZoneWithIDWasDeleted.send(id)
+        }
+
+        let recordZoneWithIDWasPurged = PassthroughSubject<CKRecordZone.ID, Never>()
+        self.recordZoneWithIDWasPurgedBlock = { id in
+            recordZoneWithIDWasPurged.send(id)
+        }
+
+        let fetchDatabaseChangesCompletion = PassthroughSubject<(token: CKServerChangeToken?, moreComing: Bool), Error>()
+        self.fetchDatabaseChangesCompletionBlock = { token, bool, error in
+            changeTokenUpdated.send(completion: .finished)
+            recordZoneWithIDChanged.send(completion: .finished)
+            recordZoneWithIDWasDeleted.send(completion: .finished)
+            recordZoneWithIDWasPurged.send(completion: .finished)
+
+            if let error = error {
+                fetchDatabaseChangesCompletion.send(completion: .failure(error))
+            } else {
+                fetchDatabaseChangesCompletion.send((token, bool))
+                fetchDatabaseChangesCompletion.send(completion: .finished)
+            }
+        }
+
+        return (
+            fetchDatabaseChangesCompletion: fetchDatabaseChangesCompletion.eraseToAnyPublisher(),
+            changeTokenUpdated: changeTokenUpdated.eraseToAnyPublisher(),
+            recordZoneWithIDChanged: recordZoneWithIDChanged.eraseToAnyPublisher(),
+            recordZoneWithIDWasDeleted: recordZoneWithIDWasDeleted.eraseToAnyPublisher(),
+            recordZoneWithIDWasPurged: recordZoneWithIDWasPurged.eraseToAnyPublisher()
+        )
+    }
+}
+
 extension CKContainer {
     func status(forApplicationPermission applicationPermission: CKContainer_Application_Permissions) -> AnyPublisher<CKContainer_Application_PermissionStatus, Error> {
         Future { promise in

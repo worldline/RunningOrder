@@ -14,7 +14,7 @@ enum Logger {
     case error
     case warning
 
-    private var icon: String {
+    fileprivate var icon: String {
         switch self {
         case .debug:
             return "🟣"
@@ -27,7 +27,18 @@ enum Logger {
         }
     }
 
-    func log(_ value: Any, file: String = #file, line: Int = #line, function: String = #function) {
+    static var disabledLevels: [Logger] = []
+
+    func log(_ value: Any, file: String = #fileID, line: Int = #line, function: String = #function) {
+        guard !Logger.disabledLevels.contains(self) else { return }
+
         print("\(self.icon) \(file):\(line) \(function) - \(value)")
+    }
+}
+import Combine
+
+extension Publisher {
+    func print(in logger: Logger, file: String = #fileID, line: Int = #line, function: String = #function) -> Publishers.Print<Self> {
+        self.print("\(logger.icon) \(file):\(line) \(function)")
     }
 }
