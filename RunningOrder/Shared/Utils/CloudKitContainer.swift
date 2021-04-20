@@ -71,7 +71,7 @@ final class CloudKitContainer {
 
     // MARK: - Setup methods
 
-    private static func createSubscriptions(for database: CKDatabase, zoneId: CKRecordZone.ID) -> AnyPublisher<Never, Error> {
+    private static func createSubscriptions(for database: CKDatabase) -> AnyPublisher<Never, Error> {
         let subscription = CKDatabaseSubscription(subscriptionID: database.subscriptionId)
         let notificationInfo = CKSubscription.NotificationInfo()
         notificationInfo.shouldSendContentAvailable = true
@@ -150,7 +150,7 @@ final class CloudKitContainer {
         let databaseToEnable = database(for: zoneId)
         databaseToEnable.fetchAllSubscriptions()
             .filter { $0.isEmpty }
-            .flatMap { _ in Self.createSubscriptions(for: databaseToEnable, zoneId: zoneId) }
+            .flatMap { _ in Self.createSubscriptions(for: databaseToEnable) }
             .sink(receiveFailure: { error in Logger.error.log(error) })
             .store(in: &cancellables)
     }
@@ -166,6 +166,16 @@ final class CloudKitContainer {
                 }
             }
         }
+    }
+
+    func test() {
+        cloudContainer.database(with: .private)
+            .fetchAllSubscriptions()
+            .print(in: .debug)
+            .sink(receiveFailure: { _ in }, receiveValue: { subs in
+                print(subs)
+            })
+            .store(in: &cancellables)
     }
 
     // MARK: -

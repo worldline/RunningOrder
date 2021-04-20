@@ -119,6 +119,10 @@ struct RunningOrderApp: App {
                 Button("Delete Subscription") {
                     CloudKitContainer.shared.removeSubscriptions()
                 }
+
+                Button("test") {
+                    CloudKitContainer.shared.test()
+                }
             }
             ToolbarCommands()
             SidebarCommands()
