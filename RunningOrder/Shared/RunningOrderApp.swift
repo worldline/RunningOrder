@@ -92,6 +92,13 @@ struct RunningOrderApp: App {
                 if case .spaceSelected(let currentSpace) = appStateManager.currentState {
                     Button("Supprimer") {
                         spaceManager.delete(space: currentSpace)
+                        var spacesLeft = spaceManager.availableSpaces
+                        spacesLeft.removeAll(where: { currentSpace == $0 })
+                        if let newSelection = spacesLeft.first {
+                            appStateManager.currentState = .spaceSelected(newSelection)
+                        } else {
+                            appStateManager.currentState = .spaceCreation
+                        }
                     }
 
                     if spaceManager.availableSpaces.count > 1 {

@@ -92,6 +92,7 @@ class SpaceService {
         if space.underlyingRecord.recordID.zoneID.ownerName == CKCurrentUserDefaultName {
             recordIdToDelete = space.underlyingRecord.recordID
         } else {
+            cloudkitContainer.removeOwnerName(space.underlyingRecord.recordID.zoneID.ownerName)
             if let shareId = space.underlyingRecord.share?.recordID {
                 recordIdToDelete = shareId
             } else {
@@ -122,7 +123,7 @@ class SpaceService {
         pub.sink(
             receiveFailure: { _ in },
             receiveValue: { [weak cloudkitContainer = self.cloudkitContainer] updatedMetadata in
-                cloudkitContainer?.saveOwnerName(updatedMetadata.rootRecordID.zoneID.ownerName)
+                cloudkitContainer?.addOwnerName(updatedMetadata.rootRecordID.zoneID.ownerName)
             })
             .store(in: &cancellables)
 

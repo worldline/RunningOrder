@@ -19,15 +19,7 @@ extension JSONDecoder {
     static var `default`: JSONDecoder = .init()
 }
 
-extension Set: Storable where Element == String {
-    static func decodeData(storedData: Data) throws -> Set<Element> {
-        return try JSONDecoder.default.decode(Self.self, from: storedData)
-    }
-
-    func encodeToData() throws -> Data {
-        try JSONEncoder.default.encode(self)
-    }
-}
+extension Dictionary: Storable where Key == String, Value == Int {}
 
 fileprivate extension CKDatabase {
     var subscriptionId: CKSubscription.ID {
@@ -52,7 +44,7 @@ final class CloudKitContainer {
 
     @AppStorage("CloudKitCreatedSharedZone") private static var createdCustomZone: Bool = false
 
-    @Stored(fileName: "owners.json", directory: .applicationSupportDirectory) private static var ownerNames: Set<String>?
+    @Stored(fileName: "owners.json", directory: .applicationSupportDirectory) private static var ownerNames: [String: Int]?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -64,9 +56,9 @@ final class CloudKitContainer {
     let cloudContainer = CKContainer(identifier: "iCloud.com.worldline.RunningOrder")
 
     var owners: [CKRecordZone.ID] {
-        (CloudKitContainer.ownerNames ?? []).map {
-            CKRecordZone.ID(zoneName: Self.zoneName, ownerName: $0)
-        }
+        CloudKitContainer.ownerNames?
+            .keys
+            .map { CKRecordZone.ID(zoneName: Self.zoneName, ownerName: $0) } ?? []
     }
 
     // MARK: - Setup methods
@@ -137,7 +129,7 @@ final class CloudKitContainer {
         enableNotificationsIfNeeded(for: ownedZoneId)
 
         if let owners = CloudKitContainer.ownerNames {
-            for owner in owners {
+            for (owner, _) in owners {
                 enableNotificationsIfNeeded(for: CKRecordZone.ID(zoneName: CloudKitContainer.zoneName, ownerName: owner))
             }
         }
@@ -176,12 +168,23 @@ final class CloudKitContainer {
                 print(subs)
             })
             .store(in: &cancellables)
+
+        let fetchZones = CKFetchRecordZonesOperation(recordZoneIDs: [ownedZoneId])
+
+        fetchZones
+            .publisher()
+            .print(in: .debug)
+            .sink(receiveFailure: { _ in }, receiveValue: { _ in })
+            .store(in: &cancellables)
+
+        cloudContainer.database(with: .private).add(fetchZones)
     }
 
     // MARK: -
 
     func database(for zoneId: CKRecordZone.ID) -> CKDatabase {
         let scope: CKDatabase.Scope = zoneId.ownerName == CKCurrentUserDefaultName ? .private : .shared
+        Logger.debug.log("scope is Private : \(scope == .private)")
         return cloudContainer.database(with: scope)
     }
 
@@ -192,13 +195,29 @@ final class CloudKitContainer {
         return notification.databaseScope
     }
 
-    func saveOwnerName(_ ownerName: String) {
+    func addOwnerName(_ ownerName: String) {
         if var names = CloudKitContainer.ownerNames {
-            names.insert(ownerName)
+            names[ownerName] = (names[ownerName] ?? 0) + 1
             CloudKitContainer.ownerNames = names
         } else {
-            CloudKitContainer.ownerNames = [ownerName]
+            CloudKitContainer.ownerNames = [ownerName: 1]
         }
+    }
+
+    func removeOwnerName(_ ownerName: String) {
+        guard var names = CloudKitContainer.ownerNames else {
+            return
+        }
+
+        let newValue = (names[ownerName] ?? 0) - 1
+
+        if newValue <= 0 {
+            names.removeValue(forKey: ownerName)
+        } else {
+            names[ownerName] = newValue
+        }
+
+        CloudKitContainer.ownerNames = names
     }
 }
 

@@ -24,6 +24,16 @@ extension Data: Storable {
     }
 }
 
+extension Storable where Self: Codable {
+    static func decodeData(storedData: Data) throws -> Self {
+        return try JSONDecoder.default.decode(Self.self, from: storedData)
+    }
+
+    func encodeToData() throws -> Data {
+        try JSONEncoder.default.encode(self)
+    }
+}
+
 enum StoreError: Error {
     case fileNotCreated(URL)
 }

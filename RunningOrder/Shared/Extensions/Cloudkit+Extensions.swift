@@ -251,6 +251,27 @@ extension CKFetchDatabaseChangesOperation {
     }
 }
 
+extension CKFetchRecordZonesOperation {
+    func publisher() -> AnyPublisher<[CKRecordZone.ID: CKRecordZone], Error> {
+        let fetchRecordZonesCompletion = PassthroughSubject<[CKRecordZone.ID: CKRecordZone], Error>()
+        self.fetchRecordZonesCompletionBlock = { result, error in
+            if let error = error {
+                fetchRecordZonesCompletion.send(completion: .failure(error))
+                return
+            }
+
+            guard let result = result else {
+                fetchRecordZonesCompletion.send(completion: .failure(BasicError.noValue))
+                return
+            }
+            fetchRecordZonesCompletion.send(result)
+            fetchRecordZonesCompletion.send(completion: .finished)
+        }
+
+        return fetchRecordZonesCompletion.eraseToAnyPublisher()
+    }
+}
+
 extension CKContainer {
     func status(forApplicationPermission applicationPermission: CKContainer_Application_Permissions) -> AnyPublisher<CKContainer_Application_PermissionStatus, Error> {
         Future { promise in
