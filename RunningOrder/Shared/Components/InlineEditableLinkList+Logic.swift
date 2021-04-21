@@ -12,14 +12,14 @@ import SwiftUI
 
 extension InlineEditableLinkList {
     final class Logic: ObservableObject {
-        @Binding var values: [LinkEntity]
+        @Binding var values: [Link]
 
-        internal init(values: Binding<[LinkEntity]>) {
+        init(values: Binding<[Link]>) {
             self._values = values
         }
 
         func addLinkTextField() {
-            values.append(LinkEntity(label: "", url: ""))
+            values.append(Link(label: "", url: ""))
         }
 
         func deleteTextField(at index: Int) {

@@ -13,6 +13,7 @@ struct StoryInformation {
     let storyId: Story.ID
 
     var configuration = Configuration()
+    var links: [Link] = []
 
     var steps: [String] = []
 
@@ -99,16 +100,15 @@ extension StoryInformation: CKRecordable {
         let indicators: [String] = try record.property("indicators")
         let identifiers: [String] = try record.property("identifiers")
 
-        let links: [LinkEntity]
         let linksData: Data = try record.property("links")
         let decoder: JSONDecoder = JSONDecoder()
-        links = try decoder.decode([LinkEntity].self, from: linksData)
+        self.links = try decoder.decode([Link].self, from: linksData)
 
         let videoAsset: CKAsset? = try? record.property("video")
         self.videoUrl = videoAsset?.fileURL
         self.videoExtension = try? record.property("videoExtension")
 
-        self.configuration = .init(environments: environments, mocks: mocks, features: features, indicators: indicators, identifiers: identifiers, links: links)
+        self.configuration = .init(environments: environments, mocks: mocks, features: features, indicators: indicators, identifiers: identifiers)
     }
 
     func encode(zoneId: CKRecordZone.ID) -> CKRecord {
@@ -131,9 +131,9 @@ extension StoryInformation: CKRecordable {
         let encoder: JSONEncoder = JSONEncoder()
 
         do {
-            storyInformationRecord["links"] = try encoder.encode(self.configuration.links)
+            storyInformationRecord["links"] = try encoder.encode(self.links)
         } catch {
-            storyInformationRecord["links"] = try? encoder.encode([LinkEntity]())
+            storyInformationRecord["links"] = try? encoder.encode([Link]())
             Logger.error.log(error)
         }
 

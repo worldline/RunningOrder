@@ -28,7 +28,7 @@ struct ConfigurationView: View {
 
                 InlineEditableList(title: "Identifier", values: $storyInformation.configuration.identifiers)
 
-                InlineEditableLinkList(title: "Link", values: $storyInformation.configuration.links)
+                InlineEditableLinkList(title: "Link", values: $storyInformation.links)
 
                 Spacer()
             }

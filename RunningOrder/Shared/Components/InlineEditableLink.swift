@@ -9,20 +9,16 @@
 import SwiftUI
 
 struct InlineEditableLink: View {
-    @Binding var value: LinkEntity
     @State private var hovered = false
     @State private var isEditing: Bool
     @State private var isDoneButtonEnabled = true
+    @ObservedObject var logic: Logic
 
     /// - Parameters:
     ///   - value: A binding to a Link Entity which referers to the Link url and label
-    init(value: Binding<LinkEntity>) {
-        self._value = value
+    init(value: Binding<Link>) {
         self._isEditing = State(initialValue: value.wrappedValue.label.isEmpty)
-    }
-
-    var isFieldsEmpty: Bool {
-        return value.url.isEmpty || value.label.isEmpty
+        self.logic = Logic(value: value)
     }
 
     var body: some View {
@@ -30,26 +26,25 @@ struct InlineEditableLink: View {
             HStack {
                 if isEditing {
                     VStack {
-                        BorderedTextField(placeholder: "Label", value: $value.label)
-                        BorderedTextField(placeholder: "Url", value: $value.url)
+                        BorderedTextField(placeholder: "Label", value: logic.$value.label)
+                        BorderedTextField(placeholder: "Url", value: logic.$value.url)
                     }
                     Spacer()
                     Button(action: {
-                        if !isFieldsEmpty {
+                        if !logic.isFieldEmpty {
                             self.isEditing = false
-                            value.url = formatURL(content: value.url)
+                            logic.value.url = logic.formatURL(content: logic.value.url)
                         }
                     }, label: {
                         Text("Done")
                     })
                     .buttonStyle(PlainButtonStyle())
                     .foregroundColor(.accentColor)
-                    .disabled(isFieldsEmpty)
+                    .disabled(logic.isFieldEmpty)
                 } else {
                     HStack {
-                        if let url = value.formattedURL {
-                            Link(value.label,
-                                 destination: url)
+                        if let url = logic.value.formattedURL {
+                            SwiftUI.Link(logic.value.label, destination: url)
                             Spacer()
                             if hovered {
                                 Button(action: {
@@ -78,19 +73,11 @@ struct InlineEditableLink: View {
             }
         }
     }
-
-    private func formatURL(content: String) -> String {
-        var url = content
-        if !value.url.contains("https://") && !value.url.contains("http://") {
-            url.insert(contentsOf: "https://", at: value.url.startIndex)
-        }
-        return url
-    }
 }
 
 struct InlineEditableLink_Previews: PreviewProvider {
     static var previews: some View {
-        InlineEditableLink(value: .constant(LinkEntity(label: "", url: "")))
-        InlineEditableLink(value: .constant(LinkEntity(label: "Label", url: "url")))
+        InlineEditableLink(value: .constant(Link(label: "", url: "")))
+        InlineEditableLink(value: .constant(Link(label: "Label", url: "url")))
     }
 }

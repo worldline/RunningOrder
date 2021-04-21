@@ -14,7 +14,7 @@ struct InlineEditableLinkList: View {
     @State private var hovered = false
     @ObservedObject var logic: Logic
 
-    init(title: LocalizedStringKey, values: Binding<[LinkEntity]>) {
+    init(title: LocalizedStringKey, values: Binding<[Link]>) {
         self.title = title
         self.logic = Logic(values: values)
     }
@@ -65,6 +65,6 @@ struct InlineEditableLinkList: View {
 
 struct InlineEditableLinkList_Previews: PreviewProvider {
     static var previews: some View {
-        InlineEditableLinkList(title: "Add a link", values: .constant([LinkEntity(label: "", url: "")]))
+        InlineEditableLinkList(title: "Add a link", values: .constant([Link(label: "", url: "")]))
     }
 }
