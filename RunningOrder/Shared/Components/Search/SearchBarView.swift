@@ -12,16 +12,21 @@ struct SearchBarView: View {
     @Binding var inputText: String
     @State private var isFocused = false
     @State private var showSelectedView = false
+    @State private var disableTextField = false
+
     @EnvironmentObject var searchManager: SearchManager
 
     var body: some View {
         HStack {
             ZStack(alignment: .leading) {
                 if let selected = searchManager.selectedSearchItem?.name {
-                    Text("\(selected)").onAppear(perform: {
-                        inputText = ""
-                    }).padding().foregroundColor(.red)
-                    TextField(searchManager.isItemSelected ? "" : "Search", text: $inputText)
+                    Tag("\(selected)", color: Color(identifier: .gray).opacity(0.25), foregroundTextColor: Color.black)
+                        .padding(.trailing, 18)
+                        .onAppear(perform: {
+                            inputText = ""
+                            disableTextField = true
+                        })
+                    TextField(searchManager.isItemSelected ? "" : "Search", text: $inputText).disabled(disableTextField)
 
                 } else {
                     TextField(searchManager.isItemSelected ? "" : "Search", text: $inputText)
@@ -30,15 +35,12 @@ struct SearchBarView: View {
 
             .overlay(
                 HStack {
-//                    Image(systemName: "magnifyingglass")
-//                        .foregroundColor(.gray)
-//                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-//                        .padding(.leading, 8)
                     Spacer()
-                    if !inputText.isEmpty {
+                    if !inputText.isEmpty || disableTextField {
                         Button(action: {
                             self.inputText = ""
                             searchManager.selectedSearchItem = nil
+                            disableTextField = false
                         }) {
                             Image(systemName: "multiply.circle.fill")
                                 .foregroundColor(.gray)
@@ -55,28 +57,6 @@ struct SearchBarView: View {
                                       set: { _ in})) {
             SearchBarSuggestions(searchText: $inputText)
         }
-
-        //        HStack(alignment: .center, spacing: 0) {
-        //            Image(systemName: "magnifyingglass")
-        //            TextField("Search test",
-        //                      text: $inputText)
-        //                .padding(.horizontal)
-        //            if !inputText.isEmpty {
-        //                Button(action: {
-        //                    self.inputText = ""
-        //                }, label: {
-        //                    Image(systemName: "multiply.circle.fill")
-        //                        .foregroundColor(.gray)
-        //                        .padding(.horizontal, 8)
-        //
-        //                })
-        //                .buttonStyle(BorderlessButtonStyle())
-        //                .animation(.easeInOut)
-        //            }
-        //        }
-        //        .padding(4)
-        //        .background(Color(identifier: .snowbank))
-        //        .cornerRadius(12)
     }
 }
 struct SearchBarView_Previews: PreviewProvider {
@@ -84,15 +64,3 @@ struct SearchBarView_Previews: PreviewProvider {
         SearchBarView(inputText: .constant(""))
     }
 }
-
-extension Binding {
-    func onChange(_ handler: @escaping (Value) -> Void) -> Binding<Value> {
-        Binding { () -> Value in
-            self.wrappedValue
-        } set: { newValue in
-            self.wrappedValue = newValue
-            handler(newValue)
-        }
-    }
-}
-
