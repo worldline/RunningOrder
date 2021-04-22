@@ -26,11 +26,8 @@ struct SearchBarView: View {
                             inputText = ""
                             disableTextField = true
                         })
-                    TextField(searchManager.isItemSelected ? "" : "Search", text: $inputText).disabled(disableTextField)
-
-                } else {
-                    TextField(searchManager.isItemSelected ? "" : "Search", text: $inputText)
                 }
+                TextField(searchManager.isItemSelected ? "" : "Search", text: $inputText).disabled(disableTextField)
             }
 
             .overlay(
@@ -45,7 +42,6 @@ struct SearchBarView: View {
                             Image(systemName: "multiply.circle.fill")
                                 .foregroundColor(.gray)
                                 .padding(.horizontal, 8)
-
                         }
                         .buttonStyle(PlainButtonStyle())
                     }

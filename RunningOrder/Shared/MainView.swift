@@ -66,7 +66,7 @@ extension MainView {
                                 Spacer()
                             }
 
-                            ToolbarItemGroup(placement: ToolbarItemPlacement.cancellationAction) {
+                            ToolbarItem(placement: ToolbarItemPlacement.cancellationAction) {
                                 Button(action: {}) {
                                     Image(systemName: "trash")
                                 }

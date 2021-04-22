@@ -20,45 +20,45 @@ extension StoryList {
         @State private var selected: Story?
 
         var body: some View {
-            List(logic.stories(for: sprint.id), id: \.self, selection: $selected) { story in
-                    VStack {
-                        NavigationLink(
-                            destination: StoryDetail(story: story).epicColor(Color(identifier: logic.epicColor(for: story))),
-                            label: { StoryRow(story: story) }
+            List(storyManager.stories(for: sprint.id, searchItem: searchManager.selectedSearchItem), id: \.self, selection: $selected) { story in
+                VStack {
+                    NavigationLink(
+                        destination: StoryDetail(story: story).epicColor(Color(identifier: logic.epicColor(for: story))),
+                        label: { StoryRow(story: story) }
+                    )
+                    .contextMenu {
+                        Button(
+                            action: { logic.deleteStory(story) },
+                            label: { Text("Delete Story") }
                         )
-                        .contextMenu {
-                            Button(
-                                action: { logic.deleteStory(story) },
-                                label: { Text("Delete Story") }
-                            )
-                        }
+                    }
                     .epicColor(Color(identifier: logic.epicColor(for: story)))
 
-                        if story == selected {
-                            Divider()
-                                .hidden()
-                        } else {
-                            Divider()
-                        }
+                    if story == selected {
+                        Divider()
+                            .hidden()
+                    } else {
+                        Divider()
                     }
-                }
-            .navigationTitle(logic.isSearchFound ? "Searching" : "Sprint \(sprint.number) - \(sprint.name)")
-                .frame(minWidth: 100, idealWidth: 300)
-                .toolbar {
-                    ToolbarItems.sidebarItem
-
-                    ToolbarItemGroup(placement: ToolbarItemPlacement.cancellationAction) {
-
-                            Button(action: logic.showAddStoryView) {
-                                Image(systemName: "square.and.pencil")
-                            }
-                    }
-                }
-                .sheet(isPresented: $logic.isAddStoryViewDisplayed) {
-                    NewStoryView(sprintId: sprint.id, createdStory: logic.createdStoryBinding)
                 }
             }
-}
+            .navigationTitle(logic.isSearchFound ? "Searching" : "Sprint \(sprint.number) - \(sprint.name)")
+            .frame(minWidth: 100, idealWidth: 300)
+            .toolbar {
+                ToolbarItems.sidebarItem
+
+                ToolbarItem(placement: ToolbarItemPlacement.cancellationAction) {
+
+                    Button(action: logic.showAddStoryView) {
+                        Image(systemName: "square.and.pencil")
+                    }
+                }
+            }
+            .sheet(isPresented: $logic.isAddStoryViewDisplayed) {
+                NewStoryView(sprintId: sprint.id, createdStory: logic.createdStoryBinding)
+            }
+        }
+    }
 }
 
 struct StoryList: View {
@@ -68,7 +68,7 @@ struct StoryList: View {
     @EnvironmentObject var sprintManager: SprintManager
 
     var body: some View {
-        InternalView(sprint: sprint, logic: Logic(storyManager: storyManager, searchManager: searchManager, sprintManager: sprintManager))
+        InternalView(sprint: sprint, logic: Logic(storyManager: storyManager, searchManager: searchManager))
     }
 }
 

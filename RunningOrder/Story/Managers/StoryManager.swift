@@ -37,7 +37,6 @@ final class StoryManager: ObservableObject {
         }).store(in: &cancellables)
     }
 
-
     func add(story: Story) -> AnyPublisher<Story, Error> {
         let saveStoryPublisher = service.save(story: story)
             .share()
@@ -131,6 +130,35 @@ final class StoryManager: ObservableObject {
                 Logger.warning.log("story not found when deleting \(recordId.recordName)")
             }
         }
+    }
+
+    var allStories: [Story] {
+        return stories.values.flatMap { $0 }
+    }
+
+    /// Returns the stories of a specific sprintId, in case of selected searchItem move to search mode
+    /// - Parameter sprintId: The id of the sprint
+    /// - Parameter searchItem: potential search item
+    /// - Returns: Retrieved stories
+    func stories(for sprintId: Sprint.ID, searchItem: SearchItem? = nil) -> [Story] {
+        var retrievedStories: [Story] = []
+
+        if let selectedItem = searchItem {
+            switch selectedItem.type {
+            case .epic:
+                retrievedStories = allStories.filter { $0.epic == selectedItem.name }
+            case .story:
+                if let selectedStory = selectedItem.relatedStory {
+                    retrievedStories = [selectedStory]
+                }
+            case .people:
+                break
+            }
+        } else {
+            retrievedStories = stories[sprintId] ?? []
+        }
+
+        return retrievedStories
     }
 }
 

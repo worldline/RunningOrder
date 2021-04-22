@@ -14,59 +14,34 @@ extension SearchBarSuggestions {
     final class Logic: ObservableObject {
         @Binding var input: String
         private unowned var storyManager: StoryManager
-        private unowned var sprintManager: SprintManager
-        var searchManager: SearchManager
+        unowned var searchManager: SearchManager
 
-        init(input: Binding<String>, storyManager: StoryManager, sprintManager: SprintManager, searchManager: SearchManager) {
+        init(input: Binding<String>, storyManager: StoryManager, searchManager: SearchManager) {
             self._input = input
             self.storyManager = storyManager
-            self.sprintManager = sprintManager
             self.searchManager = searchManager
         }
 
-        /// Return filtered stories
-        /// - Parameter filter: user's input
-        /// - Returns: All stories in all sprints filtered
         var filteredStories: [Story] {
-            var wholeStories: [Story] = []
-            sprintManager.sprints.forEach { sprint in
-                let storiesPerId = storyManager.stories[sprint.id] ?? []
-                wholeStories.append(contentsOf: storiesPerId)
+            let stories = storyManager.allStories.filter {$0.name.lowercased().contains(input.lowercased()) || $0.epic.lowercased().contains(input.lowercased()) || $0.ticketReference.lowercased().contains(input.lowercased())
             }
 
-            return wholeStories.filter { story -> Bool in
-                return story.name.lowercased().contains(input.lowercased()) || story.epic.lowercased().contains(input.lowercased()) || story.ticketReference.lowercased().contains(input.lowercased())
-            }
+            return stories
         }
 
         var filteredSearchSections: [SearchSection] {
             let formattedStories = filteredStories.map { story -> SearchItem in
-                SearchItem(name: "\(story.ticketReference) \(story.name)", icon: SearchSection.SectionType.story.iconName, type: .story, relatedStory: story)
+                SearchItem(name: "\(story.ticketReference) \(story.name)", icon: SearchSection.SectionType.story.icon, type: .story, relatedStory: story)
             }
 
             let filteredEpics = filteredStories.map {
-                SearchItem(name: $0.epic, icon: SearchSection.SectionType.epic.iconName, type: SearchSection.SectionType.epic, relatedStory: nil)}
+                SearchItem(name: $0.epic, icon: SearchSection.SectionType.epic.icon, type: .epic, relatedStory: nil)
+            }
 
-            let sections = [SearchSection(name: SearchSection.SectionType.story.rawValue.uppercased(),
-                                          items: formattedStories.removingDuplicates()),
-                            SearchSection(name: SearchSection.SectionType.epic.rawValue.uppercased(),
-                                          items: filteredEpics.removingDuplicates())]
+            let sections = [SearchSection(type: SearchSection.SectionType.story, items: Set(formattedStories)),
+                            SearchSection(type: SearchSection.SectionType.epic, items: Set(filteredEpics))]
 
             return sections
         }
-    }
-}
-
-extension Array where Element: Hashable {
-    func removingDuplicates() -> [Element] {
-        var addedDict = [Element: Bool]()
-
-        return filter {
-            addedDict.updateValue(true, forKey: $0) == nil
-        }
-    }
-
-    mutating func removeDuplicates() {
-        self = self.removingDuplicates()
     }
 }

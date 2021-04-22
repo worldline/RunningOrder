@@ -15,7 +15,7 @@ struct SearchBarSuggestions: View {
 
     @Binding var searchText: String
     var body: some View {
-        InternalView(logic: Logic(input: $searchText, storyManager: storyManager, sprintManager: sprintManager, searchManager: searchManager))
+        InternalView(logic: Logic(input: $searchText, storyManager: storyManager, searchManager: searchManager))
     }
 }
 
@@ -28,10 +28,10 @@ extension SearchBarSuggestions {
                 VStack(alignment: .leading) {
                     if !logic.filteredStories.isEmpty {
                         ForEach(logic.filteredSearchSections, id: \.id) { section in
-                            Section(header: Text(section.name).font(.headline).bold()) {
+                            Section(header: Text(section.type.title).font(.headline).bold()) {
                                 Divider()
 
-                                ForEach(section.items) { item in
+                                ForEach(Array(section.items)) { item in
                                     SuggestionRow(imageName: item.icon, suggestion: item.name)
                                         .onTapGesture {
                                             logic.searchManager.selectedSearchItem = item
