@@ -48,6 +48,8 @@
 // Common
 "Cancel" = "Cancel";
 "Create" = "Create";
+"Edit"   = "Edit";
+"Done"   = "Done";
 
 // Welcome
 "Welcome" = "Welcome";

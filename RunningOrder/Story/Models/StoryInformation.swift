@@ -35,10 +35,9 @@ struct StoryInformation {
 
     private var videoExtension: String?
 
-    init(storyId: Story.ID, configuration: Configuration = Configuration(), links: [Link] = [], steps: [String] = [], videoUrl: URL? = nil) {
+    init(storyId: Story.ID, configuration: Configuration = Configuration(), steps: [String] = [], videoUrl: URL? = nil) {
         self.storyId = storyId
         self.configuration = configuration
-        self.links = links
         self.steps = steps
         self.videoUrl = videoUrl
         if let newExtension = videoUrl?.pathExtension, !newExtension.isEmpty {
@@ -100,13 +99,14 @@ extension StoryInformation: CKRecordable {
         let features: [String] = try record.property("features")
         let indicators: [String] = try record.property("indicators")
         let identifiers: [String] = try record.property("identifiers")
-        let linkLabels: [String] = try record.property("links")
+
+        let linksData: Data = try record.property("links")
+        let decoder: JSONDecoder = JSONDecoder()
+        self.links = try decoder.decode([Link].self, from: linksData)
 
         let videoAsset: CKAsset? = try? record.property("video")
         self.videoUrl = videoAsset?.fileURL
         self.videoExtension = try? record.property("videoExtension")
-
-        self.links = linkLabels.map { Link.init(value: $0) }
 
         self.configuration = .init(environments: environments, mocks: mocks, features: features, indicators: indicators, identifiers: identifiers)
     }
@@ -128,7 +128,14 @@ extension StoryInformation: CKRecordable {
 
         // Links : for now as a link label is only the url string representation we can only store all the labels, will change in the future
 
-        storyInformationRecord["links"] = self.links.map { $0.label }
+        let encoder: JSONEncoder = JSONEncoder()
+
+        do {
+            storyInformationRecord["links"] = try encoder.encode(self.links)
+        } catch {
+            storyInformationRecord["links"] = try? encoder.encode([Link]())
+            Logger.error.log(error)
+        }
 
         if let videoUrl = self.videoUrl {
             storyInformationRecord["video"] = CKAsset(fileURL: videoUrl)

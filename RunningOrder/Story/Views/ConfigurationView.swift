@@ -16,7 +16,7 @@ struct ConfigurationView: View {
             VStack(alignment: .leading, spacing: 15) {
                 Text("Configuration")
                     .font(.title2)
-                    .padding(.leading, 10)
+                    .padding(.leading, 12)
 
                 InlineEditableList(title: "Environments", values: $storyInformation.configuration.environments)
 
@@ -28,18 +28,7 @@ struct ConfigurationView: View {
 
                 InlineEditableList(title: "Identifier", values: $storyInformation.configuration.identifiers)
 
-                Text("Links")
-                    .font(.title2)
-                    .padding(.top, 20)
-                    .padding(.leading, 10)
-
-                InlineEditableList(
-                    title: "Links",
-                    values: Binding<[String]>(
-                        get: { self.storyInformation.links.map { $0.label } },
-                        set: { values in self.storyInformation.links = values.map { Link(value: $0) } }
-                    )
-                )
+                InlineEditableLinkList(title: "Link", values: $storyInformation.links)
 
                 Spacer()
             }
