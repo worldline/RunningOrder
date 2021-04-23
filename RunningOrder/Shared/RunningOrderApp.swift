@@ -67,6 +67,10 @@ struct RunningOrderApp: App {
         }
     }
 
+    var _enabledLogs = Logger.enabledLogsBinding
+
+    var enabledLogs: [Logger] { _enabledLogs.wrappedValue }
+
     var body: some Scene {
         WindowGroup {
             MainView()
@@ -145,9 +149,34 @@ struct RunningOrderApp: App {
                 Button("test") {
                     CloudKitContainer.shared.test()
                 }
+
+                Menu("Logs") {
+                    ForEach(Logger.allCases, id: \.title) { logger in
+                        HStack {
+                            Button(logger.title) {
+                                if let index = enabledLogs.firstIndex(of: logger) {
+                                    _enabledLogs.wrappedValue.remove(at: index)
+                                } else {
+                                    _enabledLogs.wrappedValue.append(logger)
+                                }
+                            }
+                        }
+                    }
+                }
             }
             ToolbarCommands()
             SidebarCommands()
+        }
+    }
+}
+
+extension Logger {
+    static var enabledLogsBinding: Binding<[Logger]> {
+        Binding {
+            Self.allCases.filter { !Self.disabledLevels.contains($0) }
+        } set: { newValue in
+            Self.disabledLevels = Self.allCases.filter { !newValue.contains($0) }
+            Logger.debug.log("new disabledLevels : \(disabledLevels)")
         }
     }
 }

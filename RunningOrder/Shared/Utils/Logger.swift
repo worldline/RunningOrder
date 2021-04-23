@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum Logger {
+enum Logger: CaseIterable {
     case verbose
     case debug
     case error
@@ -27,6 +27,19 @@ enum Logger {
         }
     }
 
+    var title: String {
+        switch self {
+        case .debug:
+            return "Debug"
+        case .verbose:
+            return "Verbose"
+        case .warning:
+            return "Warning"
+        case .error:
+            return "Error"
+        }
+    }
+
     static var disabledLevels: [Logger] = []
 
     func log(_ value: Any, file: String = #fileID, line: Int = #line, function: String = #function) {
@@ -35,6 +48,7 @@ enum Logger {
         print("\(self.icon) \(file):\(line) \(function) - \(value)")
     }
 }
+
 import Combine
 
 extension Publisher {
