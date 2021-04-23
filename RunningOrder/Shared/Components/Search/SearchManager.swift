@@ -16,4 +16,8 @@ final class SearchManager: ObservableObject {
     var isItemSelected: Bool {
         selectedSearchItem != nil
     }
+
+    var selectedItemType: SearchSection.SectionType? {
+        return selectedSearchItem?.type
+    }
 }

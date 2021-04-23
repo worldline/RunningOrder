@@ -31,7 +31,7 @@ extension SearchBarSuggestions {
 
         var filteredSearchSections: [SearchSection] {
             let formattedStories = filteredStories.map { story -> SearchItem in
-                SearchItem(name: "\(story.ticketReference) \(story.name)", icon: SearchSection.SectionType.story.icon, type: .story, relatedStory: story)
+                SearchItem(name: "\(story.name)", icon: SearchSection.SectionType.story.icon, type: .story, relatedStory: story)
             }
 
             let filteredEpics = filteredStories.map {

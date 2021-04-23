@@ -10,7 +10,6 @@ import SwiftUI
 
 struct SearchBarSuggestions: View {
     @EnvironmentObject var storyManager: StoryManager
-    @EnvironmentObject var sprintManager: SprintManager
     @EnvironmentObject var searchManager: SearchManager
 
     @Binding var searchText: String

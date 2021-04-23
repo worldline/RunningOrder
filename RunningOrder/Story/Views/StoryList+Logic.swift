@@ -19,7 +19,7 @@ extension StoryList {
 
         var createdStoryBinding: Binding<Story?> { Binding(callback: self.addStory(_:)) }
 
-        var isSearchFound: Bool {
+        var isItemSelected: Bool {
             searchManager.isItemSelected
         }
 

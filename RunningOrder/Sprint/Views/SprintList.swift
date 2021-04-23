@@ -16,13 +16,10 @@ extension SprintList {
         @EnvironmentObject var sprintManager: SprintManager
         @EnvironmentObject var storyManager: StoryManager
         @ObservedObject var logic: Logic
-        @State private var searchText: String = ""
         let space: Space
 
         var body: some View {
             List {
-                SearchBarView(inputText: $searchText)
-
                 Section(header: Text("Active Sprints")) {
                     ForEach(sprintManager.sprints, id: \.self) { sprint in
                         NavigationLink(

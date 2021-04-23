@@ -9,11 +9,8 @@
 import SwiftUI
 
 struct SearchBarView: View {
-    @Binding var inputText: String
-    @State private var isFocused = false
-    @State private var showSelectedView = false
+    @State private var inputText: String = ""
     @State private var disableTextField = false
-
     @EnvironmentObject var searchManager: SearchManager
 
     var body: some View {
@@ -21,7 +18,8 @@ struct SearchBarView: View {
             ZStack(alignment: .leading) {
                 if let selected = searchManager.selectedSearchItem?.name {
                     Tag("\(selected)", color: Color(identifier: .gray).opacity(0.25), foregroundTextColor: Color.black)
-                        .padding(.trailing, 18)
+                        .padding(.trailing, 22)
+                        .padding(.leading, 5)
                         .onAppear(perform: {
                             inputText = ""
                             disableTextField = true
@@ -57,6 +55,6 @@ struct SearchBarView: View {
 }
 struct SearchBarView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchBarView(inputText: .constant(""))
+        SearchBarView()
     }
 }

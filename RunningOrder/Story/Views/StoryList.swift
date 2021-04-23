@@ -42,13 +42,12 @@ extension StoryList {
                     }
                 }
             }
-            .navigationTitle(logic.isSearchFound ? "Searching" : "Sprint \(sprint.number) - \(sprint.name)")
+            .navigationTitle(logic.isItemSelected ? "Searching" : "Sprint \(sprint.number) - \(sprint.name)")
             .frame(minWidth: 100, idealWidth: 300)
             .toolbar {
                 ToolbarItems.sidebarItem
 
                 ToolbarItem(placement: ToolbarItemPlacement.cancellationAction) {
-
                     Button(action: logic.showAddStoryView) {
                         Image(systemName: "square.and.pencil")
                     }
@@ -65,7 +64,6 @@ struct StoryList: View {
     let sprint: Sprint
     @EnvironmentObject var storyManager: StoryManager
     @EnvironmentObject var searchManager: SearchManager
-    @EnvironmentObject var sprintManager: SprintManager
 
     var body: some View {
         InternalView(sprint: sprint, logic: Logic(storyManager: storyManager, searchManager: searchManager))
