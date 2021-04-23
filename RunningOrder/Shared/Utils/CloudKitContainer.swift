@@ -67,6 +67,7 @@ final class CloudKitContainer {
         let subscription = CKDatabaseSubscription(subscriptionID: database.subscriptionId)
         let notificationInfo = CKSubscription.NotificationInfo()
         notificationInfo.shouldSendContentAvailable = true
+        notificationInfo.alertBody = nil
         subscription.notificationInfo = notificationInfo
 
         let operation = CKModifySubscriptionsOperation(

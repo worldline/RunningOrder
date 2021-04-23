@@ -34,6 +34,12 @@ final class CloudKitChangesService: ObservableObject {
             .forEach(self.fetchChanges(on:))
     }
 
+    func refreshAll() {
+        Logger.debug.log("refresh")
+        self.fetchDatabaseChanges(in: .private)
+        self.fetchDatabaseChanges(in: .shared)
+    }
+
     func fetchDatabaseChanges(in scope: CKDatabase.Scope) {
         let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: databaseChangesServerToken)
 

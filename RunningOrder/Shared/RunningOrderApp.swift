@@ -45,6 +45,15 @@ struct RunningOrderApp: App {
 
     @Environment(\.openURL) var openURL
 
+    let timerCancellable = Timer
+        .publish(every: 180, on: .main, in: .default)
+        .autoconnect()
+        .print(in: .debug)
+        .sink { _ in
+            Logger.verbose.log("refreshing...")
+            changesService.refreshAll()
+        }
+
     /// **Warning** This binding can't be used without an active space selection
     var selectedSpace: Binding<Space> {
         Binding {
@@ -85,7 +94,7 @@ struct RunningOrderApp: App {
                 Button("Nouveau") {
                     appStateManager.currentState = .spaceCreation
                 }
-                .keyboardShortcut(KeyEquivalent("n"), modifiers: [.command, .shift, .option])
+                .keyboardShortcut("n", modifiers: [.command, .shift, .option])
 
                 Divider()
 
@@ -110,10 +119,16 @@ struct RunningOrderApp: App {
                         }
                     }
 
-                    Button(action: CloudSharingHandler(spaceManager: spaceManager, space: currentSpace).performCloudSharing, label: {
-                        Label("Partager", systemImage: "person.crop.circle")
-                    })
-                    .keyboardShortcut(KeyEquivalent("s"), modifiers: [.command, .shift])
+                    Button("Refresh") {
+                        changesService.refreshAll()
+                    }
+                    .keyboardShortcut("r", modifiers: .command)
+
+                    Button(
+                        "Partager",
+                        action: CloudSharingHandler(spaceManager: spaceManager, space: currentSpace).performCloudSharing
+                    )
+                    .keyboardShortcut("s", modifiers: [.command, .shift])
 
                     Divider()
                     Text("Espace actuel : \(currentSpace.name)")
