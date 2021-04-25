@@ -950,6 +950,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 20210425;
 				DEVELOPMENT_ASSET_PATHS = "\"RunningOrder/Preview Content\"";
 				DEVELOPMENT_TEAM = 5GARSM38JL;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -960,6 +961,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 0.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.worldline.RunningOrder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Running Order Dev";
@@ -976,6 +978,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 20210425;
 				DEVELOPMENT_ASSET_PATHS = "\"RunningOrder/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -986,6 +989,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 0.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.worldline.RunningOrder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
