@@ -11,14 +11,6 @@ import CloudKit
 import Combine
 import struct SwiftUI.AppStorage
 
-extension JSONEncoder {
-    static var `default`: JSONEncoder = .init()
-}
-
-extension JSONDecoder {
-    static var `default`: JSONDecoder = .init()
-}
-
 extension Dictionary: Storable where Key == String, Value == Int {}
 
 fileprivate extension CKDatabase {
@@ -165,9 +157,10 @@ final class CloudKitContainer {
         cloudContainer.database(with: .private)
             .fetchAllSubscriptions()
             .print(in: .debug)
-            .sink(receiveFailure: { _ in }, receiveValue: { subs in
-                print(subs)
-            })
+            .sink(
+                receiveFailure: { _ in },
+                receiveValue: { subs in print(subs) }
+            )
             .store(in: &cancellables)
 
         let fetchZones = CKFetchRecordZonesOperation(recordZoneIDs: [ownedZoneId])
@@ -185,7 +178,7 @@ final class CloudKitContainer {
 
     func database(for zoneId: CKRecordZone.ID) -> CKDatabase {
         let scope: CKDatabase.Scope = zoneId.ownerName == CKCurrentUserDefaultName ? .private : .shared
-        Logger.debug.log("scope is Private : \(scope == .private)")
+
         return cloudContainer.database(with: scope)
     }
 

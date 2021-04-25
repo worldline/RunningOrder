@@ -33,6 +33,7 @@
 		188595D425C97C2A00E7B3FD /* CloudSharingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188595D325C97C2A00E7B3FD /* CloudSharingHandler.swift */; };
 		1888AFC525271A4200D5C678 /* Colors+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1888AFC425271A4200D5C678 /* Colors+Extensions.swift */; };
 		1890DCC2252B705400D236B6 /* CloudKitChangesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1890DCC1252B705400D236B6 /* CloudKitChangesService.swift */; };
+		1893AA4F263585D500583B8B /* JSONCoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1893AA4E263585D500583B8B /* JSONCoding.swift */; };
 		18CDCDD624B4A49200043E1D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 18CDCDD824B4A49200043E1D /* Localizable.strings */; };
 		18F6109F25FBA79700A94949 /* TextfieldEditingStringHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F6109E25FBA79700A94949 /* TextfieldEditingStringHandler.swift */; };
 		18F610A425FBAD3000A94949 /* Environment+EpicColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F610A325FBAD3000A94949 /* Environment+EpicColor.swift */; };
@@ -135,6 +136,7 @@
 		188595D325C97C2A00E7B3FD /* CloudSharingHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudSharingHandler.swift; sourceTree = "<group>"; };
 		1888AFC425271A4200D5C678 /* Colors+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Colors+Extensions.swift"; sourceTree = "<group>"; };
 		1890DCC1252B705400D236B6 /* CloudKitChangesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitChangesService.swift; sourceTree = "<group>"; };
+		1893AA4E263585D500583B8B /* JSONCoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONCoding.swift; sourceTree = "<group>"; };
 		18CDCDD724B4A49200043E1D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		18CDCDDA24B4A4A500043E1D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		18F6109E25FBA79700A94949 /* TextfieldEditingStringHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldEditingStringHandler.swift; sourceTree = "<group>"; };
@@ -384,6 +386,7 @@
 			isa = PBXGroup;
 			children = (
 				E8760DCE24DADFD8003A2766 /* Image+Extensions.swift */,
+				1893AA4E263585D500583B8B /* JSONCoding.swift */,
 				1837186125E0108300A3E3F9 /* Binding+Callback.swift */,
 				1888AFC425271A4200D5C678 /* Colors+Extensions.swift */,
 				1858275D24B4C38B008BE248 /* Sequence+Extensions.swift */,
@@ -716,6 +719,7 @@
 				183C0220251B765400EC09FD /* Logger.swift in Sources */,
 				188595D425C97C2A00E7B3FD /* CloudSharingHandler.swift in Sources */,
 				E8A5BD2324E433AD00589452 /* StoryInformationManager.swift in Sources */,
+				1893AA4F263585D500583B8B /* JSONCoding.swift in Sources */,
 				1837184825DFDE0400A3E3F9 /* SprintList+Logic.swift in Sources */,
 				E8F5501E24DD36100017582D /* Link.swift in Sources */,
 				E858997424EE68FB00BB65C8 /* Cloudkit+Extensions.swift in Sources */,

@@ -105,8 +105,7 @@ extension StoryInformation: CKRecordable {
         let identifiers: [String] = try record.property("identifiers")
 
         let linksData: Data = try record.property("links")
-        let decoder: JSONDecoder = JSONDecoder()
-        self.links = try decoder.decode([Link].self, from: linksData)
+        self.links = try JSONDecoder.default.decode([Link].self, from: linksData)
 
         let videoAsset: CKAsset? = try? record.property("video")
         self.videoUrl = videoAsset?.fileURL
@@ -134,12 +133,10 @@ extension StoryInformation: CKRecordable {
 
         // Links : for now as a link label is only the url string representation we can only store all the labels, will change in the future
 
-        let encoder: JSONEncoder = JSONEncoder()
-
         do {
-            storyInformationRecord["links"] = try encoder.encode(self.links)
+            storyInformationRecord["links"] = try JSONEncoder.default.encode(self.links)
         } catch {
-            storyInformationRecord["links"] = try? encoder.encode([Link]())
+            storyInformationRecord["links"] = try? JSONEncoder.default.encode([Link]())
             Logger.error.log(error)
         }
 
