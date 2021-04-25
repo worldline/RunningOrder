@@ -37,6 +37,10 @@ struct StoryDetail: View {
                 Spacer()
             }
 
+            ToolbarItem(placement: ToolbarItemPlacement.cancellationAction) {
+                SearchBarView().frame(width: 300)
+            }
+
             ToolbarItems.deleteStory(storyManager: storyManager, story: story)
         }
         .onAppear { storyManager.getUser(creatorOf: story) }

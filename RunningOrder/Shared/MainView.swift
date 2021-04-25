@@ -67,6 +67,9 @@ extension MainView {
                             }
 
                             ToolbarItem(placement: ToolbarItemPlacement.cancellationAction) {
+                                SearchBarView().frame(width: 300)
+                            }
+                            ToolbarItem(placement: ToolbarItemPlacement.cancellationAction) {
                                 Button(action: {}) {
                                     Image(systemName: "trash")
                                 }

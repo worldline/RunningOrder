@@ -13,13 +13,19 @@ extension StoryList {
     final class Logic: ObservableObject {
         private var cancellables = Set<AnyCancellable>()
         private unowned var storyManager: StoryManager
+        private unowned var searchManager: SearchManager
 
         @Published var isAddStoryViewDisplayed: Bool = false
 
         var createdStoryBinding: Binding<Story?> { Binding(callback: self.addStory(_:)) }
 
-        init(storyManager: StoryManager) {
+        var isItemSelected: Bool {
+            searchManager.isItemSelected
+        }
+
+        init(storyManager: StoryManager, searchManager: SearchManager) {
             self.storyManager = storyManager
+            self.searchManager = searchManager
         }
 
         private func addStory(_ story: Story) {

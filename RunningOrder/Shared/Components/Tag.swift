@@ -12,15 +12,17 @@ struct Tag: View {
 
     let text: String
     let color: Color
+    let foregroundTextColor: Color
 
-    init(_ text: String, color: Color) {
+    init(_ text: String, color: Color, foregroundTextColor: Color = Color.white) {
         self.text = text
         self.color = color
+        self.foregroundTextColor = foregroundTextColor
     }
 
     var body: some View {
         Text(text)
-            .foregroundColor(Color.white)
+            .foregroundColor(foregroundTextColor)
             .padding(.horizontal, 8)
             .padding(.vertical, 2)
             .background(color)

@@ -12,7 +12,6 @@ import CloudKit
 
 ///The class responsible of managing the Story data, this is the only source of truth
 final class StoryManager: ObservableObject {
-
     @Published var stories: [Sprint.ID: [Story]] = [:]
 
     var epics: Set<String> {
@@ -36,12 +35,6 @@ final class StoryManager: ObservableObject {
             self?.updateData(with: informations.toUpdate)
             self?.deleteData(recordIds: informations.toDelete)
         }).store(in: &cancellables)
-    }
-
-    /// Returns the stories of a specific sprintId
-    /// - Parameter sprintId: The id of the sprint
-    func stories(for sprintId: Sprint.ID) -> [Story] {
-        return stories[sprintId] ?? []
     }
 
     func add(story: Story) -> AnyPublisher<Story, Error> {
@@ -137,6 +130,35 @@ final class StoryManager: ObservableObject {
                 Logger.warning.log("story not found when deleting \(recordId.recordName)")
             }
         }
+    }
+
+    var allStories: [Story] {
+        return stories.values.flatMap { $0 }
+    }
+
+    /// Returns the stories of a specific sprintId, in case of selected searchItem move to search mode
+    /// - Parameter sprintId: The id of the sprint
+    /// - Parameter searchItem: potential search item
+    /// - Returns: Retrieved stories
+    func stories(for sprintId: Sprint.ID, searchItem: SearchItem? = nil) -> [Story] {
+        var retrievedStories: [Story] = []
+
+        if let selectedItem = searchItem {
+            switch selectedItem.type {
+            case .epic:
+                retrievedStories = allStories.filter { $0.epic == selectedItem.name }
+            case .story:
+                if let selectedStory = selectedItem.relatedStory {
+                    retrievedStories = [selectedStory]
+                }
+            case .people:
+                break
+            }
+        } else {
+            retrievedStories = stories[sprintId] ?? []
+        }
+
+        return retrievedStories
     }
 }
 

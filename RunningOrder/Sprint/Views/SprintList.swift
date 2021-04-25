@@ -14,8 +14,8 @@ extension Sprint: Identifiable {}
 extension SprintList {
     fileprivate struct InternalView: View {
         @EnvironmentObject var sprintManager: SprintManager
+        @EnvironmentObject var storyManager: StoryManager
         @ObservedObject var logic: Logic
-
         let space: Space
 
         var body: some View {

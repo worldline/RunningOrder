@@ -16,15 +16,14 @@ extension StoryList {
 
         @ObservedObject var logic: Logic
         @EnvironmentObject var storyManager: StoryManager
-
+        @EnvironmentObject var searchManager: SearchManager
         @State private var selected: Story?
 
         var body: some View {
-            List(storyManager.stories(for: sprint.id), id: \.self, selection: $selected) { story in
+            List(storyManager.stories(for: sprint.id, searchItem: searchManager.selectedSearchItem), id: \.self, selection: $selected) { story in
                 VStack {
                     NavigationLink(
-                        destination: StoryDetail(story: story)
-                            .epicColor(Color(identifier: logic.epicColor(for: story))),
+                        destination: StoryDetail(story: story).epicColor(Color(identifier: logic.epicColor(for: story))),
                         label: { StoryRow(story: story) }
                     )
                     .contextMenu {
@@ -43,7 +42,7 @@ extension StoryList {
                     }
                 }
             }
-            .navigationTitle("Sprint \(sprint.number) - \(sprint.name)")
+            .navigationTitle(logic.isItemSelected ? "Searching" : "Sprint \(sprint.number) - \(sprint.name)")
             .frame(minWidth: 100, idealWidth: 300)
             .toolbar {
                 ToolbarItems.sidebarItem
@@ -64,9 +63,10 @@ extension StoryList {
 struct StoryList: View {
     let sprint: Sprint
     @EnvironmentObject var storyManager: StoryManager
+    @EnvironmentObject var searchManager: SearchManager
 
     var body: some View {
-        InternalView(sprint: sprint, logic: Logic(storyManager: storyManager))
+        InternalView(sprint: sprint, logic: Logic(storyManager: storyManager, searchManager: searchManager))
     }
 }
 
