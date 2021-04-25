@@ -12,21 +12,21 @@ import SwiftUI
 
 extension SearchBarSuggestions {
     final class Logic: ObservableObject {
-        @Binding var input: String
         private unowned var storyManager: StoryManager
-        unowned var searchManager: SearchManager
+        let inputText: String
 
-        init(input: Binding<String>, storyManager: StoryManager, searchManager: SearchManager) {
-            self._input = input
+        init(inputText: String, storyManager: StoryManager) {
             self.storyManager = storyManager
-            self.searchManager = searchManager
+            self.inputText = inputText
         }
 
         var filteredStories: [Story] {
-            let stories = storyManager.allStories.filter {$0.name.lowercased().contains(input.lowercased()) || $0.epic.lowercased().contains(input.lowercased()) || $0.ticketReference.lowercased().contains(input.lowercased())
-            }
-
-            return stories
+            return storyManager.allStories
+                .filter {
+                    $0.name.lowercased().contains(inputText.lowercased())
+                    || $0.epic.lowercased().contains(inputText.lowercased())
+                    || $0.ticketReference.lowercased().contains(inputText.lowercased())
+                }
         }
 
         var filteredSearchSections: [SearchSection] {
@@ -38,10 +38,10 @@ extension SearchBarSuggestions {
                 SearchItem(name: $0.epic, icon: SearchSection.SectionType.epic.icon, type: .epic, relatedStory: nil)
             }
 
-            let sections = [SearchSection(type: SearchSection.SectionType.story, items: Set(formattedStories)),
-                            SearchSection(type: SearchSection.SectionType.epic, items: Set(filteredEpics))]
-
-            return sections
+            return [
+                SearchSection(type: SearchSection.SectionType.story, items: Set(formattedStories)),
+                SearchSection(type: SearchSection.SectionType.epic, items: Set(filteredEpics))
+            ]
         }
     }
 }

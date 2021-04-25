@@ -13,8 +13,20 @@ import SwiftUI
 final class SearchManager: ObservableObject {
     @Published var selectedSearchItem: SearchItem?
 
+    @Published var currentSearchText: String = ""
+
     var isItemSelected: Bool {
         selectedSearchItem != nil
+    }
+
+    func resetSearch() {
+        currentSearchText = ""
+        selectedSearchItem = nil
+    }
+
+    func selectItem(_ item: SearchItem) {
+        currentSearchText = ""
+        selectedSearchItem = item
     }
 
     var selectedItemType: SearchSection.SectionType? {

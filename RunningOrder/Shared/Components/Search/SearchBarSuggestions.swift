@@ -10,17 +10,23 @@ import SwiftUI
 
 struct SearchBarSuggestions: View {
     @EnvironmentObject var storyManager: StoryManager
-    @EnvironmentObject var searchManager: SearchManager
 
-    @Binding var searchText: String
+    let searchText: String
+
     var body: some View {
-        InternalView(logic: Logic(input: $searchText, storyManager: storyManager, searchManager: searchManager))
+        InternalView(
+            logic: Logic(
+                inputText: searchText,
+                storyManager: storyManager
+            )
+        )
     }
 }
 
 extension SearchBarSuggestions {
     fileprivate struct InternalView: View {
         @ObservedObject var logic: Logic
+        @EnvironmentObject var searchManager: SearchManager
 
         var body: some View {
             ScrollView {
@@ -32,24 +38,26 @@ extension SearchBarSuggestions {
 
                                 ForEach(Array(section.items)) { item in
                                     SuggestionRow(imageName: item.icon, suggestion: item.name)
-                                        .onTapGesture {
-                                            logic.searchManager.selectedSearchItem = item
-                                        }
+                                        .onTapGesture { searchManager.selectItem(item) }
                                 }
                             }
                         }
                     } else {
+                        Spacer()
                         Label("No matching stories, epics found", systemImage: "magnifyingglass")
                             .padding()
+                        Spacer()
                     }
-                }.padding(8)
-            }.frame(width: 300, height: 300)
+                }
+                .padding(8)
+                .frame(width: 300, height: 300, alignment: .top)
+            }
         }
     }
 }
 
 struct SearchBarSuggestions_Previews: PreviewProvider {
     static var previews: some View {
-        SearchBarSuggestions(searchText: .constant(""))
+        SearchBarSuggestions(searchText: "")
     }
 }

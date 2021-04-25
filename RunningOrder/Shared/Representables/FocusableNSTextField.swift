@@ -33,6 +33,7 @@ struct FocusableTextField: NSViewRepresentable {
 
     func updateNSView(_ nsView: NSTextField, context: Context) {
         nsView.stringValue = value
+        nsView.placeholderString = placeholder
     }
 
     func makeCoordinator() -> FocusableTextField.Coordinator {

@@ -18,7 +18,7 @@ struct BorderedTextField: View {
             // on focus background
             .background(RoundedRectangle(cornerRadius: 10)
                             .foregroundColor(Color(NSColor.textBackgroundColor))
-            ).textFieldStyle(PlainTextFieldStyle())
+            )
             // on focus border
             .overlay(RoundedRectangle(cornerRadius: 10)
                         .strokeBorder(Color.accentColor, lineWidth: 1.0, antialiased: true)
