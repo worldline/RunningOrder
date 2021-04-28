@@ -28,6 +28,7 @@
 		1862424024B489BB00A4A6CB /* Sprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862423F24B489BB00A4A6CB /* Sprint.swift */; };
 		1862424324B48A8600A4A6CB /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862424224B48A8600A4A6CB /* Story.swift */; };
 		1862424724B48E9900A4A6CB /* NewSprintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862424624B48E9900A4A6CB /* NewSprintView.swift */; };
+		186A8B1226394E8F00B8FFBE /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 186A8B1126394E8F00B8FFBE /* AVKit.framework */; };
 		188595BB25C9682400E7B3FD /* RunningOrderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188595BA25C9682400E7B3FD /* RunningOrderApp.swift */; };
 		188595CF25C9726000E7B3FD /* ToolbarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188595CE25C9726000E7B3FD /* ToolbarItems.swift */; };
 		188595D425C97C2A00E7B3FD /* CloudSharingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188595D325C97C2A00E7B3FD /* CloudSharingHandler.swift */; };
@@ -131,6 +132,7 @@
 		1862423F24B489BB00A4A6CB /* Sprint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sprint.swift; sourceTree = "<group>"; };
 		1862424224B48A8600A4A6CB /* Story.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Story.swift; sourceTree = "<group>"; };
 		1862424624B48E9900A4A6CB /* NewSprintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSprintView.swift; sourceTree = "<group>"; };
+		186A8B1126394E8F00B8FFBE /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		188595BA25C9682400E7B3FD /* RunningOrderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningOrderApp.swift; sourceTree = "<group>"; };
 		188595CE25C9726000E7B3FD /* ToolbarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarItems.swift; sourceTree = "<group>"; };
 		188595D325C97C2A00E7B3FD /* CloudSharingHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudSharingHandler.swift; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				186A8B1226394E8F00B8FFBE /* AVKit.framework in Frameworks */,
 				E83C002724ED7B0F00C83B85 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -377,6 +380,7 @@
 		E83C002524ED7B0F00C83B85 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				186A8B1126394E8F00B8FFBE /* AVKit.framework */,
 				E83C002624ED7B0F00C83B85 /* CloudKit.framework */,
 			);
 			name = Frameworks;
@@ -950,7 +954,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 20210427;
+				CURRENT_PROJECT_VERSION = 20210428;
 				DEVELOPMENT_ASSET_PATHS = "\"RunningOrder/Preview Content\"";
 				DEVELOPMENT_TEAM = 5GARSM38JL;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -961,7 +965,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 0.8;
+				MARKETING_VERSION = 0.8.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.worldline.RunningOrder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Running Order Dev";
@@ -978,7 +982,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 20210427;
+				CURRENT_PROJECT_VERSION = 20210428;
 				DEVELOPMENT_ASSET_PATHS = "\"RunningOrder/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -989,7 +993,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 0.8;
+				MARKETING_VERSION = 0.8.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.worldline.RunningOrder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
