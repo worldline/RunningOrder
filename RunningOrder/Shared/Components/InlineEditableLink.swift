@@ -11,7 +11,6 @@ import SwiftUI
 struct InlineEditableLink: View {
     @State private var hovered = false
     @State private var isEditing: Bool
-    @State private var isDoneButtonEnabled = true
     @ObservedObject var logic: Logic
 
     /// - Parameters:
@@ -24,40 +23,29 @@ struct InlineEditableLink: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                if isEditing {
+                if let url = logic.value.formattedURL, !isEditing {
+                    SwiftUI.Link(logic.value.label, destination: url)
+                    Spacer()
+                    if hovered {
+                        Button("Edit") { self.isEditing = true }
+                            .buttonStyle(PlainButtonStyle())
+                            .foregroundColor(.accentColor)
+                    }
+                } else {
                     VStack {
                         BorderedTextField(placeholder: "Label", value: logic.$value.label)
                         BorderedTextField(placeholder: "Url", value: logic.$value.url)
                     }
                     Spacer()
-                    Button(action: {
+                    Button("Done", action: {
                         if !logic.isFieldEmpty {
                             self.isEditing = false
                             logic.value.url = logic.formatURL(content: logic.value.url)
                         }
-                    }, label: {
-                        Text("Done")
                     })
                     .buttonStyle(PlainButtonStyle())
                     .foregroundColor(.accentColor)
                     .disabled(logic.isFieldEmpty)
-                } else {
-                    HStack {
-                        if let url = logic.value.formattedURL {
-                            SwiftUI.Link(logic.value.label, destination: url)
-                            Spacer()
-                            if hovered {
-                                Button(action: {
-                                    self.isEditing = true
-                                }, label: {
-                                    Text("Edit")
-                                })
-                                .buttonStyle(PlainButtonStyle())
-                                .foregroundColor(.accentColor)
-                            }
-                        }
-                    }
-                    .padding(5)
                 }
             }
         }

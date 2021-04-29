@@ -13,7 +13,7 @@ struct StyledFocusableTextField: View {
 
     let placeholder: String
 
-    @State private var isFocused: Bool = false
+    @State private var isFocused = false
     @Binding var value: String
 
     private var borderOpacity: Double { isFocused ? 1 : 0 }
