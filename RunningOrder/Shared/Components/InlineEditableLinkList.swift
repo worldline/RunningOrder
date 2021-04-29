@@ -39,12 +39,7 @@ struct InlineEditableLinkList: View {
 
             ForEach(logic.values.indices, id: \.self) { index in
                 HStack {
-                    InlineEditableLink(
-                        value: Binding(
-                            get: { return logic.values[index] },
-                            set: { newValue in return self.logic.values[index] = newValue }
-                        )
-                    )
+                    InlineEditableLink(value: self.logic.linkBinding(for: index))
                     Button(
                         action: { logic.deleteTextField(at: index) },
                         label: { Image(systemName: "minus.circle.fill") }

@@ -8,8 +8,7 @@
 
 import Foundation
 
-struct Link: Identifiable {
-    var id = UUID()
+struct Link {
     var label: String
     var url: String
 
@@ -28,3 +27,6 @@ struct Link: Identifiable {
 extension Link: Equatable { }
 extension Link: Hashable { }
 extension Link: Codable {}
+extension Link: Identifiable {
+    var id: String { label }
+}

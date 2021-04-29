@@ -27,5 +27,12 @@ extension InlineEditableLinkList {
             guard index < values.count else { return }
             _ = values.remove(at: index)
         }
+
+        func linkBinding(for index: Int) -> Binding<Link> {
+            Binding(
+                get: { return self.values[index] },
+                set: { newValue in return self.values[index] = newValue }
+            )
+        }
     }
 }
