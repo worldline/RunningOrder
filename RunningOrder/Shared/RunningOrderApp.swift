@@ -94,8 +94,8 @@ struct RunningOrderApp: App {
                     openURL(bugReportURL)
                 }
             }
-            CommandMenu("Espace de travail") {
-                Button("Nouveau") {
+            CommandMenu("Workspace") {
+                Button("New") {
                     appStateManager.currentState = .spaceCreation
                 }
                 .keyboardShortcut("n", modifiers: [.command, .shift, .option])
@@ -103,7 +103,7 @@ struct RunningOrderApp: App {
                 Divider()
 
                 if case .spaceSelected(let currentSpace) = appStateManager.currentState {
-                    Button("Supprimer") {
+                    Button("Delete") {
                         spaceManager.delete(space: currentSpace)
                         var spacesLeft = spaceManager.availableSpaces
                         spacesLeft.removeAll(where: { currentSpace == $0 })
@@ -115,7 +115,7 @@ struct RunningOrderApp: App {
                     }
 
                     if spaceManager.availableSpaces.count > 1 {
-                        Picker("Changer d'espace", selection: selectedSpace) {
+                        Picker("Switch Workspace", selection: selectedSpace) {
                             ForEach(spaceManager.availableSpaces, id: \.id) { space in
                                 Text(space.name)
                                     .tag(space)
@@ -129,15 +129,15 @@ struct RunningOrderApp: App {
                     .keyboardShortcut("r", modifiers: .command)
 
                     Button(
-                        "Partager",
+                        "Share",
                         action: CloudSharingHandler(spaceManager: spaceManager, space: currentSpace).performCloudSharing
                     )
                     .keyboardShortcut("s", modifiers: [.command, .shift])
 
                     Divider()
-                    Text("Espace actuel : \(currentSpace.name)")
+                    Text("Current workspace : \(currentSpace.name)")
                 } else {
-                    Text("Pas d'espace de travail courant")
+                    Text("No current workspace")
                 }
             }
 

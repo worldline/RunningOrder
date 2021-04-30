@@ -38,7 +38,7 @@ extension MainView {
             case .error(let error):
                 VStack {
                     Text("error : \(error)" as String)
-                    Button("Ressayer") {
+                    Button("Retry") {
                         appStateManager.fetchFirstSpace(in: spaceManager)
                     }
                 }

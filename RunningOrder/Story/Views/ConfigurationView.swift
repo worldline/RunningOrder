@@ -22,7 +22,7 @@ struct ConfigurationView: View {
 
                 InlineEditableList(title: "Mock", values: $storyInformation.configuration.mocks)
 
-                InlineEditableList(title: "Feature flip", values: $storyInformation.configuration.features)
+                InlineEditableList(title: "Feature Flip", values: $storyInformation.configuration.features)
 
                 InlineEditableList(title: "Indicators", values: $storyInformation.configuration.indicators)
 

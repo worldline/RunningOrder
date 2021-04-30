@@ -5,34 +5,57 @@
   Created by Clément Nonn on 07/07/2020.
   Copyright © 2020 Worldline. All rights reserved.
 */
-// CustomWindow - ToolBar Button
-"Add a story" = "Add a story";
-"Sidebar" = "Sidebar";
-"Show the Sidebar" = "Show the Sidebar";
-// SprintsView - Section Header
-"Active Sprints" = "Active Sprints";
-// SprintList - Button
-"New Sprint" = "New Sprint";
-// SprintList - Section Header
-"Old Sprints" = "Old Sprints";
-// SprintList - Placer holder
+
+// MARK: Common
+"Cancel" = "Cancel";
+"Create" = "Create";
+"Edit"   = "Edit";
+"Done"   = "Done";
+
+// MARK: RunningOrderApp
+
+"Report a bug" = "Report a bug";
+"Workspace" = "Workspace";
+"New" = "New";
+"Delete" = "Delete";
+"Switch Workspace" = "Switch Workspace";
+"Refresh" = "Refresh";
+"Share" = "Share";
+"Current workspace : %@" = "Current workspace : %@";
+"No current workspace" = "No current workspace";
+
+// MARK: MainView
+
+"Retry" = "Retry";
+"Select a Story" = "Select a Story";
 "Select a Sprint" = "Select a Sprint";
 
-// NewSprintView - Textfield Name
+// MARK: SprintList
+
+"Active Sprints" = "Active Sprints";
+"Old Sprints" = "Old Sprints";
+"Delete Sprint" = "Delete Sprint";
+"New Sprint" = "New Sprint";
+
+// MARK: NewSprintView
+
 "Sprint Name" = "Sprint Name";
 "Sprint Number" = "Sprint Number";
 
-// StoryList - Section Header
-"Stories" = "Stories";
-// SprintList - Placer holder
-"Select a Story" = "Select a Story";
+// MARK: StoryList
 
-// NewStoryView - Textfield Name
+"Delete Story" = "Delete Story";
+"Searching" = "Searching";
+"Sprint %ld - %@" = "Sprint %ld - %@";
+
+// MARK: NewStoryView
+
 "Story Name" = "Story Name";
 "Ticket ID" = "Ticket ID";
 "Story EPIC" = "Story EPIC";
 
-// StoryDetail - Textfield Name
+// MARK: ConfigurationView
+
 "Configuration" = "Configuration";
 "Links" = "Links";
 "Environments" = "Environments";
@@ -40,20 +63,25 @@
 "Feature Flip" = "Feature Flip";
 "Indicators" = "Indicators";
 "Identifier" = "Identifier";
-"Specifications" = "Specifications";
-"Zeplin" = "Zeplin";
+
+// MARK: StepsView
+
 "Video" = "Video";
 "Steps" = "Steps";
+"A step to follow" = "A step to follow";
+"Steps Mode" = "Steps Mode";
 
-// Common
-"Cancel" = "Cancel";
-"Create" = "Create";
-"Edit"   = "Edit";
-"Done"   = "Done";
+// MARK: WelcomeView
 
-// Welcome
 "Welcome" = "Welcome";
 "You don't have yet your space, or joined a shared space" = "You don't have yet your space, or joined a shared space";
 "Or" = "Or";
 "My Space Name" = "My Space Name";
 "Just open a link from your team to access this space" = "Just open a link from your team to access this space";
+"Please enter a name for your work space" = "Please enter a name for your work space";
+"Go back to previous space" = "Go back to previous space";
+
+// MARK: InlineEditableLink
+
+"Label" = "Label";
+"Url" = "Url";
