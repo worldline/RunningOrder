@@ -32,13 +32,7 @@ final class SpaceManager: ObservableObject {
     }
 
     private func updateState(with information: ChangeInformation) {
-//        Logger.debug.log(information)
-        // Si je récupère la suppression du space
-        // je resupprime derriere ? (en cas de suppression d'un espace partagé par son possesseur, il faut que je supprime ici aussi)
         deleteData(recordIds: information.toDelete)
-
-        // je récupère les spaces a mettre à jour
-        // j'update la liste des spaces actuels (j'ajoute si ils existent pas, ou je remplace les existants)
         updateData(with: information.toUpdate)
     }
 
@@ -54,12 +48,6 @@ final class SpaceManager: ObservableObject {
             }
         }
         availableSpaces = currentSpaces
-
-//        // If we receive an empty update and we already have no spaces, then we are before creation of space, or subscription to a space.
-//        // We need to notify AppStateManager that we received no space in order to display Welcome screen
-//        if updatedRecords.isEmpty && availableSpaces.isEmpty {
-//            availableSpaces = []
-//        }
     }
 
     private func deleteData(recordIds: [CKRecord.ID]) {
