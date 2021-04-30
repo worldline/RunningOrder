@@ -58,18 +58,20 @@ final class StoryInformationManager: ObservableObject {
     }
 
     func updateData(with updatedRecords: [CKRecord]) {
-        do {
-            let updatedStoryInformationArray = try updatedRecords
-                .map(StoryInformation.init(from:))
-                .map { ($0.storyId, $0) }
-
-            let updatedDictionary = [Story.ID: StoryInformation](updatedStoryInformationArray) { _, new in new }
-            DispatchQueue.main.async {
-                self.storyInformations.merge(updatedDictionary, uniquingKeysWith: { _, new in new })
+        let updatedStoryInformationArray = updatedRecords
+            .compactMap { record -> StoryInformation? in
+                do {
+                    return try StoryInformation(from: record)
+                } catch {
+                    Logger.error.log("\(error)\ncaused by \(record)")
+                    return nil
+                }
             }
+            .map { ($0.storyId, $0) }
 
-        } catch {
-            Logger.error.log(error)
+        let updatedDictionary = [Story.ID: StoryInformation](updatedStoryInformationArray) { _, new in new }
+        DispatchQueue.main.async {
+            self.storyInformations.merge(updatedDictionary, uniquingKeysWith: { _, new in new })
         }
     }
 
