@@ -5,34 +5,57 @@
   Created by Clément Nonn on 07/07/2020.
   Copyright © 2020 Worldline. All rights reserved.
 */
-// CustomWindow - ToolBar Button
-"Add a story" = "Ajouter une story";
-"Sidebar" = "Barre latérale";
-"Show the Sidebar" = "Afficher la Barre latérale";
-// SprintsView - Section Header
-"Active Sprints" = "Sprints en cours";
-// SprintList - Button
-"New Sprint" = "Nouveau Sprint";
-// SprintList - Section Header
-"Old Sprints" = "Anciens Sprints";
-// SprintList - Placer holder
+
+// MARK: Common
+"Cancel" = "Annuler";
+"Create" = "Créer";
+"Edit"   = "Modifier";
+"Done"   = "Terminer";
+
+// MARK: RunningOrderApp
+
+"Report a bug" = "Reporter un bug";
+"Workspace" = "Espace de travail";
+"New" = "Nouveau";
+"Delete" = "Supprimer";
+"Switch Workspace" = "Changer d'espace";
+"Refresh" = "Rafraichir";
+"Share" = "Partager";
+"Current workspace : %@" = "Espace actuel : %@";
+"No current workspace" = "Pas d'espace de travail courant";
+
+// MARK: MainView
+
+"Retry" = "Retry";
+"Select a Story" = "Sélectionner une Story";
 "Select a Sprint" = "Sélectionner un Sprint";
 
-// NewSprintView - Textfield Name
+// MARK: SprintList
+
+"Active Sprints" = "Sprints en cours";
+"Old Sprints" = "Anciens Sprints";
+"Delete Sprint" = "Supprimer le sprint";
+"New Sprint" = "Nouveau Sprint";
+
+// MARK: NewSprintView
+
 "Sprint Name" = "Nom du Sprint";
 "Sprint Number" = "Numéro du Sprint";
 
-// StoryList - Section Header
-"Stories" = "Stories";
-// SprintList - Placer holder
-"Select a Story" = "Sélectionner une Story";
+// MARK: StoryList
 
-// NewStoryView - Textfield Name
+"Delete Story" = "Supprimer la story";
+"Searching" = "Recherche";
+"Sprint %ld - %@" = "Sprint %ld - %@";
+
+// MARK: NewStoryView
+
 "Story Name" = "Nom de la Story";
 "Ticket ID" = "ID du Ticket";
 "Story EPIC" = "EPIC de la Story";
 
-// StoryDetail - Textfield Name
+// MARK: ConfigurationView
+
 "Configuration" = "Configuration";
 "Links" = "Liens";
 "Environments" = "Environnements";
@@ -40,20 +63,25 @@
 "Feature Flip" = "Feature Flip";
 "Indicators" = "Indicateurs";
 "Identifier" = "Identifiants";
-"Specifications" = "Spécifications";
-"Zeplin" = "Zeplin";
+
+// MARK: StepsView
+
 "Video" = "Vidéo";
 "Steps" = "Étapes";
+"A step to follow" = "Une étape à suivre";
+"Steps Mode" = "Mode d'affichage des étapes";
 
-// Common
-"Cancel" = "Annuler";
-"Create" = "Créer";
-"Edit"   = "Modifier";
-"Done"   = "Terminer";
+// MARK: WelcomeView
 
-// Welcome
 "Welcome" = "Bienvenue";
 "You don't have yet your space, or joined a shared space" = "Tu n'as pas encore d'espace de travail";
 "Or" = "Ou";
 "My Space Name" = "Nom de l'espace";
 "Just open a link from your team to access this space" = "Ouvre le lien de ton équipe pour accéder à cet espace";
+"Please enter a name for your workspace" = "Entrez un nom d'espace de travail";
+"Go back to previous space" = "Retournez au précédent espace de travail sélectionné";
+
+// MARK: InlineEditableLink
+
+"Label" = "Label";
+"Url" = "Url";

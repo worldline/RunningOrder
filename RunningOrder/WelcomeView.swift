@@ -42,7 +42,7 @@ struct WelcomeView: View {
                 }
 
                 if hasErrorOnField {
-                    Text("Please enter a name for your work space")
+                    Text("Please enter a name for your workspace")
                         .foregroundColor(.red)
                         .animation(.easeInOut)
                 }

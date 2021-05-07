@@ -15,12 +15,13 @@ struct StepsView: View {
     var body: some View {
         ScrollView {
             VStack {
-                Picker("", selection: $selectedMode) {
+                Picker("Steps Mode", selection: $selectedMode) {
                     ForEach(DisplayMode.allCases, id: \.self) { choice in
                         Text(choice.rawValue)
                     }
                 }
                 .padding()
+                .labelsHidden()
                 .pickerStyle(SegmentedPickerStyle())
 
                 switch selectedMode {
