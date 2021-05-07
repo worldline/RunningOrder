@@ -78,7 +78,7 @@
 "Or" = "Ou";
 "My Space Name" = "Nom de l'espace";
 "Just open a link from your team to access this space" = "Ouvre le lien de ton équipe pour accéder à cet espace";
-"Please enter a name for your work space" = "Entrez un nom d'espace de travail";
+"Please enter a name for your workspace" = "Entrez un nom d'espace de travail";
 "Go back to previous space" = "Retournez au précédent espace de travail sélectionné";
 
 // MARK: InlineEditableLink
