@@ -50,8 +50,8 @@ extension SearchBarSuggestions {
                     }
                 }
                 .padding(8)
-                .frame(width: 300, height: 300, alignment: .top)
             }
+            .frame(width: 300, height: 300, alignment: .top)
         }
     }
 }
