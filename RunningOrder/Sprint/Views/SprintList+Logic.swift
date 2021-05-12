@@ -39,5 +39,9 @@ extension SprintList {
         func deleteSprint(_ sprint: Sprint) {
             self.sprintManager.delete(sprint: sprint)
         }
+
+        func closeSprint(_ sprint: Sprint) {
+            sprintManager.closeSprint(sprint: sprint)
+        }
     }
 }

@@ -24,6 +24,7 @@ class SprintService {
         configuration.qualityOfService = .utility
 
         saveOperation.configuration = configuration
+        saveOperation.savePolicy = .allKeys // save policy to handle update
 
         cloudkitContainer.database(for: sprint.zoneId).add(saveOperation)
 

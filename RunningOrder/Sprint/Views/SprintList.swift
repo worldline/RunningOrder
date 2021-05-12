@@ -18,32 +18,56 @@ extension SprintList {
         @ObservedObject var logic: Logic
         let space: Space
 
+        private func setupSprintDisplay(_ sprint: Sprint) -> some View {
+            return NavigationLink(
+                destination: StoryList(sprint: sprint),
+                label: {
+                    HStack {
+                        SprintNumber(
+                            number: sprint.number,
+                            colorIdentifier: sprint.colorIdentifier
+                        )
+                        Text(sprint.name)
+                    }
+                }
+            )
+        }
+
+        private func setupDeleteButton(_ sprint: Sprint) -> some View {
+            return Button(
+                action: { logic.deleteSprint(sprint) },
+                label: {
+                    Text("Delete Sprint")
+                    .foregroundColor(.red)
+                }
+            )
+        }
+
         var body: some View {
             List {
                 Section(header: Text("Active Sprints")) {
                     ForEach(sprintManager.sprints(for: space.id), id: \.self) { sprint in
-                        NavigationLink(
-                            destination: StoryList(sprint: sprint),
-                            label: {
-                                HStack {
-                                    SprintNumber(
-                                        number: sprint.number,
-                                        colorIdentifier: sprint.colorIdentifier
-                                    )
-                                    Text(sprint.name)
-                                }
+                        if !sprint.closed {
+                            setupSprintDisplay(sprint)
+                            .contextMenu {
+                                Button(
+                                    action: { logic.closeSprint(sprint) },
+                                    label: { Text("Close Sprint") }
+                                )
+                                setupDeleteButton(sprint)
                             }
-                        )
-                        .contextMenu {
-                            Button(
-                                action: { logic.deleteSprint(sprint) },
-                                label: { Text("Delete Sprint") }
-                            )
                         }
                     }
                 }
-                Section(header: Text("Old Sprints")) {
-                    EmptyView()
+                Section(header: Text("Closed Sprints")) {
+                    ForEach(sprintManager.sprints(for: space.id), id: \.self) { sprint in
+                        if sprint.closed {
+                            setupSprintDisplay(sprint)
+                            .contextMenu {
+                                setupDeleteButton(sprint)
+                            }
+                        }
+                    }
                 }
             }
             .overlay(Button(action: self.logic.showNewSprintModal) {
