@@ -19,31 +19,56 @@ extension SprintList {
         let space: Space
         @State private var toBeDeletedSprint: Sprint?
 
+        private func setupSprintDisplay(_ sprint: Sprint) -> some View {
+            return NavigationLink(
+                destination: StoryList(sprint: sprint),
+                label: {
+                    HStack {
+                        SprintNumber(
+                            number: sprint.number,
+                            colorIdentifier: sprint.colorIdentifier
+                        )
+                        Text(sprint.name)
+                    }
+                }
+            )
+        }
+
+        private func setupDeleteButton(_ sprint: Sprint) -> some View {
+            return Button(
+                action: { toBeDeletedSprint = sprint },
+                label: {
+                    Text("Delete Sprint")
+                    .foregroundColor(.red)
+                }
+            )
+        }
+
         var body: some View {
             List {
                 Section(header: Text("Active Sprints")) {
                     ForEach(sprintManager.sprints(for: space.id), id: \.self) { sprint in
-                        NavigationLink(
-                            destination: StoryList(sprint: sprint),
-                            label: {
-                                HStack {
-                                    SprintNumber(
-                                        number: sprint.number,
-                                        colorIdentifier: sprint.colorIdentifier
-                                    )
-                                    Text(sprint.name)
-                                }
-                            }
-                        )
-                        .contextMenu {
-                            Button(action: { toBeDeletedSprint = sprint }) {
-                                Text("Delete Sprint")
+                        if !sprint.closed {
+                            setupSprintDisplay(sprint)
+                            .contextMenu {
+                                Button(
+                                    action: { logic.closeSprint(sprint) },
+                                    label: { Text("Close Sprint") }
+                                )
+                                setupDeleteButton(sprint)
                             }
                         }
                     }
                 }
-                Section(header: Text("Old Sprints")) {
-                    EmptyView()
+                Section(header: Text("Closed Sprints")) {
+                    ForEach(sprintManager.sprints(for: space.id), id: \.self) { sprint in
+                        if sprint.closed {
+                            setupSprintDisplay(sprint)
+                            .contextMenu {
+                                setupDeleteButton(sprint)
+                            }
+                        }
+                    }
                 }
             }
             .overlay(Button(action: self.logic.showNewSprintModal) {

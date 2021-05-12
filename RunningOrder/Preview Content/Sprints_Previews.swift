@@ -17,7 +17,7 @@ extension Sprint {
                 number: 1,
                 name: "Sprint",
                 colorIdentifier: "holiday blue",
-
+                closed: false,
                 zoneId: CKRecordZone.ID()
             ),
             Sprint(
@@ -25,6 +25,7 @@ extension Sprint {
                 number: 2,
                 name: "Sprint",
                 colorIdentifier: "elf green",
+                closed: false,
                 zoneId: CKRecordZone.ID()
             )
         ]
