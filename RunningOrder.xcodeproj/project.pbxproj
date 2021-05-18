@@ -29,6 +29,7 @@
 		1862424324B48A8600A4A6CB /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862424224B48A8600A4A6CB /* Story.swift */; };
 		1862424724B48E9900A4A6CB /* NewSprintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862424624B48E9900A4A6CB /* NewSprintView.swift */; };
 		186A8B1226394E8F00B8FFBE /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 186A8B1126394E8F00B8FFBE /* AVKit.framework */; };
+		18758ADD2653ACC0009440B9 /* DeletionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18758ADC2653ACC0009440B9 /* DeletionButton.swift */; };
 		188595BB25C9682400E7B3FD /* RunningOrderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188595BA25C9682400E7B3FD /* RunningOrderApp.swift */; };
 		188595CF25C9726000E7B3FD /* ToolbarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188595CE25C9726000E7B3FD /* ToolbarItems.swift */; };
 		188595D425C97C2A00E7B3FD /* CloudSharingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188595D325C97C2A00E7B3FD /* CloudSharingHandler.swift */; };
@@ -133,6 +134,7 @@
 		1862424224B48A8600A4A6CB /* Story.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Story.swift; sourceTree = "<group>"; };
 		1862424624B48E9900A4A6CB /* NewSprintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSprintView.swift; sourceTree = "<group>"; };
 		186A8B1126394E8F00B8FFBE /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
+		18758ADC2653ACC0009440B9 /* DeletionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletionButton.swift; sourceTree = "<group>"; };
 		188595BA25C9682400E7B3FD /* RunningOrderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningOrderApp.swift; sourceTree = "<group>"; };
 		188595CE25C9726000E7B3FD /* ToolbarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarItems.swift; sourceTree = "<group>"; };
 		188595D325C97C2A00E7B3FD /* CloudSharingHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudSharingHandler.swift; sourceTree = "<group>"; };
@@ -481,6 +483,7 @@
 				FB6A2A1C2630289900FF3EBF /* InlineEditableLink+Logic.swift */,
 				FB2D50DA2629B6BF0000C378 /* BorderedTextField.swift */,
 				18F6F6C625C9D029008078ED /* InlineButtonStyle.swift */,
+				18758ADC2653ACC0009440B9 /* DeletionButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -735,6 +738,7 @@
 				E8AFA1F824F69D5200AA84D3 /* StoryInformationService.swift in Sources */,
 				E8AFA1F224F69BE300AA84D3 /* SprintService.swift in Sources */,
 				5D81744F261723D100BCC970 /* SuggestionRow.swift in Sources */,
+				18758ADD2653ACC0009440B9 /* DeletionButton.swift in Sources */,
 				E8F5501C24DD36060017582D /* Configuration.swift in Sources */,
 				1862423D24B485E400A4A6CB /* StoryDetail.swift in Sources */,
 				FB88E12025E8F877008F2644 /* InlineEditableLink.swift in Sources */,

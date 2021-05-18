@@ -11,6 +11,7 @@
 "Create" = "Create";
 "Edit"   = "Edit";
 "Done"   = "Done";
+"Yes"    = "Yes";
 
 // MARK: RunningOrderApp
 
@@ -85,3 +86,8 @@
 
 "Label" = "Label";
 "Url" = "Url";
+
+// MARK: ToolbarItems
+
+"You can't undo this action." = "You can't undo this action.";
+"Delete the story \"%@\" ?" = "Delete the story \"%@\" ?";

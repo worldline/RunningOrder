@@ -37,11 +37,12 @@ struct StoryDetail: View {
                 Spacer()
             }
 
-            ToolbarItem(placement: ToolbarItemPlacement.cancellationAction) {
-                SearchBarView().frame(width: 300)
-            }
-
             ToolbarItems.deleteStory(storyManager: storyManager, story: story)
+
+            ToolbarItem(placement: ToolbarItemPlacement.cancellationAction) {
+                SearchBarView()
+                    .frame(minWidth: 300)
+            }
         }
     }
 }

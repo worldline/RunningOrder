@@ -11,6 +11,7 @@
 "Create" = "Créer";
 "Edit"   = "Modifier";
 "Done"   = "Terminer";
+"Yes"    = "Oui";
 
 // MARK: RunningOrderApp
 
@@ -85,3 +86,8 @@
 
 "Label" = "Label";
 "Url" = "Url";
+
+// MARK: ToolbarItems
+
+"You can't undo this action." = "Vous ne pourrez pas annuler la suppression.";
+"Delete the story \"%@\" ?" = "Supprimer la story \"%@\" ?";

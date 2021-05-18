@@ -17,6 +17,7 @@ extension SprintList {
         @EnvironmentObject var storyManager: StoryManager
         @ObservedObject var logic: Logic
         let space: Space
+        @State private var deletingSprint: Sprint?
 
         var body: some View {
             List {
@@ -35,10 +36,9 @@ extension SprintList {
                             }
                         )
                         .contextMenu {
-                            Button(
-                                action: { logic.deleteSprint(sprint) },
-                                label: { Text("Delete Sprint") }
-                            )
+                            Button(action: { deletingSprint = sprint }) {
+                                Text("Delete Sprint")
+                            }
                         }
                     }
                 }
@@ -64,6 +64,14 @@ extension SprintList {
             .sheet(isPresented: $logic.isNewSprintModalPresented) {
                 NewSprintView(space: space, createdSprint: self.logic.createdSprintBinding)
             }
+            .alert(item: $deletingSprint) { sprint in
+                Alert(
+                    title: Text("Delete the sprint \"\(sprint.name) - \(sprint.number)\" ?"),
+                    message: Text("You can't undo this action."),
+                    primaryButton: .destructive(Text("Yes"), action: { logic.deleteSprint(sprint) }),
+                    secondaryButton: .cancel()
+                )
+            }
         }
     }
 }
@@ -80,6 +88,7 @@ struct SprintList: View {
 struct SprintList_Previews: PreviewProvider {
     static var previews: some View {
         SprintList(space: Space(name: "toto", zoneId: CKRecordZone.ID()))
+            .listStyle(SidebarListStyle())
             .environmentObject(SprintManager.preview)
             .frame(width: 250)
     }

@@ -18,6 +18,7 @@ extension StoryList {
         @EnvironmentObject var storyManager: StoryManager
         @EnvironmentObject var searchManager: SearchManager
         @State private var selected: Story?
+        @State private var deletingStory: Story?
 
         var body: some View {
             List(storyManager.stories(for: sprint.id, searchItem: searchManager.selectedSearchItem), id: \.self, selection: $selected) { story in
@@ -27,10 +28,9 @@ extension StoryList {
                         label: { StoryRow(story: story) }
                     )
                     .contextMenu {
-                        Button(
-                            action: { logic.deleteStory(story) },
-                            label: { Text("Delete Story") }
-                        )
+                        Button(action: { deletingStory = story }) {
+                            Text("Delete Story")
+                        }
                     }
                     .epicColor(Color(identifier: logic.epicColor(for: story)))
 
@@ -57,6 +57,14 @@ extension StoryList {
             }
             .sheet(isPresented: $logic.isAddStoryViewDisplayed) {
                 NewStoryView(sprint: sprint, createdStory: logic.createdStoryBinding)
+            }
+            .alert(item: $deletingStory) { story in
+                Alert(
+                    title: Text("Delete the story \"\(story.name)\" ?"),
+                    message: Text("You can't undo this action."),
+                    primaryButton: .destructive(Text("Yes"), action: { logic.deleteStory(story) }),
+                    secondaryButton: .cancel()
+                )
             }
         }
     }
