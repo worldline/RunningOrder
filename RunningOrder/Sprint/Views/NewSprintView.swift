@@ -31,6 +31,16 @@ struct NewSprintView: View {
                 onCommit: logic.createSprint
             )
 
+            Picker(selection: $logic.colorIdentifier, label: Text("Sprint Color")) {
+                ForEach(Color.Identifier.sprintColors, id: \.self) { sprintColor in
+                    Text(sprintColor.rawValue)
+                        .foregroundColor(Color(identifier: sprintColor))
+                        .tag(sprintColor)
+                }
+            }.labelsHidden()
+
+            Spacer(minLength: 20)
+
             HStack {
                 Button(action: dismiss) { Text("Cancel") }
                 Spacer()

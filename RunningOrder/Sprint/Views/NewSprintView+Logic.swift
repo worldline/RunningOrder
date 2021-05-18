@@ -16,6 +16,7 @@ extension NewSprintView {
 
         @Published var name: String = ""
         @Published var number: Int?
+        @Published var colorIdentifier: Color.Identifier = Color.Identifier.sprintColors.randomElement()!
 
         var dismissSubject = PassthroughSubject<Void, Never>()
 
@@ -32,7 +33,7 @@ extension NewSprintView {
                 spaceId: space.id,
                 number: number!,
                 name: name,
-                colorIdentifier: Color.Identifier.sprintColors.randomElement()!.rawValue,
+                colorIdentifier: colorIdentifier.rawValue,
                 zoneId: space.zoneId
             )
             dismissSubject.send(())
