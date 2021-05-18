@@ -69,7 +69,6 @@
 		E896ADBF24E1375500D82952 /* StoryDetailHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E896ADBE24E1375500D82952 /* StoryDetailHeader.swift */; };
 		E8A2649F24F4FD58006B94EA /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A2649E24F4FD58006B94EA /* ConfigurationView.swift */; };
 		E8A264A124F4FE3D006B94EA /* StepsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A264A024F4FE3D006B94EA /* StepsView.swift */; };
-		E8A264A324F4FF31006B94EA /* ProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A264A224F4FF31006B94EA /* ProgressIndicator.swift */; };
 		E8A4E4D024EE984A00DBBCEA /* Sprint+CloudKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A4E4CF24EE984A00DBBCEA /* Sprint+CloudKit.swift */; };
 		E8A4E4D324EE988000DBBCEA /* CKRecordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A4E4D224EE988000DBBCEA /* CKRecordable.swift */; };
 		E8A4E4D624EE996D00DBBCEA /* Story+CloudKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A4E4D524EE996D00DBBCEA /* Story+CloudKit.swift */; };
@@ -184,7 +183,6 @@
 		E896ADBE24E1375500D82952 /* StoryDetailHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryDetailHeader.swift; sourceTree = "<group>"; };
 		E8A2649E24F4FD58006B94EA /* ConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationView.swift; sourceTree = "<group>"; };
 		E8A264A024F4FE3D006B94EA /* StepsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepsView.swift; sourceTree = "<group>"; };
-		E8A264A224F4FF31006B94EA /* ProgressIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressIndicator.swift; sourceTree = "<group>"; };
 		E8A4E4CF24EE984A00DBBCEA /* Sprint+CloudKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sprint+CloudKit.swift"; sourceTree = "<group>"; };
 		E8A4E4D224EE988000DBBCEA /* CKRecordable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKRecordable.swift; sourceTree = "<group>"; };
 		E8A4E4D524EE996D00DBBCEA /* Story+CloudKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Story+CloudKit.swift"; sourceTree = "<group>"; };
@@ -548,7 +546,6 @@
 			isa = PBXGroup;
 			children = (
 				E8C7384824C98C2B0018AAEA /* FocusableNSTextField.swift */,
-				E8A264A224F4FF31006B94EA /* ProgressIndicator.swift */,
 			);
 			path = Representables;
 			sourceTree = "<group>";
@@ -760,7 +757,6 @@
 				FB70027D261F32570088DBF0 /* InlineEditableLinkList.swift in Sources */,
 				FB6A2A1D2630289900FF3EBF /* InlineEditableLink+Logic.swift in Sources */,
 				1862423924B4859300A4A6CB /* SprintList.swift in Sources */,
-				E8A264A324F4FF31006B94EA /* ProgressIndicator.swift in Sources */,
 				18FE758E24A23E670003C76E /* AppDelegate.swift in Sources */,
 				1837184325DFD52A00A3E3F9 /* NewSprintView+Logic.swift in Sources */,
 				18F610AC25FBB8AE00A94949 /* UserReference.swift in Sources */,

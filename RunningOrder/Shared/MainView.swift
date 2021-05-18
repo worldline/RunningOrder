@@ -28,7 +28,7 @@ extension MainView {
         @ViewBuilder var body: some View {
             switch appStateManager.currentState {
             case .loading:
-                ProgressIndicator()
+                ProgressView()
                     .padding()
                     .frame(
                         maxWidth: .infinity,
