@@ -15,9 +15,7 @@ final class SearchManager: ObservableObject {
 
     @Published var currentSearchText: String = ""
 
-    var isItemSelected: Bool {
-        selectedSearchItem != nil
-    }
+    var isItemSelected: Bool { selectedSearchItem != nil }
 
     func resetSearch() {
         currentSearchText = ""

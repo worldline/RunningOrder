@@ -91,3 +91,7 @@
 
 "You can't undo this action." = "You can't undo this action.";
 "Delete the story \"%@\" ?" = "Delete the story \"%@\" ?";
+
+// Mark: Search
+
+"Search" = "Search";

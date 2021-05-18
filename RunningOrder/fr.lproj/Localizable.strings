@@ -91,3 +91,7 @@
 
 "You can't undo this action." = "Vous ne pourrez pas annuler la suppression.";
 "Delete the story \"%@\" ?" = "Supprimer la story \"%@\" ?";
+
+// Mark: Search
+
+"Search" = "Rechercher";
