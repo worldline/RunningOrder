@@ -62,7 +62,7 @@ final class AppStateManager: ObservableObject {
                 }
             })
             .mapError { _ -> Error in Error.unexistingError } // Map never to an error type to allow to use timeout
-            .timeout(5.0, scheduler: DispatchQueue.main, customError: { Error.fetchTimeout }) // timeout if too long
+            .timeout(15.0, scheduler: DispatchQueue.main, customError: { Error.fetchTimeout }) // timeout if too long
             .map { firstSpaces in
                 Logger.debug.log(firstSpaces)
                 if let storedSpaceName = self.storedSpaceName,
