@@ -24,7 +24,10 @@ extension StoryList {
             List(storyManager.stories(for: sprint.id, searchItem: searchManager.selectedSearchItem), id: \.self, selection: $selected) { story in
                 VStack {
                     NavigationLink(
-                        destination: StoryDetail(story: story).epicColor(Color(identifier: logic.epicColor(for: story))),
+                        destination: StoryDetail(story: story)
+                            .epicColor(Color(identifier: logic.epicColor(for: story))),
+                        tag: story,
+                        selection: $selected,
                         label: { StoryRow(story: story) }
                     )
                     .contextMenu {
@@ -42,7 +45,7 @@ extension StoryList {
                     }
                 }
             }
-            .navigationTitle(logic.isItemSelected ? "Searching" : "Sprint \(sprint.number) - \(sprint.name)")
+            .navigationTitle(logic.navigationTitle)
             .frame(minWidth: 100, idealWidth: 300)
             .toolbar {
                 ToolbarItems.sidebarItem
@@ -66,6 +69,12 @@ extension StoryList {
                     secondaryButton: .cancel()
                 )
             }
+            .onReceive(searchManager.$selectedSearchItem) { item in
+                if case .story(let story) = item {
+                    selected = story
+                    searchManager.selectedSearchItem = nil
+                }
+            }
         }
     }
 }
@@ -76,7 +85,7 @@ struct StoryList: View {
     @EnvironmentObject var searchManager: SearchManager
 
     var body: some View {
-        InternalView(sprint: sprint, logic: Logic(storyManager: storyManager, searchManager: searchManager))
+        InternalView(sprint: sprint, logic: Logic(storyManager: storyManager, searchManager: searchManager, sprint: sprint))
     }
 }
 
@@ -84,5 +93,6 @@ struct StoryList_Previews: PreviewProvider {
     static var previews: some View {
         StoryList(sprint: Sprint.Previews.sprints[0])
             .environmentObject(StoryManager.preview)
+            .environmentObject(SearchManager.preview)
     }
 }

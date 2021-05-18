@@ -43,7 +43,7 @@ final class SprintManager: ObservableObject {
     /// Returns the sprints of a specific spaceId
     /// - Parameter spaceId: The id of the space
     func sprints(for spaceId: Space.ID) -> [Sprint] {
-        return sprints.filter { $0.spaceId == spaceId}
+        return sprints.filter { $0.spaceId == spaceId }
     }
 
     func updateData(with updatedRecords: [CKRecord]) {

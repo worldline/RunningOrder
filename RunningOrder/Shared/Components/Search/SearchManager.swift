@@ -27,7 +27,11 @@ final class SearchManager: ObservableObject {
         selectedSearchItem = item
     }
 
-    var selectedItemType: SearchSection.SectionType? {
-        return selectedSearchItem?.type
-    }
+//    var selectedItemType: SearchSection.SectionType? {
+//        return selectedSearchItem?.type
+//    }
+}
+
+extension SearchManager {
+    static let preview = SearchManager()
 }

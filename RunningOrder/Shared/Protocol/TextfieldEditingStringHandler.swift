@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol TextfieldEditingStringHandler: class {
+protocol TextfieldEditingStringHandler: AnyObject {
     func fieldEditingChanged(valueKeyPath: ReferenceWritableKeyPath<Self, String>) -> (Bool) -> Void
 }
 

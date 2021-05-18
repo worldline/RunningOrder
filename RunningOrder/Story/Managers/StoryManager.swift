@@ -132,8 +132,19 @@ final class StoryManager: ObservableObject {
         }
     }
 
-    var allStories: [Story] {
-        return stories.values.flatMap { $0 }
+    func allStories(for sprints: [Sprint.ID]) -> [Story] {
+        return stories
+            .filter { key, value in sprints.contains(key)}
+            .flatMap { $1 }
+    }
+
+    func epics(for sprints: [Sprint.ID]) -> Set<String> {
+        return stories
+            .filter { key, value in sprints.contains(key)}
+            .values
+            .reduce(Set<String>()) { result, values in
+                result.union(values.map { $0.epic })
+            }
     }
 
     /// Returns the stories of a specific sprintId, in case of selected searchItem move to search mode
@@ -141,24 +152,23 @@ final class StoryManager: ObservableObject {
     /// - Parameter searchItem: potential search item
     /// - Returns: Retrieved stories
     func stories(for sprintId: Sprint.ID, searchItem: SearchItem? = nil) -> [Story] {
-        var retrievedStories: [Story] = []
-
         if let selectedItem = searchItem {
-            switch selectedItem.type {
-            case .epic:
-                retrievedStories = allStories.filter { $0.epic == selectedItem.name }
-            case .story:
-                if let selectedStory = selectedItem.relatedStory {
-                    retrievedStories = [selectedStory]
-                }
-            case .people:
-                break
+            switch selectedItem {
+            case .epic(let epicString):
+                return allStories(for: [sprintId]).filter { $0.epic == epicString }
+            case .story(_):
+                return allStories(for: [sprintId]) // we show all stories since we just want to go to this story, not only have one item in the list
+            case .filter(let filterString):
+                return allStories(for: [sprintId])
+                    .filter {
+                        $0.name.lowercased().contains(filterString.lowercased())
+                        || $0.epic.lowercased().contains(filterString.lowercased())
+                        || $0.ticketReference.lowercased().contains(filterString.lowercased())
+                    }
             }
         } else {
-            retrievedStories = stories[sprintId] ?? []
+            return allStories(for: [sprintId])
         }
-
-        return retrievedStories
     }
 }
 
