@@ -29,6 +29,8 @@ extension StoryList {
                     return "Filtering \"\(filterString)\""
                 case .story(_):
                     return "Sprint \(sprint.number) - \(sprint.name)"
+                case .people(let user):
+                    return "De \(user.identity.name ?? "Nobody")"
                 }
             } else {
                 return "Sprint \(sprint.number) - \(sprint.name)"

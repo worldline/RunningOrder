@@ -32,17 +32,17 @@ extension StoryDetailHeader {
 }
 
 struct StoryDetailHeader: View {
-    @EnvironmentObject var storyManager: StoryManager
+    @EnvironmentObject var userManager: UserManager
     let story: Story
 
     var body: some View {
-        InternalView(story: story, logic: Logic(storyManager: storyManager))
+        InternalView(story: story, logic: Logic(userManager: userManager))
     }
 }
 
 struct StoryDetailHeader_Previews: PreviewProvider {
     static var previews: some View {
         StoryDetailHeader(story: Story.Previews.stories[0])
-            .environmentObject(StoryManager.preview)
+            .environmentObject(UserManager.preview)
     }
 }

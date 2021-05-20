@@ -8,19 +8,41 @@
 
 import Foundation
 
-enum User {
-    case name(PersonNameComponents)
-    case email(String)
-    case noIdentity
+struct User {
+    let reference: User.Reference
+    let identity: Identity
+}
 
-    var name: String? {
-        switch self {
-        case .noIdentity:
-            return nil
-        case .email(let email):
-            return email
-        case .name(let components):
-            return PersonNameComponentsFormatter.localizedString(from: components, style: .default)
+extension User {
+    enum Identity {
+        case name(PersonNameComponents)
+        case email(String)
+        case noIdentity
+
+        var name: String? {
+            switch self {
+            case .noIdentity:
+                return nil
+            case .email(let email):
+                return email
+            case .name(let components):
+                return PersonNameComponentsFormatter.localizedString(from: components, style: .default)
+            }
         }
     }
 }
+
+import CloudKit
+
+extension User {
+    struct Reference {
+        let recordId: CKRecord.ID
+    }
+}
+
+extension User.Reference: Equatable {}
+extension User.Reference: Hashable {}
+
+extension User.Identity: Hashable {}
+
+extension User: Hashable {}

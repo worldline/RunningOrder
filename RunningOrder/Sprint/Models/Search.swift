@@ -47,7 +47,7 @@ enum SearchItem {
     case story(Story)
     case epic(String)
     case filter(String)
-//    case people(String)
+    case people(User)
 
     var name: String {
         switch self {
@@ -57,6 +57,8 @@ enum SearchItem {
             return "Filter..."
         case .story(let story):
             return story.name
+        case .people(let user):
+            return user.identity.name ?? "No Identity"
         }
     }
 }

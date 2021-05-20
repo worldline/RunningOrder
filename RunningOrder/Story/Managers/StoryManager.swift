@@ -165,6 +165,10 @@ final class StoryManager: ObservableObject {
                         || $0.epic.lowercased().contains(filterString.lowercased())
                         || $0.ticketReference.lowercased().contains(filterString.lowercased())
                     }
+
+            case .people(let user):
+                return allStories(for: [sprintId])
+                    .filter { $0.creatorReference == user.reference }
             }
         } else {
             return allStories(for: [sprintId])

@@ -41,6 +41,10 @@ struct RunningOrderApp: App {
 
     @StateObject var appStateManager = AppStateManager()
 
+    @StateObject var userManager = UserManager(
+        userService: UserService()
+    )
+
     let bugReportURL = URL(string: "https://github.com/worldline/RunningOrder/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBUG%5D")!
 
     @Environment(\.openURL) var openURL
@@ -80,12 +84,19 @@ struct RunningOrderApp: App {
                 .environmentObject(storyInformationManager)
                 .environmentObject(searchManager)
                 .environmentObject(appStateManager)
+                .environmentObject(userManager)
                 .onAppear {
                     appDelegate.changesService = changesService
                     appDelegate.spaceManager = spaceManager
                     changesService.initialFetch()
                     appStateManager.fetchFirstSpace(in: spaceManager)
                     Logger.disabledLevels = [.verbose]
+                }
+                .onReceive(appStateManager.$currentState) { state in
+                    guard case .spaceSelected(let space) = state else {
+                        return
+                    }
+                    userManager.fetchUser(for: space)
                 }
         }
         .commands {

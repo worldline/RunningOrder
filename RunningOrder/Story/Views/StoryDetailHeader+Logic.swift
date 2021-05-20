@@ -13,15 +13,16 @@ extension StoryDetailHeader {
     final class Logic: ObservableObject {
         @Published var userName: String?
 
-        private unowned var storyManager: StoryManager
+        private unowned var userManager: UserManager
 
-        init(storyManager: StoryManager) {
-            self.storyManager = storyManager
+        init(userManager: UserManager) {
+            self.userManager = userManager
         }
 
         func fetchUsername(for story: Story) {
-            storyManager.getUser(creatorOf: story)
-                .catchAndExit({ error in Logger.error.log(error) })
+            guard let reference = story.creatorReference else { return }
+
+            userManager.identity(for: reference)
                 .map(\.name)
                 .assign(to: &$userName)
         }

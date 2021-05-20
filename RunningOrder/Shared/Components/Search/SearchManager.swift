@@ -26,10 +26,6 @@ final class SearchManager: ObservableObject {
         currentSearchText = ""
         selectedSearchItem = item
     }
-
-//    var selectedItemType: SearchSection.SectionType? {
-//        return selectedSearchItem?.type
-//    }
 }
 
 extension SearchManager {

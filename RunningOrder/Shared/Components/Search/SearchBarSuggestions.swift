@@ -12,6 +12,7 @@ struct SearchBarSuggestions: View {
     @EnvironmentObject var storyManager: StoryManager
     @EnvironmentObject var sprintManager: SprintManager
     @EnvironmentObject var appStateManager: AppStateManager
+    @EnvironmentObject var userManager: UserManager
 
     let searchText: String
 
@@ -21,6 +22,7 @@ struct SearchBarSuggestions: View {
                 storyManager: storyManager,
                 sprintManager: sprintManager,
                 appStateManager: appStateManager,
+                userManager: userManager,
                 inputText: searchText
             )
         )

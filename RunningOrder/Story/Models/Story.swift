@@ -15,7 +15,7 @@ struct Story {
     let ticketReference: String
     let epic: String
 
-    let creatorReference: UserReference?
+    let creatorReference: User.Reference?
     let zoneId: CKRecordZone.ID
 }
 
