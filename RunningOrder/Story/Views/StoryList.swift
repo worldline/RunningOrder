@@ -18,7 +18,7 @@ extension StoryList {
         @EnvironmentObject var storyManager: StoryManager
         @EnvironmentObject var searchManager: SearchManager
         @State private var selected: Story?
-        @State private var deletingStory: Story?
+        @State private var toBeDeletedStory: Story?
 
         var body: some View {
             List(storyManager.stories(for: sprint.id, searchItem: searchManager.selectedSearchItem), id: \.self, selection: $selected) { story in
@@ -31,7 +31,7 @@ extension StoryList {
                         label: { StoryRow(story: story) }
                     )
                     .contextMenu {
-                        Button(action: { deletingStory = story }) {
+                        Button(action: { toBeDeletedStory = story }) {
                             Text("Delete Story")
                         }
                     }
@@ -61,7 +61,7 @@ extension StoryList {
             .sheet(isPresented: $logic.isAddStoryViewDisplayed) {
                 NewStoryView(sprint: sprint, createdStory: logic.createdStoryBinding)
             }
-            .alert(item: $deletingStory) { story in
+            .alert(item: $toBeDeletedStory) { story in
                 Alert(
                     title: Text("Delete the story \"\(story.name)\" ?"),
                     message: Text("You can't undo this action."),

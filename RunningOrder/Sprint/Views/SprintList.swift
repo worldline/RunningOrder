@@ -17,7 +17,7 @@ extension SprintList {
         @EnvironmentObject var storyManager: StoryManager
         @ObservedObject var logic: Logic
         let space: Space
-        @State private var deletingSprint: Sprint?
+        @State private var toBeDeletedSprint: Sprint?
 
         var body: some View {
             List {
@@ -36,7 +36,7 @@ extension SprintList {
                             }
                         )
                         .contextMenu {
-                            Button(action: { deletingSprint = sprint }) {
+                            Button(action: { toBeDeletedSprint = sprint }) {
                                 Text("Delete Sprint")
                             }
                         }
@@ -64,7 +64,7 @@ extension SprintList {
             .sheet(isPresented: $logic.isNewSprintModalPresented) {
                 NewSprintView(space: space, createdSprint: self.logic.createdSprintBinding)
             }
-            .alert(item: $deletingSprint) { sprint in
+            .alert(item: $toBeDeletedSprint) { sprint in
                 Alert(
                     title: Text("Delete the sprint \"\(sprint.name) - \(sprint.number)\" ?"),
                     message: Text("You can't undo this action."),
