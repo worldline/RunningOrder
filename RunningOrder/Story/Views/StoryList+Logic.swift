@@ -18,14 +18,27 @@ extension StoryList {
         @Published var isAddStoryViewDisplayed: Bool = false
 
         var createdStoryBinding: Binding<Story?> { Binding(callback: self.addStory(_:)) }
+        let sprint: Sprint
 
-        var isItemSelected: Bool {
-            searchManager.isItemSelected
+        var navigationTitle: LocalizedStringKey {
+            if let selectedItem = searchManager.selectedSearchItem {
+                switch selectedItem {
+                case .epic(let epic):
+                    return "EPIC \"\(epic)\""
+                case .filter(let filterString):
+                    return "Filtering \"\(filterString)\""
+                case .story(_):
+                    return "Sprint \(sprint.number) - \(sprint.name)"
+                }
+            } else {
+                return "Sprint \(sprint.number) - \(sprint.name)"
+            }
         }
 
-        init(storyManager: StoryManager, searchManager: SearchManager) {
+        init(storyManager: StoryManager, searchManager: SearchManager, sprint: Sprint) {
             self.storyManager = storyManager
             self.searchManager = searchManager
+            self.sprint = sprint
         }
 
         private func addStory(_ story: Story) {

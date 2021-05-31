@@ -10,14 +10,18 @@ import SwiftUI
 
 struct SearchBarSuggestions: View {
     @EnvironmentObject var storyManager: StoryManager
+    @EnvironmentObject var sprintManager: SprintManager
+    @EnvironmentObject var appStateManager: AppStateManager
 
     let searchText: String
 
     var body: some View {
         InternalView(
             logic: Logic(
-                inputText: searchText,
-                storyManager: storyManager
+                storyManager: storyManager,
+                sprintManager: sprintManager,
+                appStateManager: appStateManager,
+                inputText: searchText
             )
         )
     }
@@ -30,28 +34,37 @@ extension SearchBarSuggestions {
 
         var body: some View {
             ScrollView {
-                VStack(alignment: .leading) {
-                    if !logic.filteredStories.isEmpty {
-                        ForEach(logic.filteredSearchSections, id: \.id) { section in
-                            Section(header: Text(section.type.title).font(.headline).bold()) {
-                                Divider()
+//                Picker("Search Scope", selection: $logic.searchScope) {
+//                    ForEach(Scope.allCases, id: \.self) { scope in
+//                        Text(scope.title)
+//                            .tag(scope)
+//                    }
+//                }
+//                .labelsHidden()
+//                .pickerStyle(SegmentedPickerStyle())
+//                .padding()
 
-                                ForEach(Array(section.items)) { item in
-                                    SuggestionRow(imageName: item.icon, suggestion: item.name)
-                                        .onTapGesture { searchManager.selectItem(item) }
-                                }
+                VStack(alignment: .leading) {
+                    ForEach(logic.filteredSearchSections) { section in
+                        Section(header: header(section.type.title)) {
+                            Divider()
+
+                            ForEach(Array(section.items)) { item in
+                                SuggestionRow(imageName: section.type.icon, suggestion: item.name)
+                                    .onTapGesture { searchManager.selectItem(item) }
                             }
                         }
-                    } else {
-                        Spacer()
-                        Label("No matching stories, epics found", systemImage: "magnifyingglass")
-                            .padding()
-                        Spacer()
                     }
                 }
                 .padding(8)
             }
             .frame(width: 300, height: 300, alignment: .top)
+        }
+
+        func header(_ string: String) -> some View {
+            Text(string)
+                .font(.headline)
+                .bold()
         }
     }
 }

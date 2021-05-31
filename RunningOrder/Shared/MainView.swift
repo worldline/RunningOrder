@@ -28,7 +28,7 @@ extension MainView {
         @ViewBuilder var body: some View {
             switch appStateManager.currentState {
             case .loading:
-                ProgressIndicator()
+                ProgressView()
                     .padding()
                     .frame(
                         maxWidth: .infinity,
@@ -81,13 +81,15 @@ extension MainView {
                             }
 
                             ToolbarItem(placement: ToolbarItemPlacement.cancellationAction) {
-                                SearchBarView().frame(width: 300)
-                            }
-                            ToolbarItem(placement: ToolbarItemPlacement.cancellationAction) {
                                 Button(action: {}) {
                                     Image(systemName: "trash")
                                 }
                                 .disabled(true)
+                            }
+
+                            ToolbarItem(placement: ToolbarItemPlacement.cancellationAction) {
+                                SearchBarView()
+                                    .frame(width: 300)
                             }
                         }
                 }

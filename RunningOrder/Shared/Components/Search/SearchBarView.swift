@@ -24,45 +24,43 @@ struct SearchBarView: View {
     }
 
     var body: some View {
-        HStack {
-            ZStack(alignment: .leading) {
-                FocusableTextField(
-                    placeholder: searchManager.isItemSelected ? "" : "Search",
-                    value: $searchManager.currentSearchText,
-                    isFocused: $isFocused,
-                    onCommit: {}
-                )
-                .padding(8)
-                // on focus background
-                .background(RoundedRectangle(cornerRadius: 8)
-                                .foregroundColor(Color(NSColor.textBackgroundColor))
-                )
-                // on focus border
-                .overlay(RoundedRectangle(cornerRadius: 8)
-                            .strokeBorder(isFocused ? Color.accentColor : Color(NSColor.placeholderTextColor), lineWidth: 1.0, antialiased: true)
-                )
-                .disabled(searchManager.isItemSelected)
+        ZStack(alignment: .leading) {
+            FocusableTextField(
+                placeholder: searchManager.isItemSelected ? "" : NSLocalizedString("Search", comment: ""),
+                value: $searchManager.currentSearchText,
+                isFocused: $isFocused,
+                onCommit: {}
+            )
+            .padding(8)
+            // on focus background
+            .background(RoundedRectangle(cornerRadius: 8)
+                            .foregroundColor(Color(NSColor.textBackgroundColor))
+            )
+            // on focus border
+            .overlay(RoundedRectangle(cornerRadius: 8)
+                        .strokeBorder(isFocused ? Color.accentColor : Color(NSColor.placeholderTextColor), lineWidth: 1.0, antialiased: true)
+            )
+            .disabled(searchManager.isItemSelected)
 
-                if let selected = searchManager.selectedSearchItem?.name {
-                    Tag(selected, color: Color(identifier: .gray).opacity(0.25), foregroundTextColor: Color.black)
-                        .padding(.trailing, 22)
-                        .padding(.leading, 5)
+            if let selected = searchManager.selectedSearchItem?.name {
+                Tag(selected, color: Color(identifier: .gray).opacity(0.25), foregroundTextColor: Color.black)
+                    .padding(.trailing, 22)
+                    .padding(.leading, 5)
+            }
+        }
+        .overlay(
+            HStack {
+                Spacer()
+                if !searchManager.currentSearchText.isEmpty || searchManager.isItemSelected {
+                    Button(action: searchManager.resetSearch) {
+                        Image(systemName: "multiply.circle.fill")
+                            .foregroundColor(.gray)
+                            .padding(.horizontal, 8)
+                    }
+                    .buttonStyle(PlainButtonStyle())
                 }
             }
-            .overlay(
-                HStack {
-                    Spacer()
-                    if !searchManager.currentSearchText.isEmpty || searchManager.isItemSelected {
-                        Button(action: searchManager.resetSearch) {
-                            Image(systemName: "multiply.circle.fill")
-                                .foregroundColor(.gray)
-                                .padding(.horizontal, 8)
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                    }
-                }
-            )
-        }
+        )
         .popover(item: shouldDisplayPopover, content: { searchText in
             SearchBarSuggestions(searchText: searchText)
         })

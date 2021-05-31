@@ -18,6 +18,7 @@ extension SearchSection {
         case story // Jira reference + story's name
         case epic // epic name
         case people // story's creator name
+        case filter
 
         var icon: String {
             switch self {
@@ -27,6 +28,8 @@ extension SearchSection {
                 return "folder.fill"
             case .people:
                 return "person.circle"
+            case .filter:
+                return ""
             }
         }
 
@@ -40,16 +43,31 @@ extension SearchSection: Identifiable {
     var id: String { type.title }
 }
 
-struct SearchItem: Hashable {
-    var name: String
-    var icon: String
-    var type: SearchSection.SectionType
-    var relatedStory: Story?
+enum SearchItem {
+    case story(Story)
+    case epic(String)
+    case filter(String)
+//    case people(String)
 
+    var name: String {
+        switch self {
+        case .epic(let epic):
+            return epic
+        case .filter(_):
+            return "Filter..."
+        case .story(let story):
+            return story.name
+        }
+    }
+}
+
+extension SearchItem: Equatable {
     static func == (lhs: SearchItem, rhs: SearchItem) -> Bool {
         lhs.name == rhs.name
     }
 }
+
+extension SearchItem: Hashable { }
 
 extension SearchItem: Identifiable {
     var id: String { name }
