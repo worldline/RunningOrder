@@ -21,14 +21,12 @@ struct NewSprintView: View {
             TextField(
                 "Sprint Name",
                 text: $logic.name,
-                onEditingChanged: logic.fieldEditingChanged(valueKeyPath: \.name),
-                onCommit: logic.createSprint
+                onEditingChanged: logic.fieldEditingChanged(valueKeyPath: \.name)
             )
             TextField(
                 "Sprint Number",
                 value: $logic.number,
-                formatter: NumberFormatter(),
-                onCommit: logic.createSprint
+                formatter: NumberFormatter()
             )
 
             Picker(selection: $logic.colorIdentifier, label: Text("Sprint Color")) {
@@ -37,15 +35,18 @@ struct NewSprintView: View {
                         .foregroundColor(Color(identifier: sprintColor))
                         .tag(sprintColor)
                 }
-            }.labelsHidden()
+            }
+            .labelsHidden()
 
             Spacer(minLength: 20)
 
             HStack {
                 Button(action: dismiss) { Text("Cancel") }
+                    .keyboardShortcut(.cancelAction)
                 Spacer()
                 Button(action: logic.createSprint) { Text("Create") }
                     .disabled(!logic.areAllFieldsFilled)
+                    .keyboardShortcut(.defaultAction)
             }
         }
         .padding()
