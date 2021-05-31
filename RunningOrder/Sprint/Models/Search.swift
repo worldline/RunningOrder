@@ -29,7 +29,7 @@ extension SearchSection {
             case .people:
                 return "person.circle"
             case .filter:
-                return ""
+                return "text.magnifyingglass"
             }
         }
 
