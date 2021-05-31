@@ -34,6 +34,7 @@ extension NewSprintView {
                 number: number!,
                 name: name,
                 colorIdentifier: colorIdentifier.rawValue,
+                closed: false,
                 zoneId: space.zoneId
             )
             dismissSubject.send(())

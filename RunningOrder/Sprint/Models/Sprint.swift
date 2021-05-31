@@ -14,6 +14,7 @@ struct Sprint {
     let number: Int
     let name: String
     let colorIdentifier: String
+    var closed: Bool
 
     var zoneId: CKRecordZone.ID
 }

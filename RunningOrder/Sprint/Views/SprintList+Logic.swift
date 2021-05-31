@@ -36,8 +36,16 @@ extension SprintList {
             isNewSprintModalPresented = true
         }
 
+        func activeSprints(for spaceId: Space.ID) -> [Sprint] {
+            sprintManager.sprints(for: spaceId).filter { !$0.closed }
+        }
+
+        func closedSprints(for spaceId: Space.ID) -> [Sprint] {
+            sprintManager.sprints(for: spaceId).filter { $0.closed }
+        }
+
         func deleteSprint(_ sprint: Sprint) {
-            self.sprintManager.delete(sprint: sprint)
+            sprintManager.delete(sprint: sprint)
         }
     }
 }

@@ -96,6 +96,21 @@ final class SprintManager: ObservableObject {
             }
         }
     }
+
+    func updateSprint(sprint: Sprint) {
+        guard let index = self.sprints.firstIndex(where: { $0.id == sprint.id }) else {
+            Logger.error.log("couldn't find index of sprint in stored sprints")
+            return
+        }
+
+        self.sprints[index] = sprint
+        service.save(sprint: self.sprints[index])
+            .ignoreOutput()
+            .sink(receiveFailure: { error in
+                Logger.error.log(error) // TODO: error Handling
+            })
+            .store(in: &cancellables)
+    }
 }
 
 extension SprintManager {

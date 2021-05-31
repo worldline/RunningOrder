@@ -17,6 +17,8 @@ extension Sprint: CKRecordable {
         self.number = try record.property("number")
         self.colorIdentifier = try record.property("colorIdentifier")
         self.zoneId = record.recordID.zoneID
+        // `try? ?? false` here only during transition with all sprints having this value
+        self.closed = (try? record.property("closed")) ?? false
     }
 
     func encode() -> CKRecord {
@@ -28,6 +30,7 @@ extension Sprint: CKRecordable {
         sprintRecord["name"] = self.name
         sprintRecord["number"] = self.number
         sprintRecord["colorIdentifier"] = self.colorIdentifier
+        sprintRecord["closed"] = self.closed
 
         return sprintRecord
     }

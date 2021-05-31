@@ -22,28 +22,14 @@ extension SprintList {
         var body: some View {
             List {
                 Section(header: Text("Active Sprints")) {
-                    ForEach(sprintManager.sprints(for: space.id), id: \.self) { sprint in
-                        NavigationLink(
-                            destination: StoryList(sprint: sprint),
-                            label: {
-                                HStack {
-                                    SprintNumber(
-                                        number: sprint.number,
-                                        colorIdentifier: sprint.colorIdentifier
-                                    )
-                                    Text(sprint.name)
-                                }
-                            }
-                        )
-                        .contextMenu {
-                            Button(action: { toBeDeletedSprint = sprint }) {
-                                Text("Delete Sprint")
-                            }
-                        }
+                    ForEach(logic.activeSprints(for: space.id), id: \.self) { sprint in
+                        SprintRow(sprintToDelete: $toBeDeletedSprint, sprint: sprint)
                     }
                 }
-                Section(header: Text("Old Sprints")) {
-                    EmptyView()
+                Section(header: Text("Closed Sprints")) {
+                    ForEach(logic.closedSprints(for: space.id), id: \.self) { sprint in
+                        SprintRow(sprintToDelete: $toBeDeletedSprint, sprint: sprint)
+                    }
                 }
             }
             .overlay(Button(action: self.logic.showNewSprintModal) {

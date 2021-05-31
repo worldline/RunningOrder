@@ -72,7 +72,6 @@ final class CloudKitContainer {
         database.add(operation)
 
         return operation.publisher()
-            .print(in: Logger.debug)
             .ignoreOutput()
             .eraseToAnyPublisher()
     }
