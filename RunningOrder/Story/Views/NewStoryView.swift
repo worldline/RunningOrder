@@ -31,15 +31,16 @@ struct NewStoryView: View {
             TextField(
                 "Story EPIC",
                 text: $logic.epic,
-                onEditingChanged: logic.fieldEditingChanged(valueKeyPath: \.epic),
-                onCommit: logic.createStory
+                onEditingChanged: logic.fieldEditingChanged(valueKeyPath: \.epic)
             )
 
             HStack {
                 Button(action: dismiss) { Text("Cancel") }
+                    .keyboardShortcut(.cancelAction)
                 Spacer()
                 Button(action: logic.createStory) { Text("Create") }
                     .disabled(!logic.areAllFieldsFilled)
+                    .keyboardShortcut(.defaultAction)
             }
         }
         .padding()

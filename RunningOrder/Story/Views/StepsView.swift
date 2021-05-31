@@ -12,6 +12,11 @@ struct StepsView: View {
     @Binding var storyInformation: StoryInformation
     @State private var selectedMode = DisplayMode.video
 
+    init(storyInformation: Binding<StoryInformation>) {
+        _storyInformation = storyInformation
+        _selectedMode = State(initialValue: storyInformation.wrappedValue.steps.isEmpty ? .video : .steps)
+    }
+
     var body: some View {
         ScrollView {
             VStack {
