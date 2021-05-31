@@ -19,55 +19,16 @@ extension SprintList {
         let space: Space
         @State private var toBeDeletedSprint: Sprint?
 
-        private func setupSprintDisplay(_ sprint: Sprint) -> some View {
-            return NavigationLink(
-                destination: StoryList(sprint: sprint),
-                label: {
-                    HStack {
-                        SprintNumber(
-                            number: sprint.number,
-                            colorIdentifier: sprint.colorIdentifier
-                        )
-                        Text(sprint.name)
-                    }
-                }
-            )
-        }
-
-        private func setupDeleteButton(_ sprint: Sprint) -> some View {
-            return Button(
-                action: { toBeDeletedSprint = sprint },
-                label: {
-                    Text("Delete Sprint")
-                    .foregroundColor(.red)
-                }
-            )
-        }
-
         var body: some View {
             List {
                 Section(header: Text("Active Sprints")) {
-                    ForEach(sprintManager.sprints(for: space.id), id: \.self) { sprint in
-                        if !sprint.closed {
-                            setupSprintDisplay(sprint)
-                            .contextMenu {
-                                Button(
-                                    action: { logic.closeSprint(sprint) },
-                                    label: { Text("Close Sprint") }
-                                )
-                                setupDeleteButton(sprint)
-                            }
-                        }
+                    ForEach(logic.activeSprints(for: space.id), id: \.self) { sprint in
+                        SprintRow(sprintToDelete: $toBeDeletedSprint, sprint: sprint)
                     }
                 }
                 Section(header: Text("Closed Sprints")) {
-                    ForEach(sprintManager.sprints(for: space.id), id: \.self) { sprint in
-                        if sprint.closed {
-                            setupSprintDisplay(sprint)
-                            .contextMenu {
-                                setupDeleteButton(sprint)
-                            }
-                        }
+                    ForEach(logic.closedSprints(for: space.id), id: \.self) { sprint in
+                        SprintRow(sprintToDelete: $toBeDeletedSprint, sprint: sprint)
                     }
                 }
             }

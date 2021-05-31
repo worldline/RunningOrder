@@ -35,8 +35,14 @@
 
 "Active Sprints" = "Active Sprints";
 "Closed Sprints" = "Closed Sprints";
-"Delete Sprint" = "Delete Sprint";
 "New Sprint" = "New Sprint";
+
+// MARK: SprintRow
+
+"Close Sprint" = "Close Sprint";
+"Reopen Sprint" = "Reopen Sprint";
+"Delete Sprint" = "Delete Sprint";
+
 
 // MARK: NewSprintView
 

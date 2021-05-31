@@ -34,9 +34,15 @@
 // MARK: SprintList
 
 "Active Sprints" = "Sprints en cours";
-"Old Sprints" = "Anciens Sprints";
+"Closed Sprints" = "Sprints fermés";
 "Delete Sprint" = "Supprimer le sprint";
 "New Sprint" = "Nouveau Sprint";
+
+// MARK: SprintRow
+
+"Close Sprint" = "Fermer le Sprint";
+"Reopen Sprint" = "Rouvrir le Sprint";
+"Delete Sprint" = "Supprimer le Sprint";
 
 // MARK: NewSprintView
 

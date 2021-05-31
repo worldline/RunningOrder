@@ -44,7 +44,6 @@ final class AppStateManager: ObservableObject {
                     return nil
                 }
             }
-            .print(in: Logger.debug)
             .assign(to: \.storedSpaceName, onStrong: self)
     }
 

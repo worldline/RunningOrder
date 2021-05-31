@@ -48,7 +48,6 @@ class UserService {
 
         return operation.publishers()
             .perRecord
-            .print(in: Logger.debug)
             .tryMap { record, _ -> [User] in
                 guard let share = record as? CKShare else { throw Error.noShareFound }
                 return share.participants

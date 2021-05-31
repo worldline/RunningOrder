@@ -17,6 +17,7 @@ extension Sprint: CKRecordable {
         self.number = try record.property("number")
         self.colorIdentifier = try record.property("colorIdentifier")
         self.zoneId = record.recordID.zoneID
+        // `try? ?? false` here only during transition with all sprints having this value
         self.closed = (try? record.property("closed")) ?? false
     }
 

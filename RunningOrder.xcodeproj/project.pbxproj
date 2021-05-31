@@ -17,6 +17,8 @@
 		1837186225E0108300A3E3F9 /* Binding+Callback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1837186125E0108300A3E3F9 /* Binding+Callback.swift */; };
 		183C0220251B765400EC09FD /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183C021F251B765400EC09FD /* Logger.swift */; };
 		183C8D552611DEE400F5037D /* AppStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183C8D542611DEE400F5037D /* AppStateManager.swift */; };
+		184189842664DFB200DDB53D /* SprintRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184189832664DFB200DDB53D /* SprintRow.swift */; };
+		184189862664DFFD00DDB53D /* SprintRow+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184189852664DFFD00DDB53D /* SprintRow+Logic.swift */; };
 		185277D52518AC8C0050F6C1 /* Space.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185277D42518AC8C0050F6C1 /* Space.swift */; };
 		185277E72518D9990050F6C1 /* SpaceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185277E62518D9990050F6C1 /* SpaceService.swift */; };
 		185277ED2519E74C0050F6C1 /* SpaceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185277EC2519E74C0050F6C1 /* SpaceManager.swift */; };
@@ -121,6 +123,8 @@
 		1837186125E0108300A3E3F9 /* Binding+Callback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Callback.swift"; sourceTree = "<group>"; };
 		183C021F251B765400EC09FD /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		183C8D542611DEE400F5037D /* AppStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateManager.swift; sourceTree = "<group>"; };
+		184189832664DFB200DDB53D /* SprintRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintRow.swift; sourceTree = "<group>"; };
+		184189852664DFFD00DDB53D /* SprintRow+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SprintRow+Logic.swift"; sourceTree = "<group>"; };
 		185277D42518AC8C0050F6C1 /* Space.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Space.swift; sourceTree = "<group>"; };
 		185277E62518D9990050F6C1 /* SpaceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceService.swift; sourceTree = "<group>"; };
 		185277EC2519E74C0050F6C1 /* SpaceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceManager.swift; sourceTree = "<group>"; };
@@ -428,6 +432,8 @@
 				1837184225DFD52A00A3E3F9 /* NewSprintView+Logic.swift */,
 				1862423824B4859300A4A6CB /* SprintList.swift */,
 				1837184725DFDE0400A3E3F9 /* SprintList+Logic.swift */,
+				184189832664DFB200DDB53D /* SprintRow.swift */,
+				184189852664DFFD00DDB53D /* SprintRow+Logic.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -768,6 +774,8 @@
 				5D81744E261723D100BCC970 /* SearchBarSuggestions+Logic.swift in Sources */,
 				185277F52519F32E0050F6C1 /* WelcomeView.swift in Sources */,
 				1888AFC525271A4200D5C678 /* Colors+Extensions.swift in Sources */,
+				184189842664DFB200DDB53D /* SprintRow.swift in Sources */,
+				184189862664DFFD00DDB53D /* SprintRow+Logic.swift in Sources */,
 				1837186225E0108300A3E3F9 /* Binding+Callback.swift in Sources */,
 				18F6F6C725C9D029008078ED /* InlineButtonStyle.swift in Sources */,
 				1862424024B489BB00A4A6CB /* Sprint.swift in Sources */,
