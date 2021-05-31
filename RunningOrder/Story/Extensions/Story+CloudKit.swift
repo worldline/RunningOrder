@@ -21,7 +21,7 @@ extension Story: CKRecordable {
         self.zoneId = record.recordID.zoneID
 
         if let id = record.creatorUserRecordID {
-            self.creatorReference = UserReference(recordId: id)
+            self.creatorReference = User.Reference(recordId: id)
         } else {
             self.creatorReference = nil
         }
