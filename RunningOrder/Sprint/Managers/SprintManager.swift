@@ -14,6 +14,8 @@ import CloudKit
 final class SprintManager: ObservableObject {
     @Published var sprints: [Sprint] = []
 
+    @Stored(fileName: "sprints.json", directory: .applicationSupportDirectory) private var storedSprints: [Sprint]?
+
     var cancellables: Set<AnyCancellable> = []
 
     private let service: SprintService
@@ -21,10 +23,18 @@ final class SprintManager: ObservableObject {
     init(service: SprintService, dataPublisher: AnyPublisher<ChangeInformation, Never>) {
         self.service = service
 
+        sprints = storedSprints ?? []
+
         dataPublisher.sink(receiveValue: { [weak self] informations in
             self?.updateData(with: informations.toUpdate)
             self?.deleteData(recordIds: informations.toDelete)
         }).store(in: &cancellables)
+
+        $sprints
+            .throttle(for: 5, scheduler: DispatchQueue.main, latest: true)
+            .map { $0 as [Sprint]? }
+            .assign(to: \.storedSprints, on: self)
+            .store(in: &cancellables)
     }
 
     func add(sprint: Sprint) -> AnyPublisher<Sprint, Error> {

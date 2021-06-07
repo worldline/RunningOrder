@@ -11,8 +11,6 @@ import CloudKit
 import Combine
 import struct SwiftUI.AppStorage
 
-extension Dictionary: Storable where Key == String, Value == Int {}
-
 fileprivate extension CKDatabase {
     var subscriptionId: CKSubscription.ID {
         switch self.databaseScope {

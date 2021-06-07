@@ -14,8 +14,10 @@ typealias ChangeInformation = (toUpdate: [CKRecord], toDelete: [CKRecord.ID])
 
 final class CloudKitChangesService: ObservableObject {
     private unowned let container: CloudKitContainer
-    private var currentChangeServerTokens: [CKRecordZone.ID: CKServerChangeToken] = [:]
-    private var databaseChangesServerToken: CKServerChangeToken?
+    @Published private(set) var currentChangeServerTokens: [CKRecordZone.ID: CKServerChangeToken] = [:]
+    @Published private(set) var databaseChangesServerToken: CKServerChangeToken?
+
+    @Stored(fileName: "tokens.json", directory: .applicationSupportDirectory) private var storedTokens: CloudKitTokens?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -26,6 +28,14 @@ final class CloudKitChangesService: ObservableObject {
 
     init(container: CloudKitContainer) {
         self.container = container
+
+        currentChangeServerTokens = storedTokens?.currentChangeServerTokens ?? [:]
+        databaseChangesServerToken = storedTokens?.databaseChangesServerToken
+
+        self.$databaseChangesServerToken
+            .combineLatest(self.$currentChangeServerTokens, CloudKitTokens.init)
+            .assign(to: \.storedTokens, onStrong: self)
+            .store(in: &cancellables)
     }
 
     func initialFetch() {
