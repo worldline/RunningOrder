@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 struct ObjectCodableWrapper<ObjectType: NSObject & NSSecureCoding>: Codable {
     var wrappedValue: ObjectType
 

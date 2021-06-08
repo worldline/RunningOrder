@@ -147,13 +147,13 @@ final class StoryManager: ObservableObject {
 
     func allStories(for sprints: [Sprint.ID]) -> [Story] {
         return stories
-            .filter { key, value in sprints.contains(key)}
+            .filter { key, _ in sprints.contains(key)}
             .flatMap { $1 }
     }
 
     func epics(for sprints: [Sprint.ID]) -> Set<String> {
         return stories
-            .filter { key, value in sprints.contains(key)}
+            .filter { key, _ in sprints.contains(key)}
             .values
             .reduce(Set<String>()) { result, values in
                 result.union(values.map { $0.epic })

@@ -12,7 +12,8 @@ import SwiftUI
 
 extension AppStateManager {
     enum State {
-        case loading
+        case idle
+        case loading(Progress)
         case error(Swift.Error)
         case spaceCreation
         case spaceSelected(Space)
@@ -27,7 +28,7 @@ extension AppStateManager {
 }
 
 final class AppStateManager: ObservableObject {
-    @Published var currentState: State = .loading
+    @Published var currentState: State = .idle
 
     @AppStorage("currentSpaceName") private var storedSpaceName: String?
 
@@ -47,12 +48,13 @@ final class AppStateManager: ObservableObject {
             .assign(to: \.storedSpaceName, onStrong: self)
     }
 
-    func fetchFirstSpace(in spaceManager: SpaceManager) {
+    func fetchFirstSpace(in spaceManager: SpaceManager, withProgress progress: Progress) {
+        self.currentState = .loading(progress)
         let isFirstCall = self.isFirstCall
         self.isFirstCall = false
         spaceManager
             .$availableSpaces
-            .dropFirst(isFirstCall ? 1 : 0) // avoid the [] value before first changes fetch. next time won't need it
+            .filter { !isFirstCall || !$0.isEmpty }
             .first(where: { // only the first change to avoid re-updating each time a new space is fetched, but we still wait if the stored space is not in the first stored spaces fetched
                 if let storedSpaceName = self.storedSpaceName {
                     return $0.contains(where: { space in space.name == storedSpaceName })
@@ -71,6 +73,7 @@ final class AppStateManager: ObservableObject {
                     return .spaceCreation
                 }
             }
+            .delay(for: 100.0, scheduler: DispatchQueue.main) // to see the loadng bar 🤣
             .assign(to: &$currentState)
     }
 }

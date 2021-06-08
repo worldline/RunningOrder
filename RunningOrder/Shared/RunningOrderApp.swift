@@ -88,8 +88,8 @@ struct RunningOrderApp: App {
                 .onAppear {
                     appDelegate.changesService = changesService
                     appDelegate.spaceManager = spaceManager
-                    changesService.initialFetch()
-                    appStateManager.fetchFirstSpace(in: spaceManager)
+
+                    appStateManager.fetchFirstSpace(in: spaceManager, withProgress: changesService.refreshAll())
                     Logger.disabledLevels = [.verbose]
                 }
                 .onReceive(appStateManager.$currentState) { state in
