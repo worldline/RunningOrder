@@ -15,6 +15,7 @@ extension SprintList {
     fileprivate struct InternalView: View {
         @EnvironmentObject var sprintManager: SprintManager
         @EnvironmentObject var storyManager: StoryManager
+        @EnvironmentObject var appStateManager: AppStateManager
         @ObservedObject var logic: Logic
         let space: Space
         @State private var toBeDeletedSprint: Sprint?
@@ -32,21 +33,34 @@ extension SprintList {
                     }
                 }
             }
-            .overlay(Button(action: self.logic.showNewSprintModal) {
-                HStack {
-                    Image(nsImageName: NSImage.addTemplateName)
-                        .frame(width: 20, height: 20)
-                        .foregroundColor(.white)
-                        .background(Color.accentColor)
-                        .clipShape(Circle())
-                    Text("New Sprint")
-                        .foregroundColor(Color.accentColor)
-                        .font(.system(size: 12))
+            .overlay(HStack {
+                Button(action: self.logic.showNewSprintModal) {
+                    HStack { // sprintListFooter
+                        Image(nsImageName: NSImage.addTemplateName)
+                            .frame(width: 20, height: 20)
+                            .foregroundColor(.white)
+                            .background(Color.accentColor)
+                            .clipShape(Circle())
+                        Text("New Sprint")
+                            .foregroundColor(Color.accentColor)
+                            .font(.system(size: 12))
+                    }
+                }
+                .keyboardShortcut(KeyEquivalent("n"), modifiers: .command)
+                .padding(.all, 20.0)
+                .buttonStyle(PlainButtonStyle())
+
+                if let currentLoading = appStateManager.currentLoading {
+                    ProgressView(currentLoading)
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .scaleEffect(0.5)
+                } else {
+                    Circle()
+                        .fill(Color.green)
+                        .frame(width: 10, height: 10)
                 }
             }
-            .keyboardShortcut(KeyEquivalent("n"), modifiers: .command)
-            .padding(.all, 20.0)
-            .buttonStyle(PlainButtonStyle()), alignment: .bottom)
+            , alignment: .bottom)
             .sheet(isPresented: $logic.isNewSprintModalPresented) {
                 NewSprintView(space: space, createdSprint: self.logic.createdSprintBinding)
             }
@@ -58,7 +72,17 @@ extension SprintList {
                     secondaryButton: .cancel()
                 )
             }
+//            .onAppear {
+//                fakeNetworkCall()
+//            }
         }
+
+//        func fakeNetworkCall() {
+//            isLoading = true
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+//                isLoading = false
+//            }
+//        }
     }
 }
 

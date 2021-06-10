@@ -32,11 +32,25 @@ final class AppStateManager: ObservableObject {
 
     @AppStorage("currentSpaceName") private var storedSpaceName: String?
 
+    private unowned var changesService: CloudKitChangesService
+
     private var isFirstCall = true
 
     private var spaceNameCancellable: AnyCancellable?
 
-    init() {
+    @Published var currentLoading: Progress?
+
+    init(changesService: CloudKitChangesService) {
+        self.changesService = changesService
+        Timer
+            .publish(every: 180, on: .main, in: .default)
+            .autoconnect()
+            .print(in: .debug)
+            .map { _ in
+                changesService.refreshAll()
+            }
+            .assign(to: &$currentLoading)
+
         spaceNameCancellable = $currentState
             .compactMap {
                 if case .spaceSelected(let space) = $0 {

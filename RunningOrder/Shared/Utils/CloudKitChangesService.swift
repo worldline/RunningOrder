@@ -80,6 +80,7 @@ final class CloudKitChangesService: ObservableObject {
         let progress = Progress(totalUnitCount: 2)
         progress.addChild(self.fetchDatabaseChanges(in: .private), withPendingUnitCount: 1)
         progress.addChild(self.fetchDatabaseChanges(in: .shared), withPendingUnitCount: 1)
+
         return progress
     }
 

@@ -39,7 +39,7 @@ struct RunningOrderApp: App {
         dataPublisher: changesService.storyInformationChangesPublisher.eraseToAnyPublisher()
     )
 
-    @StateObject var appStateManager = AppStateManager()
+    @StateObject var appStateManager = AppStateManager(changesService: changesService)
 
     @StateObject var userManager = UserManager(
         userService: UserService()
@@ -48,15 +48,6 @@ struct RunningOrderApp: App {
     let bugReportURL = URL(string: "https://github.com/worldline/RunningOrder/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBUG%5D")!
 
     @Environment(\.openURL) var openURL
-
-    let timerCancellable = Timer
-        .publish(every: 180, on: .main, in: .default)
-        .autoconnect()
-        .print(in: .debug)
-        .sink { _ in
-            Logger.verbose.log("refreshing...")
-            changesService.refreshAll()
-        }
 
     /// **Warning** This binding can't be used without an active space selection
     var selectedSpace: Binding<Space> {
