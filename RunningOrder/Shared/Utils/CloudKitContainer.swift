@@ -34,8 +34,6 @@ final class CloudKitContainer {
 
     @AppStorage("CloudKitCreatedSharedZone") private static var createdCustomZone: Bool = false
 
-    @Stored(fileName: "owners.json", directory: .applicationSupportDirectory) private static var ownerNames: [String: Int]?
-
     private var cancellables = Set<AnyCancellable>()
 
     let ownedZoneId = CKRecordZone.ID(
@@ -45,34 +43,7 @@ final class CloudKitContainer {
 
     let cloudContainer = CKContainer(identifier: "iCloud.com.worldline.RunningOrder")
 
-    var owners: [CKRecordZone.ID] {
-        CloudKitContainer.ownerNames?
-            .keys
-            .map { CKRecordZone.ID(zoneName: Self.zoneName, ownerName: $0) } ?? []
-    }
-
     // MARK: - Setup methods
-
-    private static func createSubscriptions(for database: CKDatabase) -> AnyPublisher<Never, Error> {
-        let subscription = CKDatabaseSubscription(subscriptionID: database.subscriptionId)
-        let notificationInfo = CKSubscription.NotificationInfo()
-        notificationInfo.shouldSendContentAvailable = true
-        notificationInfo.alertBody = nil
-        subscription.notificationInfo = notificationInfo
-
-        let operation = CKModifySubscriptionsOperation(
-            subscriptionsToSave: [subscription],
-            subscriptionIDsToDelete: []
-        )
-
-        operation.qualityOfService = .utility
-
-        database.add(operation)
-
-        return operation.publisher()
-            .ignoreOutput()
-            .eraseToAnyPublisher()
-    }
 
     private static func askPermissionForDiscoverabilityIfNeeded(in container: CKContainer) -> AnyCancellable {
         container.status(forApplicationPermission: .userDiscoverability)
@@ -118,12 +89,6 @@ final class CloudKitContainer {
         createCustomZoneIfNeeded()
         enableNotificationsIfNeeded(for: ownedZoneId)
 
-        if let owners = CloudKitContainer.ownerNames {
-            for (owner, _) in owners {
-                enableNotificationsIfNeeded(for: CKRecordZone.ID(zoneName: CloudKitContainer.zoneName, ownerName: owner))
-            }
-        }
-
         Self.askPermissionForDiscoverabilityIfNeeded(in: cloudContainer)
             .store(in: &cancellables)
     }
@@ -135,6 +100,27 @@ final class CloudKitContainer {
             .flatMap { _ in Self.createSubscriptions(for: databaseToEnable) }
             .sink(receiveFailure: { error in Logger.error.log(error) })
             .store(in: &cancellables)
+    }
+
+    private static func createSubscriptions(for database: CKDatabase) -> AnyPublisher<Never, Error> {
+        let subscription = CKDatabaseSubscription(subscriptionID: database.subscriptionId)
+        let notificationInfo = CKSubscription.NotificationInfo()
+        notificationInfo.shouldSendContentAvailable = true
+        notificationInfo.alertBody = nil
+        subscription.notificationInfo = notificationInfo
+
+        let operation = CKModifySubscriptionsOperation(
+            subscriptionsToSave: [subscription],
+            subscriptionIDsToDelete: []
+        )
+
+        operation.qualityOfService = .utility
+
+        database.add(operation)
+
+        return operation.publisher()
+            .ignoreOutput()
+            .eraseToAnyPublisher()
     }
 
     func removeSubscriptions() {
@@ -184,31 +170,6 @@ final class CloudKitContainer {
         guard let notification = CKNotification(fromRemoteNotificationDictionary: userInfo) as? CKDatabaseNotification else { return nil }
 
         return notification.databaseScope
-    }
-
-    func addOwnerName(_ ownerName: String) {
-        if var names = CloudKitContainer.ownerNames {
-            names[ownerName] = (names[ownerName] ?? 0) + 1
-            CloudKitContainer.ownerNames = names
-        } else {
-            CloudKitContainer.ownerNames = [ownerName: 1]
-        }
-    }
-
-    func removeOwnerName(_ ownerName: String) {
-        guard var names = CloudKitContainer.ownerNames else {
-            return
-        }
-
-        let newValue = (names[ownerName] ?? 0) - 1
-
-        if newValue <= 0 {
-            names.removeValue(forKey: ownerName)
-        } else {
-            names[ownerName] = newValue
-        }
-
-        CloudKitContainer.ownerNames = names
     }
 }
 

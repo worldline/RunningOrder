@@ -63,7 +63,6 @@ final class AppStateManager: ObservableObject {
                 }
             })
             .map { firstSpaces in
-                Logger.debug.log(firstSpaces)
                 if let storedSpaceName = self.storedSpaceName,
                    let foundSpace = firstSpaces.first(where: { $0.name == storedSpaceName }) {
                     return .spaceSelected(foundSpace)
@@ -73,7 +72,7 @@ final class AppStateManager: ObservableObject {
                     return .spaceCreation
                 }
             }
-            .delay(for: 100.0, scheduler: DispatchQueue.main) // to see the loadng bar 🤣
+            .delay(for: 1, scheduler: DispatchQueue.main) // to see the loading bar 🤣
             .assign(to: &$currentState)
     }
 }

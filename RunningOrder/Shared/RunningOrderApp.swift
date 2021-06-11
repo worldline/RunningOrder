@@ -73,8 +73,6 @@ struct RunningOrderApp: App {
 
     var _enabledLogs = Logger.enabledLogsBinding
 
-    var enabledLogs: [Logger] { _enabledLogs.wrappedValue }
-
     var body: some Scene {
         WindowGroup {
             MainView()
@@ -91,6 +89,8 @@ struct RunningOrderApp: App {
 
                     appStateManager.fetchFirstSpace(in: spaceManager, withProgress: changesService.refreshAll())
                     Logger.disabledLevels = [.verbose]
+
+                    checkDeprecatedFiles()
                 }
                 .onReceive(appStateManager.$currentState) { state in
                     guard case .spaceSelected(let space) = state else {
@@ -99,85 +99,102 @@ struct RunningOrderApp: App {
                     userManager.fetchUser(for: space)
                 }
         }
-        .commands {
-            CommandGroup(before: CommandGroupPlacement.appSettings) {
-                Button("Report a bug") {
-                    openURL(bugReportURL)
-                }
+        .commands { commands }
+    }
+
+    private func checkDeprecatedFiles() {
+        guard let fileUrl = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first?.appendingPathComponent("owners.json"),
+           FileManager.default.fileExists(atPath: fileUrl.path) else {
+            return
+        }
+
+        do {
+            try FileManager.default.removeItem(at: fileUrl)
+        } catch {
+            Logger.error.log("couldn't remove the existing file")
+        }
+    }
+
+    @CommandsBuilder
+    var commands: some Commands {
+        CommandGroup(before: CommandGroupPlacement.appSettings) {
+            Button("Report a bug") {
+                openURL(bugReportURL)
             }
-            CommandMenu("Workspace") {
-                Button("New") {
-                    appStateManager.currentState = .spaceCreation
+        }
+
+        CommandMenu("Workspace") {
+            Button("New") {
+                appStateManager.currentState = .spaceCreation
+            }
+            .keyboardShortcut("n", modifiers: [.command, .shift, .option])
+
+            Divider()
+
+            if case .spaceSelected(let currentSpace) = appStateManager.currentState {
+                Button("Delete") {
+                    spaceManager.delete(space: currentSpace)
+                    var spacesLeft = spaceManager.availableSpaces
+                    spacesLeft.removeAll(where: { currentSpace == $0 })
+                    if let newSelection = spacesLeft.first {
+                        appStateManager.currentState = .spaceSelected(newSelection)
+                    } else {
+                        appStateManager.currentState = .spaceCreation
+                    }
                 }
-                .keyboardShortcut("n", modifiers: [.command, .shift, .option])
+
+                if spaceManager.availableSpaces.count > 1 {
+                    Picker("Switch Workspace", selection: selectedSpace) {
+                        ForEach(spaceManager.availableSpaces, id: \.id) { space in
+                            Text(space.name)
+                                .tag(space)
+                        }
+                    }
+                }
+
+                Button("Refresh") {
+                    changesService.refreshAll()
+                }
+                .keyboardShortcut("r", modifiers: .command)
+
+                Button(
+                    "Share",
+                    action: CloudSharingHandler(spaceManager: spaceManager, space: currentSpace).performCloudSharing
+                )
+                .keyboardShortcut("s", modifiers: [.command, .shift])
 
                 Divider()
-
-                if case .spaceSelected(let currentSpace) = appStateManager.currentState {
-                    Button("Delete") {
-                        spaceManager.delete(space: currentSpace)
-                        var spacesLeft = spaceManager.availableSpaces
-                        spacesLeft.removeAll(where: { currentSpace == $0 })
-                        if let newSelection = spacesLeft.first {
-                            appStateManager.currentState = .spaceSelected(newSelection)
-                        } else {
-                            appStateManager.currentState = .spaceCreation
-                        }
-                    }
-
-                    if spaceManager.availableSpaces.count > 1 {
-                        Picker("Switch Workspace", selection: selectedSpace) {
-                            ForEach(spaceManager.availableSpaces, id: \.id) { space in
-                                Text(space.name)
-                                    .tag(space)
-                            }
-                        }
-                    }
-
-                    Button("Refresh") {
-                        changesService.refreshAll()
-                    }
-                    .keyboardShortcut("r", modifiers: .command)
-
-                    Button(
-                        "Share",
-                        action: CloudSharingHandler(spaceManager: spaceManager, space: currentSpace).performCloudSharing
-                    )
-                    .keyboardShortcut("s", modifiers: [.command, .shift])
-
-                    Divider()
-                    Text("Current workspace : \(currentSpace.name)")
-                } else {
-                    Text("No current workspace")
-                }
+                Text("Current workspace : \(currentSpace.name)")
+            } else {
+                Text("No current workspace")
             }
-
-            CommandMenu("DEBUG") {
-                Button("Delete Subscription") {
-                    CloudKitContainer.shared.removeSubscriptions()
-                }
-
-                Button("test") {
-                    CloudKitContainer.shared.test()
-                }
-
-                Menu("Logs") {
-                    ForEach(Logger.allCases, id: \.title) { logger in
-                        HStack {
-                            Button(logger.title) {
-                                if let index = enabledLogs.firstIndex(of: logger) {
-                                    _enabledLogs.wrappedValue.remove(at: index)
-                                } else {
-                                    _enabledLogs.wrappedValue.append(logger)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            ToolbarCommands()
-            SidebarCommands()
         }
+
+        CommandMenu("DEBUG") {
+            Button("Delete Subscription") {
+                CloudKitContainer.shared.removeSubscriptions()
+            }
+
+            Button("test") {
+                CloudKitContainer.shared.test()
+            }
+
+            Menu("Logs") {
+                ForEach(Logger.allCases, id: \.title) { logger in
+                    HStack {
+                        Button(logger.title) {
+                            if let index = _enabledLogs.wrappedValue.firstIndex(of: logger) {
+                                _enabledLogs.wrappedValue.remove(at: index)
+                            } else {
+                                _enabledLogs.wrappedValue.append(logger)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        ToolbarCommands()
+        SidebarCommands()
     }
 }
 

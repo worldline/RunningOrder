@@ -92,7 +92,6 @@ class SpaceService {
         if space.underlyingRecord.recordID.zoneID.ownerName == CKCurrentUserDefaultName {
             recordIdToDelete = space.underlyingRecord.recordID
         } else {
-            cloudkitContainer.removeOwnerName(space.underlyingRecord.recordID.zoneID.ownerName)
             if let shareId = space.underlyingRecord.share?.recordID {
                 recordIdToDelete = shareId
             } else {
@@ -118,19 +117,13 @@ class SpaceService {
     func acceptShare(metadata: CKShare.Metadata) -> AnyPublisher<CKShare.Metadata, Swift.Error> {
         let acceptSharesOperation = CKAcceptSharesOperation(shareMetadatas: [metadata])
 
-        let pub = acceptSharesOperation.publishers().perShare.map { return $0.0 }.share()
-
-        pub.sink(
-            receiveFailure: { _ in },
-            receiveValue: { [weak cloudkitContainer = self.cloudkitContainer] updatedMetadata in
-                cloudkitContainer?.addOwnerName(updatedMetadata.rootRecordID.zoneID.ownerName)
-            })
-            .store(in: &cancellables)
-
         let remoteContainer = CKContainer(identifier: metadata.containerIdentifier)
 
         remoteContainer.add(acceptSharesOperation)
 
-        return pub.eraseToAnyPublisher()
+        return acceptSharesOperation.publishers()
+            .perShare
+            .map { return $0.0 }
+            .eraseToAnyPublisher()
     }
 }
