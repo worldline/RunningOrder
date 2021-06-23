@@ -111,7 +111,8 @@ final class CloudKitChangesService: ObservableObject {
             .collect()
             .sink { [weak self] zoneIds in
                 guard !zoneIds.isEmpty, let self = self else {
-                    progress.completedUnitCount = 100
+                    progress.totalUnitCount = 1
+                    progress.completedUnitCount = 1
                     return
                 }
                 progress.totalUnitCount = Int64(zoneIds.count)

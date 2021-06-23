@@ -36,6 +36,7 @@ final class UserManager: ObservableObject {
         } else {
             return userService
                 .fetch(userReference: reference)
+                .receive(on: DispatchQueue.main)
                 .handleEvents(receiveOutput: {
                     self.users.insert($0)
                 })

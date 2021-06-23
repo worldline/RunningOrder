@@ -50,11 +50,25 @@ final class AppStateManager: ObservableObject {
 
     func fetchFirstSpace(in spaceManager: SpaceManager, withProgress progress: Progress) {
         self.currentState = .loading(progress)
-        let isFirstCall = self.isFirstCall
-        self.isFirstCall = false
+
+        let progressEndedPublisher: AnyPublisher<Bool, Never>
+
+        if progress.isIndeterminate {
+            progressEndedPublisher = Just(true)
+                .eraseToAnyPublisher()
+        } else {
+            progressEndedPublisher = progress
+                .publisher(for: \.isFinished)
+                .filter { $0 }
+                .first()
+                .delay(for: 0.5, scheduler: DispatchQueue.main)
+                .eraseToAnyPublisher()
+        }
+
         spaceManager
             .$availableSpaces
-            .filter { !isFirstCall || !$0.isEmpty }
+            .combineLatest(progressEndedPublisher)
+            .map(\.0)
             .first(where: { // only the first change to avoid re-updating each time a new space is fetched, but we still wait if the stored space is not in the first stored spaces fetched
                 if let storedSpaceName = self.storedSpaceName {
                     return $0.contains(where: { space in space.name == storedSpaceName })
@@ -72,7 +86,6 @@ final class AppStateManager: ObservableObject {
                     return .spaceCreation
                 }
             }
-            .delay(for: 1, scheduler: DispatchQueue.main) // to see the loading bar 🤣
             .assign(to: &$currentState)
     }
 }
