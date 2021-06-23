@@ -13,6 +13,7 @@ import CloudKit
 ///The class responsible of managing the Story data, this is the only source of truth
 final class StoryManager: ObservableObject {
     @Published var stories: [Sprint.ID: [Story]] = [:]
+    @Stored(fileName: "stories.json", directory: .applicationSupportDirectory) private var storedStories: [Story]?
 
     var epics: Set<String> {
         return stories
@@ -31,10 +32,22 @@ final class StoryManager: ObservableObject {
         self.service = service
         self.userService = userService
 
+        if let storedStories = storedStories {
+            stories = [Sprint.ID: [Story]](grouping: storedStories) { story in
+                story.sprintId
+            }
+        }
+
         dataPublisher.sink(receiveValue: { [weak self] informations in
             self?.updateData(with: informations.toUpdate)
             self?.deleteData(recordIds: informations.toDelete)
         }).store(in: &cancellables)
+
+        $stories
+            .throttle(for: 5, scheduler: DispatchQueue.main, latest: true)
+            .map { stories in Array(stories.values).flatMap { $0 } }
+            .assign(to: \.storedStories, on: self)
+            .store(in: &cancellables)
     }
 
     func add(story: Story) -> AnyPublisher<Story, Error> {
@@ -134,13 +147,13 @@ final class StoryManager: ObservableObject {
 
     func allStories(for sprints: [Sprint.ID]) -> [Story] {
         return stories
-            .filter { key, value in sprints.contains(key)}
+            .filter { key, _ in sprints.contains(key)}
             .flatMap { $1 }
     }
 
     func epics(for sprints: [Sprint.ID]) -> Set<String> {
         return stories
-            .filter { key, value in sprints.contains(key)}
+            .filter { key, _ in sprints.contains(key)}
             .values
             .reduce(Set<String>()) { result, values in
                 result.union(values.map { $0.epic })

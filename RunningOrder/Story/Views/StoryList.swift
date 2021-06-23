@@ -37,12 +37,8 @@ extension StoryList {
                     }
                     .epicColor(Color(identifier: logic.epicColor(for: story)))
 
-                    if story == selected {
-                        Divider()
-                            .hidden()
-                    } else {
-                        Divider()
-                    }
+                    Divider()
+                        .opacity(story == selected ? 0 : 1)
                 }
             }
             .navigationTitle(logic.navigationTitle)

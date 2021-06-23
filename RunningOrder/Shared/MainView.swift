@@ -27,19 +27,32 @@ extension MainView {
 
         @ViewBuilder var body: some View {
             switch appStateManager.currentState {
-            case .loading:
-                ProgressView()
-                    .padding()
-                    .frame(
-                        maxWidth: .infinity,
-                        maxHeight: .infinity,
-                        alignment: .center
-                    )
+            case .idle:
+                Text("Nothing here")
+            case .loading(let progress):
+                HStack {
+                    Spacer()
+                    VStack {
+                        Spacer()
+                        ProgressView(progress)
+                            .frame(
+                                minWidth: 300,
+                                maxWidth: 500,
+                                minHeight: 50,
+                                maxHeight: 500,
+                                alignment: .center
+                            )
+                            .padding()
+                        Spacer()
+                    }
+                    Spacer()
+                }
+
             case .error(let error):
                 VStack {
                     Text("error : \(error)" as String)
                     Button("Retry") {
-                        appStateManager.fetchFirstSpace(in: spaceManager)
+                        appStateManager.fetchFirstSpace(in: spaceManager, withProgress: Progress())
                     }
                 }
                 .padding()

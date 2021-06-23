@@ -10,12 +10,29 @@ import Foundation
 import Combine
 import CloudKit
 
+extension CKDatabase.Scope {
+    var name: String {
+        switch self {
+        case .public:
+            return "Public Database"
+        case .private:
+            return "Private Database"
+        case .shared:
+            return "Shared Database"
+        @unknown default:
+            return "Unknown Database"
+        }
+    }
+}
+
 typealias ChangeInformation = (toUpdate: [CKRecord], toDelete: [CKRecord.ID])
 
 final class CloudKitChangesService: ObservableObject {
     private unowned let container: CloudKitContainer
-    private var currentChangeServerTokens: [CKRecordZone.ID: CKServerChangeToken] = [:]
-    private var databaseChangesServerToken: CKServerChangeToken?
+    @Published private(set) var currentChangeServerTokens: [CKRecordZone.ID: CKServerChangeToken] = [:]
+    @Published private(set) var databaseChangesServerToken: CKServerChangeToken?
+
+    @Stored(fileName: "tokens.json", directory: .applicationSupportDirectory) private var storedTokens: CloudKitTokens?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -26,31 +43,61 @@ final class CloudKitChangesService: ObservableObject {
 
     init(container: CloudKitContainer) {
         self.container = container
+
+        currentChangeServerTokens = storedTokens?.currentChangeServerTokens ?? [:]
+        databaseChangesServerToken = storedTokens?.databaseChangesServerToken
+
+        self.$databaseChangesServerToken
+            .combineLatest(self.$currentChangeServerTokens, CloudKitTokens.init)
+            .assign(to: \.storedTokens, onStrong: self)
+            .store(in: &cancellables)
+
+        self.checkNotifications()
     }
 
-    func initialFetch() {
-        self.fetchChanges(on: container.ownedZoneId)
-        container.owners
-            .forEach(self.fetchChanges(on:))
+    private func checkNotifications() {
+        let operation = CKFetchRecordZonesOperation.fetchAllRecordZonesOperation()
+
+        operation
+            .publisher()
+            .sink(
+                receiveFailure: { error in Logger.error.log(error) },
+                receiveValue: { [weak self] zones in
+                    for (zoneId, _) in zones {
+                        self?.container.enableNotificationsIfNeeded(for: zoneId)
+                    }
+                }
+            )
+            .store(in: &cancellables)
+
+        container.cloudContainer.database(with: .shared).add(operation)
     }
 
-    func refreshAll() {
+    /// Fetch the database changes first, then fetch the changes in the zones with the ids found in the changes of the database
+    @discardableResult func refreshAll() -> Progress {
         Logger.debug.log("refresh")
-        self.fetchDatabaseChanges(in: .private)
-        self.fetchDatabaseChanges(in: .shared)
+
+        let progress = Progress(totalUnitCount: 2)
+        progress.addChild(self.fetchDatabaseChanges(in: .private), withPendingUnitCount: 1)
+        progress.addChild(self.fetchDatabaseChanges(in: .shared), withPendingUnitCount: 1)
+        return progress
     }
 
-    func fetchDatabaseChanges(in scope: CKDatabase.Scope) {
+    func fetchDatabaseChanges(in scope: CKDatabase.Scope) -> Progress {
         let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: databaseChangesServerToken)
-
+        let progress = Progress(totalUnitCount: 0)
         let (fetchDatabaseChangesCompletion, changeTokenUpdated, recordZoneWithIDChanged, _, _) = operation.publishers()
 
         // update the token
         fetchDatabaseChangesCompletion
             .catchAndExit { [weak self] error in
-                if let error = error as? CKError, error.code == .changeTokenExpired {
-                    self?.databaseChangesServerToken = nil
-                    self?.fetchDatabaseChanges(in: scope)
+                if let self = self,
+                   let error = error as? CKError,
+                   error.code == .changeTokenExpired {
+                    self.databaseChangesServerToken = nil
+                    progress.addChild(self.fetchDatabaseChanges(in: scope), withPendingUnitCount: 0)
+                } else {
+                    progress.cancel()
                 }
                 Logger.error.log(error) // TODO: Error handling
             }
@@ -63,16 +110,24 @@ final class CloudKitChangesService: ObservableObject {
         recordZoneWithIDChanged
             .collect()
             .sink { [weak self] zoneIds in
+                guard !zoneIds.isEmpty, let self = self else {
+                    progress.totalUnitCount = 1
+                    progress.completedUnitCount = 1
+                    return
+                }
+                progress.totalUnitCount = Int64(zoneIds.count)
                 for zoneId in zoneIds {
-                    self?.fetchChanges(on: zoneId)
+                    progress.addChild(self.fetchChanges(on: zoneId), withPendingUnitCount: 1)
                 }
             }
             .store(in: &cancellables)
 
         container.cloudContainer.database(with: scope).add(operation)
+        return progress
     }
 
-    func fetchChanges(on zoneId: CKRecordZone.ID) {
+    func fetchChanges(on zoneId: CKRecordZone.ID) -> Progress {
+        let progress = Progress(totalUnitCount: 5)
         let token = currentChangeServerTokens[zoneId]
         let operation = CKFetchRecordZoneChangesOperation(
             recordZoneIDs: [zoneId],
@@ -81,7 +136,19 @@ final class CloudKitChangesService: ObservableObject {
 
         operation.qualityOfService = .userInteractive
 
-        let (_, recordPublisher, recordDeletedPublisher, tokenChangesPublisher, recordZoneFetchPublisher) = operation.publishers()
+        let (fetchRecordZoneChangesCompletion, recordPublisher, recordDeletedPublisher, tokenChangesPublisher, recordZoneFetchPublisher) = operation.publishers()
+
+        fetchRecordZoneChangesCompletion
+            .handleEvents(receiveCompletion: { _ in progress.completedUnitCount += 1 })
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .failure(let error):
+                    Logger.error.log(error)
+                case .finished:
+                    break
+                }
+            })
+            .store(in: &cancellables)
 
         Publishers.CombineLatest(recordPublisher.collect(), recordDeletedPublisher.collect())
             .map { records, toDelete -> ([CKRecord.RecordType: ChangeInformation]) in
@@ -97,6 +164,7 @@ final class CloudKitChangesService: ObservableObject {
                 }
             }
             .receive(on: DispatchQueue.main)
+            .handleEvents(receiveCompletion: { _ in progress.completedUnitCount += 2 })
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -120,17 +188,23 @@ final class CloudKitChangesService: ObservableObject {
             .filter { $0.zoneId == zoneId }
             .map(\.serverToken)
             .catchAndExit { [weak self] error in
-                if let error = error as? CKError, error.code == .changeTokenExpired {
-                    self?.currentChangeServerTokens[zoneId] = nil
-                    self?.fetchChanges(on: zoneId)
+                if let self = self,
+                   let error = error as? CKError,
+                   error.code == .changeTokenExpired {
+                    self.currentChangeServerTokens[zoneId] = nil
+                    progress.addChild(self.fetchChanges(on: zoneId), withPendingUnitCount: 5)
+                } else {
+                    progress.cancel()
                 }
                 Logger.error.log(error) // TODO: Error handling
             }
             .merge(with: tokenChanged)
+            .handleEvents(receiveCompletion: { _ in progress.completedUnitCount += 2 })
             .assign(to: \.currentChangeServerTokens[zoneId], onStrong: self)
             .store(in: &cancellables)
 
         container.database(for: zoneId).add(operation)
+        return progress
     }
 
     private var firstCallSpaceEmpty = true

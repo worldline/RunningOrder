@@ -34,6 +34,10 @@ extension Storable where Self: Codable {
     }
 }
 
+extension Dictionary: Storable where Key: Codable, Value: Codable {}
+
+extension Array: Storable where Element: Codable {}
+
 enum StoreError: Error {
     case fileNotCreated(URL)
 }

@@ -12,7 +12,8 @@ import SwiftUI
 
 extension AppStateManager {
     enum State {
-        case loading
+        case idle
+        case loading(Progress)
         case error(Swift.Error)
         case spaceCreation
         case spaceSelected(Space)
@@ -27,7 +28,7 @@ extension AppStateManager {
 }
 
 final class AppStateManager: ObservableObject {
-    @Published var currentState: State = .loading
+    @Published var currentState: State = .idle
 
     @AppStorage("currentSpaceName") private var storedSpaceName: String?
 
@@ -47,12 +48,27 @@ final class AppStateManager: ObservableObject {
             .assign(to: \.storedSpaceName, onStrong: self)
     }
 
-    func fetchFirstSpace(in spaceManager: SpaceManager) {
-        let isFirstCall = self.isFirstCall
-        self.isFirstCall = false
+    func fetchFirstSpace(in spaceManager: SpaceManager, withProgress progress: Progress) {
+        self.currentState = .loading(progress)
+
+        let progressEndedPublisher: AnyPublisher<Bool, Never>
+
+        if progress.isIndeterminate {
+            progressEndedPublisher = Just(true)
+                .eraseToAnyPublisher()
+        } else {
+            progressEndedPublisher = progress
+                .publisher(for: \.isFinished)
+                .filter { $0 }
+                .first()
+                .delay(for: 0.5, scheduler: DispatchQueue.main)
+                .eraseToAnyPublisher()
+        }
+
         spaceManager
             .$availableSpaces
-            .dropFirst(isFirstCall ? 1 : 0) // avoid the [] value before first changes fetch. next time won't need it
+            .combineLatest(progressEndedPublisher)
+            .map(\.0)
             .first(where: { // only the first change to avoid re-updating each time a new space is fetched, but we still wait if the stored space is not in the first stored spaces fetched
                 if let storedSpaceName = self.storedSpaceName {
                     return $0.contains(where: { space in space.name == storedSpaceName })
@@ -61,7 +77,6 @@ final class AppStateManager: ObservableObject {
                 }
             })
             .map { firstSpaces in
-                Logger.debug.log(firstSpaces)
                 if let storedSpaceName = self.storedSpaceName,
                    let foundSpace = firstSpaces.first(where: { $0.name == storedSpaceName }) {
                     return .spaceSelected(foundSpace)

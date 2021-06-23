@@ -92,7 +92,6 @@ import CloudKit
 
 // Extension here to access to a private property of the struct.
 extension StoryInformation: CKRecordable {
-
     init(from record: CKRecord) throws {
         let storyReference: CKRecord.Reference = try record.property("storyId")
         self.storyId = storyReference.recordID.recordName
@@ -162,5 +161,19 @@ extension StoryInformation: CKRecordable {
 
     private func storyRecordId(zoneId: CKRecordZone.ID) -> CKRecord.ID {
         return CKRecord.ID(recordName: self.storyId, zoneID: zoneId)
+    }
+}
+
+extension StoryInformation: Codable {
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let record = try container.decode(ObjectCodableWrapper<CKRecord>.self).wrappedValue
+        try self.init(from: record)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+
+        try container.encode(ObjectCodableWrapper<CKRecord>(wrappedValue: self.encode()))
     }
 }

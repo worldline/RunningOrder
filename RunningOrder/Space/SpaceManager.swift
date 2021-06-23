@@ -23,11 +23,21 @@ final class SpaceManager: ObservableObject {
 
     @Published var availableSpaces: [Space] = []
 
+    @Stored(fileName: "spaces.json", directory: .applicationSupportDirectory) private var storedSpaces: [Space]?
+
     init(service: SpaceService, dataPublisher: AnyPublisher<ChangeInformation, Never>) {
         self.spaceService = service
 
+        availableSpaces = storedSpaces ?? []
+
         dataPublisher
             .sink(receiveValue: updateState(with:))
+            .store(in: &cancellables)
+
+        $availableSpaces
+            .throttle(for: 5, scheduler: DispatchQueue.main, latest: true)
+            .map { $0 as [Space]? }
+            .assign(to: \.storedSpaces, on: self)
             .store(in: &cancellables)
     }
 

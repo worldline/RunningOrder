@@ -17,6 +17,8 @@ final class StoryInformationManager: ObservableObject {
 
     @Published var storyInformationsBuffer: [Story.ID: StoryInformation] = [:]
 
+    @Stored(fileName: "storyInformations.json", directory: .applicationSupportDirectory) private var storedStoryInformations: [StoryInformation]?
+
     var cancellables: Set<AnyCancellable> = []
 
     private let service: StoryInformationService
@@ -24,10 +26,23 @@ final class StoryInformationManager: ObservableObject {
     init(service: StoryInformationService, dataPublisher: AnyPublisher<ChangeInformation, Never>) {
         self.service = service
 
+        if let storedStoryInformations = storedStoryInformations {
+            storyInformations = [Story.ID: [StoryInformation]](grouping: storedStoryInformations) { storyInformation in
+                storyInformation.storyId
+            }
+            .mapValues { $0.first! }
+        }
+
         dataPublisher.sink(receiveValue: { [weak self] informations in
             self?.updateData(with: informations.toUpdate)
             self?.deleteData(recordIds: informations.toDelete)
         }).store(in: &cancellables)
+
+        $storyInformations
+            .throttle(for: 5, scheduler: DispatchQueue.main, latest: true)
+            .map { Array($0.values) }
+            .assign(to: \.storedStoryInformations, on: self)
+            .store(in: &cancellables)
 
         // saving storyinformation while live editing in the list component, each modification is stored in the buffer in order to persist it
         // when the saving operation is sent to the cloud, we empty the buffer
