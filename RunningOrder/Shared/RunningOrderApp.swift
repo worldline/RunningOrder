@@ -144,7 +144,7 @@ struct RunningOrderApp: App {
                 }
 
                 Button("Refresh") {
-                    changesService.refreshAll()
+                    appStateManager.currentLoading = changesService.refreshAll()
                 }
                 .keyboardShortcut("r", modifiers: .command)
 

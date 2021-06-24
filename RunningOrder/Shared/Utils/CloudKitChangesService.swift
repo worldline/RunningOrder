@@ -110,6 +110,7 @@ final class CloudKitChangesService: ObservableObject {
 
         recordZoneWithIDChanged
             .collect()
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] zoneIds in
                 guard !zoneIds.isEmpty, let self = self else {
                     progress.totalUnitCount = 1
@@ -122,7 +123,8 @@ final class CloudKitChangesService: ObservableObject {
                 }
             }
             .store(in: &cancellables)
-
+        operation.queuePriority = .veryHigh
+        operation.qualityOfService = .userInitiated
         container.cloudContainer.database(with: scope).add(operation)
         return progress
     }
@@ -140,6 +142,7 @@ final class CloudKitChangesService: ObservableObject {
         let (fetchRecordZoneChangesCompletion, recordPublisher, recordDeletedPublisher, tokenChangesPublisher, recordZoneFetchPublisher) = operation.publishers()
 
         fetchRecordZoneChangesCompletion
+            .receive(on: DispatchQueue.main)
             .handleEvents(receiveCompletion: { _ in progress.completedUnitCount += 1 })
             .sink(receiveCompletion: { completion in
                 switch completion {
@@ -200,6 +203,7 @@ final class CloudKitChangesService: ObservableObject {
                 Logger.error.log(error) // TODO: Error handling
             }
             .merge(with: tokenChanged)
+            .receive(on: DispatchQueue.main)
             .handleEvents(receiveCompletion: { _ in progress.completedUnitCount += 2 })
             .assign(to: \.currentChangeServerTokens[zoneId], onStrong: self)
             .store(in: &cancellables)

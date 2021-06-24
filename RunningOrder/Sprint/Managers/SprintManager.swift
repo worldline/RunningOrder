@@ -15,7 +15,6 @@ final class SprintManager: ObservableObject {
     @Published var sprints: [Sprint] = []
 
     @Stored(fileName: "sprints.json", directory: .applicationSupportDirectory) private var storedSprints: [Sprint]?
-    @Published var isLoading = false
 
     var cancellables: Set<AnyCancellable> = []
 
@@ -23,7 +22,6 @@ final class SprintManager: ObservableObject {
 
     init(service: SprintService, dataPublisher: AnyPublisher<ChangeInformation, Never>) {
         self.service = service
-        isLoading = true
 
         sprints = storedSprints ?? []
 
@@ -76,7 +74,6 @@ final class SprintManager: ObservableObject {
                 Logger.error.log(error)
             }
         }
-        isLoading = false
     }
 
     func delete(sprint: Sprint) {

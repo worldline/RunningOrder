@@ -47,20 +47,20 @@ extension SprintList {
                     }
                 }
                 .keyboardShortcut(KeyEquivalent("n"), modifiers: .command)
-                .padding(.all, 20.0)
+                .padding(.all, 10)
                 .buttonStyle(PlainButtonStyle())
 
-                if let currentLoading = appStateManager.currentLoading {
-                    ProgressView(currentLoading)
+                if appStateManager.currentLoading != nil {
+                    ProgressView()
                         .progressViewStyle(CircularProgressViewStyle())
-                        .scaleEffect(0.5)
+                        .scaleEffect(0.4)
+                        .padding(-8)
                 } else {
                     Circle()
                         .fill(Color.green)
                         .frame(width: 10, height: 10)
                 }
-            }
-            , alignment: .bottom)
+            }, alignment: .bottom)
             .sheet(isPresented: $logic.isNewSprintModalPresented) {
                 NewSprintView(space: space, createdSprint: self.logic.createdSprintBinding)
             }
@@ -72,17 +72,7 @@ extension SprintList {
                     secondaryButton: .cancel()
                 )
             }
-//            .onAppear {
-//                fakeNetworkCall()
-//            }
         }
-
-//        func fakeNetworkCall() {
-//            isLoading = true
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//                isLoading = false
-//            }
-//        }
     }
 }
 
