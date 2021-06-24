@@ -78,7 +78,7 @@ struct RunningOrderApp: App {
                     appDelegate.changesService = changesService
                     appDelegate.spaceManager = spaceManager
 
-                    appStateManager.fetchFirstSpace(in: spaceManager, withProgress: changesService.refreshAll())
+                    appStateManager.fetchFirstSpace(in: spaceManager, withProgress: changesService.refreshAll(qos: .userInteractive))
                     Logger.disabledLevels = [.verbose]
 
                     checkDeprecatedFiles()
@@ -144,7 +144,7 @@ struct RunningOrderApp: App {
                 }
 
                 Button("Refresh") {
-                    appStateManager.currentLoading = changesService.refreshAll()
+                    appStateManager.refreshAll()
                 }
                 .keyboardShortcut("r", modifiers: .command)
 

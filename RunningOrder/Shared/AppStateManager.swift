@@ -34,8 +34,6 @@ final class AppStateManager: ObservableObject {
 
     private unowned var changesService: CloudKitChangesService
 
-    private var isFirstCall = true
-
     private var spaceNameCancellable: AnyCancellable?
 
     @Published var currentLoading: Progress?
@@ -71,6 +69,10 @@ final class AppStateManager: ObservableObject {
                 }
             }
             .assign(to: \.storedSpaceName, onStrong: self)
+    }
+
+    func refreshAll() {
+        currentLoading = changesService.refreshAll(qos: .userInitiated)
     }
 
     func fetchFirstSpace(in spaceManager: SpaceManager, withProgress progress: Progress) {
