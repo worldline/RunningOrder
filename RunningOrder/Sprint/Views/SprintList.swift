@@ -15,6 +15,7 @@ extension SprintList {
     fileprivate struct InternalView: View {
         @EnvironmentObject var sprintManager: SprintManager
         @EnvironmentObject var storyManager: StoryManager
+        @EnvironmentObject var appStateManager: AppStateManager
         @ObservedObject var logic: Logic
         let space: Space
         @State private var toBeDeletedSprint: Sprint?
@@ -32,21 +33,34 @@ extension SprintList {
                     }
                 }
             }
-            .overlay(Button(action: self.logic.showNewSprintModal) {
-                HStack {
-                    Image(nsImageName: NSImage.addTemplateName)
-                        .frame(width: 20, height: 20)
-                        .foregroundColor(.white)
-                        .background(Color.accentColor)
-                        .clipShape(Circle())
-                    Text("New Sprint")
-                        .foregroundColor(Color.accentColor)
-                        .font(.system(size: 12))
+            .overlay(HStack {
+                Button(action: self.logic.showNewSprintModal) {
+                    HStack { // sprintListFooter
+                        Image(nsImageName: NSImage.addTemplateName)
+                            .frame(width: 20, height: 20)
+                            .foregroundColor(.white)
+                            .background(Color.accentColor)
+                            .clipShape(Circle())
+                        Text("New Sprint")
+                            .foregroundColor(Color.accentColor)
+                            .font(.system(size: 12))
+                    }
                 }
-            }
-            .keyboardShortcut(KeyEquivalent("n"), modifiers: .command)
-            .padding(.all, 20.0)
-            .buttonStyle(PlainButtonStyle()), alignment: .bottom)
+                .keyboardShortcut(KeyEquivalent("n"), modifiers: .command)
+                .padding(.all, 10)
+                .buttonStyle(PlainButtonStyle())
+
+                if appStateManager.currentLoading != nil {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .scaleEffect(0.4)
+                        .padding(-8)
+                } else {
+                    Circle()
+                        .fill(Color.green)
+                        .frame(width: 10, height: 10)
+                }
+            }, alignment: .bottom)
             .sheet(isPresented: $logic.isNewSprintModalPresented) {
                 NewSprintView(space: space, createdSprint: self.logic.createdSprintBinding)
             }
