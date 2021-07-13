@@ -39,6 +39,11 @@ struct RunningOrderApp: App {
         dataPublisher: changesService.storyInformationChangesPublisher.eraseToAnyPublisher()
     )
 
+    @StateObject var videoManager = VideoManager(
+        service: VideoService(),
+        dataPublisher: changesService.videoChangesPublisher.eraseToAnyPublisher()
+    )
+
     @StateObject var appStateManager = AppStateManager(changesService: changesService)
 
     @StateObject var userManager = UserManager(
@@ -74,6 +79,7 @@ struct RunningOrderApp: App {
                 .environmentObject(searchManager)
                 .environmentObject(appStateManager)
                 .environmentObject(userManager)
+                .environmentObject(videoManager)
                 .onAppear {
                     appDelegate.changesService = changesService
                     appDelegate.spaceManager = spaceManager

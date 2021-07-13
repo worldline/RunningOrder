@@ -40,6 +40,7 @@ final class CloudKitChangesService: ObservableObject {
     let storyChangesPublisher = PassthroughSubject<ChangeInformation, Never>()
     let storyInformationChangesPublisher = PassthroughSubject<ChangeInformation, Never>()
     let spaceChangesPublisher = PassthroughSubject<ChangeInformation, Never>()
+    let videoChangesPublisher = PassthroughSubject<ChangeInformation, Never>()
 
     init(container: CloudKitContainer) {
         self.container = container
@@ -234,6 +235,8 @@ final class CloudKitChangesService: ObservableObject {
             case .space:
                 self.spaceChangesPublisher.send(changes)
                 self.firstCallSpaceEmpty = false
+            case .video:
+                self.videoChangesPublisher.send(changes)
             }
         }
     }

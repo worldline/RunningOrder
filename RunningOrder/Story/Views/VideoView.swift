@@ -12,21 +12,15 @@ import AVFoundation
 import AVKit
 
 struct VideoView: View {
-    @Binding var storyInformation: StoryInformation
+    let storyInformation: StoryInformation
+
+    @EnvironmentObject var videoManager: VideoManager
 
     @State private var isVideoDropTargeted = false
     @State private var isFileImporterPresented = false
 
-    var avPlayer: AVPlayer? {
-        if let videoUrl = storyInformation.createSymbolicVideoUrlIfNeeded(with: .default) {
-            return AVPlayer(playerItem: AVPlayerItem(asset: AVAsset(url: videoUrl)))
-        } else {
-            return nil
-        }
-    }
-
     var body: some View {
-        videoView
+        videoListView
             .animation(.none)
             .border(Color.green, width: isVideoDropTargeted ? 4 : 0)
             .animation(.default)
@@ -39,7 +33,14 @@ struct VideoView: View {
                        let url = URL(string: string),
                        let fileType = UTType(filenameExtension: url.pathExtension),
                        fileType.conforms(to: .movie) {
-                        storyInformation.videoUrl = url
+                        videoManager.add(
+                            video: Video(
+                                name: url.lastPathComponent,
+                                url: url,
+                                storyId: storyInformation.storyId,
+                                zoneId: storyInformation.zoneId
+                            )
+                        )
                     } else if let error = error {
                         Logger.error.log(error)
                     } else {
@@ -52,39 +53,76 @@ struct VideoView: View {
             .fileImporter(isPresented: $isFileImporterPresented, allowedContentTypes: [.movie]) { result in
                 switch result {
                 case .success(let url):
-                    storyInformation.videoUrl = url
+                    videoManager.add(
+                        video: Video(
+                            name: url.lastPathComponent,
+                            url: url,
+                            storyId: storyInformation.storyId,
+                            zoneId: storyInformation.zoneId
+                        )
+                    )
                 case .failure(let error):
                     Logger.error.log(error)
                 }
             }
     }
 
-    @ViewBuilder var videoView: some View {
-        if let avPlayer = avPlayer {
-            VideoPlayer(player: avPlayer)
-                .frame(height: 600)
-                .overlay(
-                    RoundButton(image: Image(systemName: "trash"), color: .red) {
-                        storyInformation.videoUrl = nil
+    @ViewBuilder var videoListView: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            ForEach(videoManager.videos(for: storyInformation.storyId), id: \.wrappedValue.id) { videoBinding in
+                if let avPlayer = videoBinding.wrappedValue.avPlayer {
+                    VStack {
+                        VideoPlayer(player: avPlayer)
+                            .frame(height: 600)
+                            .padding(.horizontal, 8)
+                            .overlay(
+                                RoundButton(image: Image(systemName: "trash"), color: .red) {
+                                    videoManager.delete(video: videoBinding.wrappedValue)
+                                }
+                                .frame(width: 25, height: 25)
+                                .padding(.trailing, 8)
+                                .padding([.trailing, .top]),
+                                alignment: .topTrailing
+                            )
+
+                        StyledFocusableTextField(
+                            "",
+                            value: videoBinding.name,
+                            onCommit: {}
+                        )
                     }
-                    .frame(width: 25, height: 25)
-                    .padding(),
-                    alignment: .topTrailing
-                )
-        } else {
-            Rectangle()
-                .frame(height: 600)
-                .foregroundColor(.black)
-                .overlay(
-                    RoundButton(
-                        image: Image(systemName: "tray.and.arrow.down"),
-                        color: .gray,
-                        action: { isFileImporterPresented = true }
-                    )
-                    .frame(width: 100, height: 100)
-                    .padding(),
-                    alignment: .center
-                )
+                } else {
+                    Rectangle()
+                        .frame(height: 600)
+                        .foregroundColor(.black)
+                        .overlay(
+                            Text("Broken"),
+                            alignment: .center
+                        )
+                }
+            }
+
+            HStack {
+                Button {
+                    isFileImporterPresented = true
+                } label: {
+                    HStack { // sprintListFooter
+                        Image(nsImageName: NSImage.addTemplateName)
+                            .frame(width: 20, height: 20)
+                            .foregroundColor(.white)
+                            .background(Color.accentColor)
+                            .clipShape(Circle())
+                        Text("Ajouter une vidéo")
+                            .foregroundColor(Color.accentColor)
+                            .font(.system(size: 12))
+                    }
+                }
+                .buttonStyle(PlainButtonStyle())
+                .padding(.horizontal, 8)
+
+                Spacer()
+            }
         }
+        .padding(.horizontal, 15)
     }
 }
