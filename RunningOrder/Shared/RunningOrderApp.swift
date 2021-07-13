@@ -170,6 +170,18 @@ struct RunningOrderApp: App {
                 CloudKitContainer.shared.test()
             }
 
+            Menu("Features") {
+                ForEach(FeatureFlag.allCases, id: \.rawValue) { feature in
+                    Button(feature.rawValue) {
+                        if let featureIndex = appStateManager.enabledFeatures.firstIndex(of: feature) {
+                            appStateManager.enabledFeatures.remove(at: featureIndex)
+                        } else {
+                            appStateManager.enabledFeatures.append(feature)
+                        }
+                    }
+                }
+            }
+
             Menu("Logs") {
                 ForEach(Logger.allCases, id: \.title) { logger in
                     HStack {

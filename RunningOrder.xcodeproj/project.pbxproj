@@ -44,6 +44,7 @@
 		189ADDEC266E2272001B4137 /* Space+Storable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189ADDEB266E2272001B4137 /* Space+Storable.swift */; };
 		189ADDEE266E639F001B4137 /* ObjectCodableWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189ADDED266E639F001B4137 /* ObjectCodableWrapper.swift */; };
 		18CDCDD624B4A49200043E1D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 18CDCDD824B4A49200043E1D /* Localizable.strings */; };
+		18E6F2B4269D9A36009A7AB1 /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E6F2B3269D9A36009A7AB1 /* FeatureFlag.swift */; };
 		18F6109F25FBA79700A94949 /* TextfieldEditingStringHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F6109E25FBA79700A94949 /* TextfieldEditingStringHandler.swift */; };
 		18F610A425FBAD3000A94949 /* Environment+EpicColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F610A325FBAD3000A94949 /* Environment+EpicColor.swift */; };
 		18F610B125FBB96700A94949 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F610B025FBB96700A94949 /* UserService.swift */; };
@@ -155,6 +156,7 @@
 		189ADDED266E639F001B4137 /* ObjectCodableWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectCodableWrapper.swift; sourceTree = "<group>"; };
 		18CDCDD724B4A49200043E1D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		18CDCDDA24B4A4A500043E1D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		18E6F2B3269D9A36009A7AB1 /* FeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlag.swift; sourceTree = "<group>"; };
 		18F6109E25FBA79700A94949 /* TextfieldEditingStringHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldEditingStringHandler.swift; sourceTree = "<group>"; };
 		18F610A325FBAD3000A94949 /* Environment+EpicColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+EpicColor.swift"; sourceTree = "<group>"; };
 		18F610B025FBB96700A94949 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
@@ -534,6 +536,7 @@
 				18F610B525FBCEE600A94949 /* BasicError.swift */,
 				189ADDEF266E64A2001B4137 /* Local storage */,
 				183D5821269D8E3500C28CC1 /* FileManager+SymbolicFile.swift */,
+				18E6F2B3269D9A36009A7AB1 /* FeatureFlag.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -796,6 +799,7 @@
 				18F7918424B61A5900FDCBEF /* Stories_Previews.swift in Sources */,
 				185277ED2519E74C0050F6C1 /* SpaceManager.swift in Sources */,
 				E8A4E4D324EE988000DBBCEA /* CKRecordable.swift in Sources */,
+				18E6F2B4269D9A36009A7AB1 /* FeatureFlag.swift in Sources */,
 				E896ADBF24E1375500D82952 /* StoryDetailHeader.swift in Sources */,
 				5D285C1F261C706B008E01AC /* SearchManager.swift in Sources */,
 				5D2EE4762631E25300D346AF /* Search.swift in Sources */,

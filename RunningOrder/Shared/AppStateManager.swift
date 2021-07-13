@@ -29,14 +29,15 @@ extension AppStateManager {
 
 final class AppStateManager: ObservableObject {
     @Published var currentState: State = .idle
+    @Published var currentLoading: Progress?
+
+    @Published var enabledFeatures: [FeatureFlag] = []
 
     @AppStorage("currentSpaceName") private var storedSpaceName: String?
 
     private unowned var changesService: CloudKitChangesService
 
     private var spaceNameCancellable: AnyCancellable?
-
-    @Published var currentLoading: Progress?
 
     init(changesService: CloudKitChangesService) {
         self.changesService = changesService
