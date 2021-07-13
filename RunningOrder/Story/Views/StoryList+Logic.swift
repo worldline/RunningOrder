@@ -16,6 +16,7 @@ extension StoryList {
         private unowned var searchManager: SearchManager
 
         @Published var isAddStoryViewDisplayed: Bool = false
+//        @Published var sortOption = 
 
         var createdStoryBinding: Binding<Story?> { Binding(callback: self.addStory(_:)) }
         let sprint: Sprint
@@ -62,10 +63,6 @@ extension StoryList {
             let epicIndex = (Array(storyManager.epics).sorted().firstIndex(of: story.epic) ?? 0) % Color.Identifier.epicColors.count
 
             return Color.Identifier.epicColors[epicIndex]
-        }
-
-        func sort() {
-            
         }
     }
 }

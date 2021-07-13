@@ -23,7 +23,7 @@ extension InlineEditableLinkList {
         }
 
         func deleteTextField(at index: Int) {
-            //sanity check to prevent some out of bounds exception
+            // sanity check to prevent some out of bounds exception
             guard index < values.count else { return }
             _ = values.remove(at: index)
         }

@@ -50,7 +50,6 @@ struct StoryInformation {
     }
 }
 
-
 extension StoryInformation: Equatable {}
 extension StoryInformation: Hashable {}
 
