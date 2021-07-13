@@ -46,12 +46,13 @@ extension StoryList {
             .toolbar {
                 ToolbarItems.sidebarItem
 
-                ToolbarItem(placement: ToolbarItemPlacement.cancellationAction) {
+                ToolbarItemGroup(placement: ToolbarItemPlacement.cancellationAction) {
+                    SortMenu(selectedSort: .constant(SortMenu.Option(type: .name, isReversed: false)))
+
                     Button(action: logic.showAddStoryView) {
                         Image(systemName: "square.and.pencil")
                     }
                     .keyboardShortcut(KeyEquivalent("n"), modifiers: [.command, .shift])
-
                 }
             }
             .sheet(isPresented: $logic.isAddStoryViewDisplayed) {
@@ -71,6 +72,58 @@ extension StoryList {
                     searchManager.selectedSearchItem = nil
                 }
             }
+        }
+    }
+}
+
+struct SortMenu: View {
+    struct Option {
+        enum OptionType: String, CaseIterable {
+            case epic, name
+
+            var title: LocalizedStringKey {
+                switch self {
+                case .epic:
+                    return "Epic"
+                case .name:
+                    return "Name"
+                }
+            }
+        }
+        var type: OptionType
+        var isReversed: Bool
+
+        func apply(lhs: Story, rhs: Story) -> Bool {
+            switch (self.type, isReversed) {
+            case (.epic, false):
+                return lhs.epic < rhs.epic
+            case (.epic, true):
+                return lhs.epic > rhs.epic
+            case (.name, false):
+                return lhs.name < rhs.name
+            case (.name, true):
+                return lhs.name > rhs.name
+            }
+        }
+    }
+
+    @Binding var selectedSort: Option
+
+    func newIsReversed(for optionType: Option.OptionType) -> Bool {
+        return optionType == selectedSort.type && !selectedSort.isReversed
+    }
+
+    var body: some View {
+        Menu {
+            ForEach(Option.OptionType.allCases, id: \.rawValue) { optionType in
+                Button {
+                    selectedSort = Option(type: optionType, isReversed: newIsReversed(for: optionType))
+                } label: {
+                    Label(optionType.title, systemImage: optionType == selectedSort.type ? "checkmark" : "")
+                }
+            }
+        } label: {
+            Image(systemName: "line.horizontal.3.decrease.circle")
         }
     }
 }

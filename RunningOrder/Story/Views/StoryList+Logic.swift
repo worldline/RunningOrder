@@ -63,5 +63,9 @@ extension StoryList {
 
             return Color.Identifier.epicColors[epicIndex]
         }
+
+        func sort() {
+            
+        }
     }
 }
