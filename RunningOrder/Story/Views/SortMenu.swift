@@ -11,15 +11,14 @@ import SwiftUI
 struct SortMenu: View {
     @Binding var selectedSort: Option
 
-    func newIsReversed(for optionType: Option.OptionType) -> Bool {
-        return optionType == selectedSort.type && !selectedSort.isReversed
-    }
-
     var body: some View {
         Menu {
             ForEach(Option.OptionType.allCases, id: \.rawValue) { optionType in
                 Button(optionType.title) {
-                    selectedSort = Option(type: optionType, isReversed: newIsReversed(for: optionType))
+                    selectedSort = Option(
+                        type: optionType,
+                        isReversed: optionType == selectedSort.type && !selectedSort.isReversed
+                    )
                 }
             }
         } label: {
@@ -30,6 +29,7 @@ struct SortMenu: View {
 
 extension SortMenu {
     struct Option {
+        // swiftlint:disable:next nesting
         enum OptionType: String, CaseIterable {
             case epic, name, reference
 
