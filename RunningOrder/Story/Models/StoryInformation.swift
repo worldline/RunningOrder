@@ -65,6 +65,15 @@ extension StoryInformation {
     func createSymbolicVideoUrlIfNeeded(with fileManager: FileManager) -> URL? {
         guard let videoUrl = videoUrl, let videoExtension = videoExtension else { return nil }
 
+        guard fileManager.fileExists(atPath: videoUrl.path) else {
+            if let symbolicUrl = try? Self.symbolicVideoUrl(videoUrl: videoUrl, videoExtension: videoExtension, fileManager: fileManager),
+               fileManager.isSymbolicFileExist(at: symbolicUrl.path) {
+                try? fileManager.removeItem(at: symbolicUrl)
+            }
+
+            return nil
+        }
+
         // If the type corresponding to the pathExtension doesn't exist, it means it's a file from CKAsset,
         // without extension, we then create a symbolic link with the extension
         if UTType(filenameExtension: videoUrl.pathExtension, conformingTo: .movie)?.isDynamic ?? true {
@@ -74,6 +83,13 @@ extension StoryInformation {
                 if fileManager.fileExists(atPath: symbolicUrl.path) {
                     Logger.debug.log("this symbolic link already exist, no creation")
                 } else {
+                    // Here, the file doesn't exist at the symbolic destination.
+                    // It could be either the symbolic link itself doesn't exist, or the file at the destination that doesn't exist anymore. in that case, we remove the link to recreate the link with the proper destination
+                    if fileManager.isSymbolicFileExist(at: symbolicUrl.path) {
+                        try fileManager.removeItem(at: symbolicUrl)
+                    }
+
+                    // then we create it anyway
                     try fileManager.createSymbolicLink(at: symbolicUrl, withDestinationURL: videoUrl)
                 }
 

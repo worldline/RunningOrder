@@ -78,7 +78,7 @@ struct RunningOrderApp: App {
                     appDelegate.changesService = changesService
                     appDelegate.spaceManager = spaceManager
 
-                    appStateManager.fetchFirstSpace(in: spaceManager, withProgress: changesService.refreshAll())
+                    appStateManager.fetchFirstSpace(in: spaceManager, withProgress: changesService.refreshAll(qos: .userInteractive))
                     Logger.disabledLevels = [.verbose]
 
                     checkDeprecatedFiles()
@@ -144,7 +144,7 @@ struct RunningOrderApp: App {
                 }
 
                 Button("Refresh") {
-                    appStateManager.currentLoading = changesService.refreshAll()
+                    appStateManager.refreshAll()
                 }
                 .keyboardShortcut("r", modifiers: .command)
 
@@ -168,6 +168,18 @@ struct RunningOrderApp: App {
 
             Button("test") {
                 CloudKitContainer.shared.test()
+            }
+
+            Menu("Features") {
+                ForEach(FeatureFlag.allCases, id: \.rawValue) { feature in
+                    Button(feature.rawValue) {
+                        if let featureIndex = appStateManager.enabledFeatures.firstIndex(of: feature) {
+                            appStateManager.enabledFeatures.remove(at: featureIndex)
+                        } else {
+                            appStateManager.enabledFeatures.append(feature)
+                        }
+                    }
+                }
             }
 
             Menu("Logs") {
