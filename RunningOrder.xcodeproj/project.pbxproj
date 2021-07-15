@@ -49,6 +49,9 @@
 		18E6F2B9269DBD67009A7AB1 /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E6F2B8269DBD67009A7AB1 /* Video.swift */; };
 		18E6F2BB269DCD19009A7AB1 /* VideoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E6F2BA269DCD19009A7AB1 /* VideoManager.swift */; };
 		18E6F2BD269DD7C3009A7AB1 /* VideoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E6F2BC269DD7C3009A7AB1 /* VideoService.swift */; };
+		18E6F2BF26A03A45009A7AB1 /* FocusableTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E6F2BE26A03A45009A7AB1 /* FocusableTextFieldStyle.swift */; };
+		18E6F2C126A067C1009A7AB1 /* EpicTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E6F2C026A067C1009A7AB1 /* EpicTextfield.swift */; };
+		18E6F2C326A079EC009A7AB1 /* EpicTextField+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E6F2C226A079EC009A7AB1 /* EpicTextField+Logic.swift */; };
 		18F6109F25FBA79700A94949 /* TextfieldEditingStringHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F6109E25FBA79700A94949 /* TextfieldEditingStringHandler.swift */; };
 		18F610A425FBAD3000A94949 /* Environment+EpicColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F610A325FBAD3000A94949 /* Environment+EpicColor.swift */; };
 		18F610B125FBB96700A94949 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F610B025FBB96700A94949 /* UserService.swift */; };
@@ -165,6 +168,9 @@
 		18E6F2B8269DBD67009A7AB1 /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
 		18E6F2BA269DCD19009A7AB1 /* VideoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoManager.swift; sourceTree = "<group>"; };
 		18E6F2BC269DD7C3009A7AB1 /* VideoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoService.swift; sourceTree = "<group>"; };
+		18E6F2BE26A03A45009A7AB1 /* FocusableTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusableTextFieldStyle.swift; sourceTree = "<group>"; };
+		18E6F2C026A067C1009A7AB1 /* EpicTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpicTextfield.swift; sourceTree = "<group>"; };
+		18E6F2C226A079EC009A7AB1 /* EpicTextField+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EpicTextField+Logic.swift"; sourceTree = "<group>"; };
 		18F6109E25FBA79700A94949 /* TextfieldEditingStringHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldEditingStringHandler.swift; sourceTree = "<group>"; };
 		18F610A325FBAD3000A94949 /* Environment+EpicColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+EpicColor.swift"; sourceTree = "<group>"; };
 		18F610B025FBB96700A94949 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
@@ -470,6 +476,8 @@
 			isa = PBXGroup;
 			children = (
 				E88CC8E324D0119C00E9F2DD /* StoryRow.swift */,
+				18E6F2C026A067C1009A7AB1 /* EpicTextfield.swift */,
+				18E6F2C226A079EC009A7AB1 /* EpicTextField+Logic.swift */,
 				E882F03324CF030F002D1591 /* NewStoryView.swift */,
 				1837184C25DFE0BC00A3E3F9 /* NewStoryView+Logic.swift */,
 				E896ADBE24E1375500D82952 /* StoryDetailHeader.swift */,
@@ -583,6 +591,7 @@
 			isa = PBXGroup;
 			children = (
 				E8C7384824C98C2B0018AAEA /* FocusableNSTextField.swift */,
+				18E6F2BE26A03A45009A7AB1 /* FocusableTextFieldStyle.swift */,
 			);
 			path = Representables;
 			sourceTree = "<group>";
@@ -751,9 +760,12 @@
 				18E6F2BB269DCD19009A7AB1 /* VideoManager.swift in Sources */,
 				E8A5BD1D24E3E8B200589452 /* StoryManager.swift in Sources */,
 				1803F6302617593E00604A50 /* Stored.swift in Sources */,
+				18E6F2BF26A03A45009A7AB1 /* FocusableTextFieldStyle.swift in Sources */,
 				188595CF25C9726000E7B3FD /* ToolbarItems.swift in Sources */,
+				18E6F2C126A067C1009A7AB1 /* EpicTextfield.swift in Sources */,
 				183C8D552611DEE400F5037D /* AppStateManager.swift in Sources */,
 				188A940C2656B409001743D5 /* UserManager.swift in Sources */,
+				18E6F2C326A079EC009A7AB1 /* EpicTextField+Logic.swift in Sources */,
 				E8A2649F24F4FD58006B94EA /* ConfigurationView.swift in Sources */,
 				1862424324B48A8600A4A6CB /* Story.swift in Sources */,
 				1837185225DFF2CC00A3E3F9 /* StoryList+Logic.swift in Sources */,
