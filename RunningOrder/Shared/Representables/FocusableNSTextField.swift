@@ -10,7 +10,6 @@ import SwiftUI
 
 /// The NSViewRepresentable of an NSFocusableTextField
 struct FocusableTextField: NSViewRepresentable {
-
     let placeholder: String
 
     @Binding var value: String
@@ -18,7 +17,7 @@ struct FocusableTextField: NSViewRepresentable {
 
     let onCommit: () -> Void
 
-    func makeNSView(context: Context) -> NSTextField {
+    func makeNSView(context: Context) -> FocusableNSTextField {
         let textField = FocusableNSTextField()
         textField.delegate = context.coordinator
         textField.placeholderString = placeholder
@@ -31,9 +30,18 @@ struct FocusableTextField: NSViewRepresentable {
         return textField
     }
 
-    func updateNSView(_ nsView: NSTextField, context: Context) {
+    func updateNSView(_ nsView: FocusableNSTextField, context: Context) {
         nsView.stringValue = value
         nsView.placeholderString = placeholder
+        if !isFocused && context.coordinator.oldFocused == true {
+            if context.coordinator.preventFocus {
+                context.coordinator.preventFocus = false
+            } else {
+                nsView.window?.makeFirstResponder(nil)
+            }
+        }
+
+        context.coordinator.oldFocused = isFocused
     }
 
     func makeCoordinator() -> FocusableTextField.Coordinator {
@@ -42,6 +50,8 @@ struct FocusableTextField: NSViewRepresentable {
 
     class Coordinator: NSObject, NSTextFieldDelegate {
         var parent: FocusableTextField
+        var oldFocused: Bool?
+        var preventFocus = false
 
         init(_ textFieldContainer: FocusableTextField) {
             self.parent = textFieldContainer
@@ -53,7 +63,11 @@ struct FocusableTextField: NSViewRepresentable {
         }
 
         func controlTextDidEndEditing(_ obj: Notification) {
-            self.parent.isFocused = false
+            if self.parent.isFocused {
+                preventFocus = true
+                self.parent.isFocused = false
+            }
+
             self.parent.onCommit()
         }
     }
@@ -68,6 +82,7 @@ extension FocusableTextField {
             let textView = window?.fieldEditor(true, for: nil) as? NSTextView
             textView?.insertionPointColor = NSColor.controlAccentColor
             onFocusChange(true)
+
             return super.becomeFirstResponder()
         }
     }

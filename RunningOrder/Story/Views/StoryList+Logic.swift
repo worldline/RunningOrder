@@ -59,7 +59,7 @@ extension StoryList {
         }
 
         func epicColor(for story: Story) -> Color.Identifier {
-            let epicIndex = (Array(storyManager.epics).sorted().firstIndex(of: story.epic) ?? 0) % Color.Identifier.epicColors.count
+            let epicIndex = (Array(storyManager.epics(for: [sprint.id])).sorted().firstIndex(of: story.epic) ?? 0) % Color.Identifier.epicColors.count
 
             return Color.Identifier.epicColors[epicIndex]
         }

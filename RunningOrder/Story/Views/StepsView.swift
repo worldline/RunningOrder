@@ -34,7 +34,7 @@ struct StepsView: View {
                     InlineEditableList(title: "Steps", placeholder: "A step to follow", values: self.$storyInformation.steps)
 
                 case .video:
-                    VideoView(storyInformation: $storyInformation)
+                    VideoView(storyInformation: storyInformation)
                 }
                 Spacer()
             }
