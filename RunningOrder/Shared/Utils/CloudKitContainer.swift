@@ -178,4 +178,5 @@ enum RecordType: String {
     case story = "Story"
     case storyInformation = "StoryInformation"
     case space = "Space"
+    case video = "Video"
 }

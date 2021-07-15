@@ -10,10 +10,11 @@ import SwiftUI
 import Combine
 import CloudKit
 
-///The class responsible of managing the Story data, this is the only source of truth
+/// The class responsible of managing the Story data, this is the only source of truth
 final class StoryManager: ObservableObject {
     @Published var stories: [Sprint.ID: [Story]] = [:]
     @Stored(fileName: "stories.json", directory: .applicationSupportDirectory) private var storedStories: [Story]?
+    @Published var sortOption: SortMenu.Option = SortMenu.Option(type: .reference, isReversed: false)
 
     var epics: Set<String> {
         return stories
@@ -169,8 +170,11 @@ final class StoryManager: ObservableObject {
             switch selectedItem {
             case .epic(let epicString):
                 return allStories(for: [sprintId]).filter { $0.epic == epicString }
+                    .sorted(by: sortOption.apply(lhs:rhs:))
             case .story(_):
-                return allStories(for: [sprintId]) // we show all stories since we just want to go to this story, not only have one item in the list
+                // we show all stories since we just want to go to this story, not only have one item in the list
+                return allStories(for: [sprintId])
+                    .sorted(by: sortOption.apply(lhs:rhs:))
             case .filter(let filterString):
                 return allStories(for: [sprintId])
                     .filter {
@@ -178,13 +182,16 @@ final class StoryManager: ObservableObject {
                         || $0.epic.lowercased().contains(filterString.lowercased())
                         || $0.ticketReference.lowercased().contains(filterString.lowercased())
                     }
+                    .sorted(by: sortOption.apply(lhs:rhs:))
 
             case .people(let user):
                 return allStories(for: [sprintId])
                     .filter { $0.creatorReference == user.reference }
+                    .sorted(by: sortOption.apply(lhs:rhs:))
             }
         } else {
             return allStories(for: [sprintId])
+                .sorted(by: sortOption.apply(lhs:rhs:))
         }
     }
 }
