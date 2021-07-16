@@ -30,6 +30,21 @@ struct ConfigurationView: View {
 
                 InlineEditableLinkList(title: "Links", values: $storyInformation.links)
 
+                Text("Comment")
+                    .font(.title2)
+                    .padding(.leading, 12)
+
+                ZStack(alignment: Alignment.topLeading) {
+                    TextEditor(text: $storyInformation.comment)
+                        .font(.body)
+
+                    Text("Your comment here")
+                        .foregroundColor(Color.init(NSColor.secondaryLabelColor))
+                        .padding(.horizontal, 4)
+                        .allowsHitTesting(false)
+                        .opacity(storyInformation.comment.isEmpty ? 1 : 0)
+                }
+
                 Spacer()
             }
             .padding(.horizontal, 10)

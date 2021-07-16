@@ -31,15 +31,7 @@ struct SearchBarView: View {
                 isFocused: $isFocused,
                 onCommit: {}
             )
-            .padding(8)
-            // on focus background
-            .background(RoundedRectangle(cornerRadius: 8)
-                            .foregroundColor(Color(NSColor.textBackgroundColor))
-            )
-            // on focus border
-            .overlay(RoundedRectangle(cornerRadius: 8)
-                        .strokeBorder(isFocused ? Color.accentColor : Color(NSColor.placeholderTextColor), lineWidth: 1.0, antialiased: true)
-            )
+            .focusableTextFieldSearchFieldStyle(isFocused: isFocused)
             .disabled(searchManager.isItemSelected)
 
             if let selected = searchManager.selectedSearchItem?.name {

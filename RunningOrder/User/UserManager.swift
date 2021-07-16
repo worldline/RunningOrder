@@ -22,7 +22,7 @@ final class UserManager: ObservableObject {
 
     func fetchUser(for space: Space) {
         userService.users(in: space)
-            .catchAndExit { error in Logger.error.log(error) }
+            .catchAndExit { error in Logger.warning.log(error) } // This is not really an error : space could be not shared at all
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] newUsers in
                 self?.users.formUnion(newUsers)

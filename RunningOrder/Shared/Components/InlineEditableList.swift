@@ -92,7 +92,7 @@ struct InlineEditableList: View {
     }
 
     private func deleteTextfieldValue(at index: Int) {
-        //sanity check to prevent some out of bounds exception
+        // sanity check to prevent some out of bounds exception
         guard index < values.count else { return }
 
         withAnimation {

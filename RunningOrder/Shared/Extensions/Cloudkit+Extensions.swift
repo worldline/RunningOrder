@@ -322,19 +322,33 @@ extension CKRecord {
     /// - Returns: The property value which conforms to the CKRecordValueProtocol
     func property<T: CKRecordValueProtocol>(_ key: String) throws -> T {
         guard let value = self[key] as? T else {
-            throw CKRecord.Error.decodeFailure(for: key)
+            throw CKRecord.Error.decodeFailure(for: key, typeDescription: String(describing: T.self))
         }
         return value
     }
 
-    enum Error: Swift.Error {
-        case decodeFailure(for: String)
+    enum Error: LocalizedError {
+        case decodeFailure(for: String, typeDescription: String)
+
+        var failureReason: String? {
+            switch self {
+            case .decodeFailure(let key, let type):
+                return "Couldn't decode property at key : \(key) as type : \(type)"
+            }
+        }
     }
 }
 
 extension CKDatabase {
-    enum Error: Swift.Error {
-        case missingSubscriptions
+    enum Error: LocalizedError {
+        case missingSubscriptions(database: CKDatabase)
+
+        var failureReason: String? {
+            switch self {
+            case .missingSubscriptions(let database):
+                return "No Subscription found in \(database)"
+            }
+        }
     }
 
     func fetchAllSubscriptions() -> AnyPublisher<[CKSubscription], Swift.Error> {
@@ -347,7 +361,7 @@ extension CKDatabase {
             }
 
             guard let subscriptions = subscriptions else {
-                publisher.send(completion: .failure(Error.missingSubscriptions))
+                publisher.send(completion: .failure(Error.missingSubscriptions(database: self)))
                 return
             }
 

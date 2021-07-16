@@ -32,19 +32,8 @@ struct StyledFocusableTextField: View {
 
     var body: some View {
         FocusableTextField(placeholder: placeholder, value: $value, isFocused: $isFocused, onCommit: onCommit)
-            .padding(5)
-            // on focus background
-            .background(RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(Color(NSColor.textBackgroundColor).opacity(borderOpacity))
-                            .animation(.linear)
-            )
-            // on focus border
-            .overlay(RoundedRectangle(cornerRadius: 10)
-                        .strokeBorder(Color.accentColor, lineWidth: 1.0, antialiased: true)
-                        .opacity(borderOpacity)
-                        .animation(.easeInOut)
-            )
-            .focusable()
+            .focusableTextFieldDefaultStyle(isFocused: isFocused)
+
     }
 }
 

@@ -17,7 +17,10 @@ struct NewStoryView: View {
     }
 
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
+            Text("New Story")
+                .font(.title2)
+                .padding(.bottom)
             TextField(
                 "Story Name",
                 text: $logic.name,
@@ -28,20 +31,17 @@ struct NewStoryView: View {
                 text: $logic.ticketID,
                 onEditingChanged: logic.fieldEditingChanged(valueKeyPath: \.ticketID)
             )
-            TextField(
-                "Story EPIC",
-                text: $logic.epic,
-                onEditingChanged: logic.fieldEditingChanged(valueKeyPath: \.epic)
-            )
+
+            EpicTextField(spaceId: logic.sprint.spaceId, epic: $logic.epic)
 
             HStack {
                 Button(action: dismiss) { Text("Cancel") }
                     .keyboardShortcut(.cancelAction)
-                Spacer()
+                Spacer(minLength: 20)
                 Button(action: logic.createStory) { Text("Create") }
                     .disabled(!logic.areAllFieldsFilled)
                     .keyboardShortcut(.defaultAction)
-            }
+            }.padding(.top)
         }
         .padding()
         .onReceive(logic.dismissSubject, perform: dismiss)

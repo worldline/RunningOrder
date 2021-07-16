@@ -30,7 +30,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 receiveFailure: { error in Logger.error.log(error) },
                 receiveValue: { [weak self] space in
                     self?.cloudkitContainer.enableNotificationsIfNeeded(for: metadata.rootRecordID.zoneID)
-                    _ = self?.changesService?.fetchChanges(on: metadata.rootRecordID.zoneID)
+                    _ = self?.changesService?.fetchChanges(on: metadata.rootRecordID.zoneID, qos: .userInitiated)
                     self?.appStateManager?.currentState = .spaceSelected(space)
                 }
             )
@@ -60,6 +60,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         Logger.debug.log("notif : \(userInfo)")
         guard let scope = cloudkitContainer.databaseScopeForNotification(userInfo) else { return }
 
-        _ = changesService?.fetchDatabaseChanges(in: scope)
+        _ = changesService?.fetchDatabaseChanges(in: scope, qos: .userInitiated)
     }
 }
