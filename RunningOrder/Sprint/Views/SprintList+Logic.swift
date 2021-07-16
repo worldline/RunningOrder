@@ -27,7 +27,7 @@ extension SprintList {
             sprintManager.add(sprint: sprint)
                 .ignoreOutput()
                 .sink(receiveFailure: { failure in
-                    Logger.error.log(failure) // TODO error Handling
+                    NotificationCenter.default.postError(failure)
                 })
                 .store(in: &cancellables)
         }

@@ -11,9 +11,18 @@ import Combine
 import CloudKit
 
 extension UserService {
-    enum Error: Swift.Error {
+    enum Error: LocalizedError {
         case noShareFound
         case noShareReferenceFound
+
+        var failureReason: String? {
+            switch self {
+            case .noShareFound:
+                return "No share found for the provided `CKRecord.Reference`."
+            case .noShareReferenceFound:
+                return "No `CKRecord.Reference` found inside the provided Space."
+            }
+        }
     }
 }
 

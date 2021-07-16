@@ -52,6 +52,7 @@
 		18E6F2BF26A03A45009A7AB1 /* FocusableTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E6F2BE26A03A45009A7AB1 /* FocusableTextFieldStyle.swift */; };
 		18E6F2C126A067C1009A7AB1 /* EpicTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E6F2C026A067C1009A7AB1 /* EpicTextfield.swift */; };
 		18E6F2C326A079EC009A7AB1 /* EpicTextField+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E6F2C226A079EC009A7AB1 /* EpicTextField+Logic.swift */; };
+		18E6F2C526A17C82009A7AB1 /* AppStateIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E6F2C426A17C82009A7AB1 /* AppStateIndicator.swift */; };
 		18F6109F25FBA79700A94949 /* TextfieldEditingStringHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F6109E25FBA79700A94949 /* TextfieldEditingStringHandler.swift */; };
 		18F610A425FBAD3000A94949 /* Environment+EpicColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F610A325FBAD3000A94949 /* Environment+EpicColor.swift */; };
 		18F610B125FBB96700A94949 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F610B025FBB96700A94949 /* UserService.swift */; };
@@ -171,6 +172,7 @@
 		18E6F2BE26A03A45009A7AB1 /* FocusableTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusableTextFieldStyle.swift; sourceTree = "<group>"; };
 		18E6F2C026A067C1009A7AB1 /* EpicTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpicTextfield.swift; sourceTree = "<group>"; };
 		18E6F2C226A079EC009A7AB1 /* EpicTextField+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EpicTextField+Logic.swift"; sourceTree = "<group>"; };
+		18E6F2C426A17C82009A7AB1 /* AppStateIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateIndicator.swift; sourceTree = "<group>"; };
 		18F6109E25FBA79700A94949 /* TextfieldEditingStringHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldEditingStringHandler.swift; sourceTree = "<group>"; };
 		18F610A325FBAD3000A94949 /* Environment+EpicColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+EpicColor.swift"; sourceTree = "<group>"; };
 		18F610B025FBB96700A94949 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
@@ -403,6 +405,7 @@
 				18FE758D24A23E670003C76E /* AppDelegate.swift */,
 				188595BA25C9682400E7B3FD /* RunningOrderApp.swift */,
 				183C8D542611DEE400F5037D /* AppStateManager.swift */,
+				18E6F2C426A17C82009A7AB1 /* AppStateIndicator.swift */,
 				18FE758F24A23E670003C76E /* MainView.swift */,
 				185277F42519F32E0050F6C1 /* WelcomeView.swift */,
 				1837183D25DFCD8F00A3E3F9 /* MainView+Logic.swift */,
@@ -795,6 +798,7 @@
 				FB88E12025E8F877008F2644 /* InlineEditableLink.swift in Sources */,
 				E8A264A124F4FE3D006B94EA /* StepsView.swift in Sources */,
 				E8AFA1F624F69D4900AA84D3 /* StoryService.swift in Sources */,
+				18E6F2C526A17C82009A7AB1 /* AppStateIndicator.swift in Sources */,
 				18F610B125FBB96700A94949 /* UserService.swift in Sources */,
 				E8F4EEC624EE6BA300EC1CA2 /* Combine+Extensions.swift in Sources */,
 				E81BBFE824CB194B00DB289A /* RoundButton.swift in Sources */,

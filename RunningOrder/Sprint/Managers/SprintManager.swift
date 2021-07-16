@@ -87,7 +87,7 @@ final class SprintManager: ObservableObject {
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
                 case .failure(let error):
-                    Logger.error.log(error) // TODO: error Handling
+                    NotificationCenter.default.postError(error)
                 case .finished:
                     self?.sprints.remove(at: index)
                 }
@@ -117,7 +117,7 @@ final class SprintManager: ObservableObject {
         service.save(sprint: self.sprints[index])
             .ignoreOutput()
             .sink(receiveFailure: { error in
-                Logger.error.log(error) // TODO: error Handling
+                NotificationCenter.default.postError(error)
             })
             .store(in: &cancellables)
     }

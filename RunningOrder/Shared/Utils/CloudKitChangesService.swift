@@ -101,7 +101,7 @@ final class CloudKitChangesService: ObservableObject {
                 } else {
                     progress.cancel()
                 }
-                Logger.error.log(error) // TODO: Error handling
+                NotificationCenter.default.postError(error)
             }
             .map(\.token)
             .compactMap { $0 }
@@ -181,7 +181,7 @@ final class CloudKitChangesService: ObservableObject {
                     }
 
                 case .failure(let error):
-                    Logger.error.log("error : \(error)") // TODO: Error handling
+                    NotificationCenter.default.postError(error)
                 }
             }, receiveValue: { [weak self] updates in self?.handleUpdates(updates: updates) })
             .store(in: &cancellables)
@@ -202,7 +202,7 @@ final class CloudKitChangesService: ObservableObject {
                 } else {
                     progress.cancel()
                 }
-                Logger.error.log(error) // TODO: Error handling
+                NotificationCenter.default.postError(error)
             }
             .merge(with: tokenChanged)
             .receive(on: DispatchQueue.main)

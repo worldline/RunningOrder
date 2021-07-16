@@ -46,7 +46,9 @@ extension StoryList {
         private func addStory(_ story: Story) {
             storyManager.add(story: story)
                 .ignoreOutput()
-                .sink(receiveFailure: { error in Logger.error.log(error) }) // TODO Clean error handling
+                .sink(receiveFailure: { error in
+                    NotificationCenter.default.postError(error)
+                })
                 .store(in: &cancellables)
         }
 

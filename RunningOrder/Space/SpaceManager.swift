@@ -11,8 +11,15 @@ import Combine
 import CloudKit
 
 extension SpaceManager {
-    enum Error: Swift.Error {
+    enum Error: LocalizedError {
         case noSpaceAvailable
+
+        var failureReason: String? {
+            switch self {
+            case .noSpaceAvailable:
+                return "no space available"
+            }
+        }
     }
 }
 

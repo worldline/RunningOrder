@@ -38,8 +38,15 @@ extension Dictionary: Storable where Key: Codable, Value: Codable {}
 
 extension Array: Storable where Element: Codable {}
 
-enum StoreError: Error {
+enum StoreError: LocalizedError {
     case fileNotCreated(URL)
+
+    var failureReason: String? {
+        switch self {
+        case .fileNotCreated(let url):
+            return "file not created at url : \(url)"
+        }
+    }
 }
 
 @propertyWrapper struct Stored<StoredType: Storable> {
