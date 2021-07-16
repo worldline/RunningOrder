@@ -24,7 +24,11 @@ struct StoryDetail: View {
                 .padding(10)
             HSplitView {
                 ConfigurationView(storyInformation: informationBinding)
-                StepsView(storyInformation: informationBinding)
+                StepsView(
+                    steps: informationBinding.steps,
+                    storyId: informationBinding.wrappedValue.storyId,
+                    zoneId: informationBinding.wrappedValue.zoneId
+                )
             }
         }
         .background(Color(NSColor.controlBackgroundColor))

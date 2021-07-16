@@ -54,7 +54,7 @@ final class StoryInformationManager: ObservableObject {
                 self.service.save(storyInformations: Array(value.values))
                     .ignoreOutput()
                     .sink (receiveFailure: { failure in
-                        Logger.error.log(failure) // TODO error Handling
+                        NotificationCenter.default.postError(failure)
                     })
                     .store(in: &self.cancellables)
 

@@ -8,6 +8,13 @@
 
 import Foundation
 
-enum BasicError: Error {
+enum BasicError: LocalizedError {
     case noValue
+
+    var failureReason: String? {
+        switch self {
+        case .noValue:
+            return "no value found"
+        }
+    }
 }
