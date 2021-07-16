@@ -31,7 +31,7 @@ extension MainView {
             spaceManager.create(space: space)
                 .ignoreOutput()
                 .sink(receiveFailure: { failure in
-                    Logger.error.log(failure) // TODO error Handling
+                    NotificationCenter.default.postError(failure)
                 })
                 .store(in: &cancellables)
         }

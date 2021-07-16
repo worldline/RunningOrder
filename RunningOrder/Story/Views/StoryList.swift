@@ -15,8 +15,11 @@ extension StoryList {
         let sprint: Sprint
 
         @ObservedObject var logic: Logic
+
         @EnvironmentObject var storyManager: StoryManager
         @EnvironmentObject var searchManager: SearchManager
+        @EnvironmentObject var appStateManager: AppStateManager
+
         @State private var selected: Story?
         @State private var toBeDeletedStory: Story?
 
@@ -28,30 +31,36 @@ extension StoryList {
                             .epicColor(Color(identifier: logic.epicColor(for: story))),
                         tag: story,
                         selection: $selected,
-                        label: { StoryRow(story: story) }
-                    )
-                    .contextMenu {
-                        Button(action: { toBeDeletedStory = story }) {
-                            Text("Delete Story")
+                        label: {
+                            StoryRow(story: story)
+                                .frame(minHeight: 50, maxHeight: 150)
                         }
-                    }
-                    .epicColor(Color(identifier: logic.epicColor(for: story)))
+                    )
 
                     Divider()
                         .opacity(story == selected ? 0 : 1)
                 }
+                .contextMenu {
+                    Button(action: { toBeDeletedStory = story }) {
+                        Text("Delete Story")
+                    }
+                }
+                .epicColor(Color(identifier: logic.epicColor(for: story)))
             }
             .navigationTitle(logic.navigationTitle)
             .frame(minWidth: 100, idealWidth: 300)
             .toolbar {
                 ToolbarItems.sidebarItem
 
-                ToolbarItem(placement: ToolbarItemPlacement.cancellationAction) {
+                ToolbarItemGroup(placement: ToolbarItemPlacement.cancellationAction) {
+                    if appStateManager.enabledFeatures.contains(.sorting) {
+                        SortMenu(selectedSort: $storyManager.sortOption)
+                    }
+
                     Button(action: logic.showAddStoryView) {
                         Image(systemName: "square.and.pencil")
                     }
                     .keyboardShortcut(KeyEquivalent("n"), modifiers: [.command, .shift])
-
                 }
             }
             .sheet(isPresented: $logic.isAddStoryViewDisplayed) {
@@ -81,7 +90,14 @@ struct StoryList: View {
     @EnvironmentObject var searchManager: SearchManager
 
     var body: some View {
-        InternalView(sprint: sprint, logic: Logic(storyManager: storyManager, searchManager: searchManager, sprint: sprint))
+        InternalView(
+            sprint: sprint,
+            logic: Logic(
+                storyManager: storyManager,
+                searchManager: searchManager,
+                sprint: sprint
+            )
+        )
     }
 }
 

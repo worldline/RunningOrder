@@ -46,7 +46,9 @@ extension StoryList {
         private func addStory(_ story: Story) {
             storyManager.add(story: story)
                 .ignoreOutput()
-                .sink(receiveFailure: { error in Logger.error.log(error) }) // TODO Clean error handling
+                .sink(receiveFailure: { error in
+                    NotificationCenter.default.postError(error)
+                })
                 .store(in: &cancellables)
         }
 
@@ -59,7 +61,7 @@ extension StoryList {
         }
 
         func epicColor(for story: Story) -> Color.Identifier {
-            let epicIndex = (Array(storyManager.epics).sorted().firstIndex(of: story.epic) ?? 0) % Color.Identifier.epicColors.count
+            let epicIndex = (Array(storyManager.epics(for: [sprint.id])).sorted().firstIndex(of: story.epic) ?? 0) % Color.Identifier.epicColors.count
 
             return Color.Identifier.epicColors[epicIndex]
         }
