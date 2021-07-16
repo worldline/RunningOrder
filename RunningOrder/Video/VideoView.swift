@@ -12,7 +12,8 @@ import AVFoundation
 import AVKit
 
 struct VideoView: View {
-    let storyInformation: StoryInformation
+    let storyId: Story.ID
+    let zoneId: CloudKit.CKRecordZone.ID
 
     @EnvironmentObject var videoManager: VideoManager
 
@@ -37,8 +38,8 @@ struct VideoView: View {
                             video: Video(
                                 name: url.lastPathComponent,
                                 url: url,
-                                storyId: storyInformation.storyId,
-                                zoneId: storyInformation.zoneId
+                                storyId: storyId,
+                                zoneId: zoneId
                             )
                         )
                     } else if let error = error {
@@ -57,8 +58,8 @@ struct VideoView: View {
                         video: Video(
                             name: url.lastPathComponent,
                             url: url,
-                            storyId: storyInformation.storyId,
-                            zoneId: storyInformation.zoneId
+                            storyId: storyId,
+                            zoneId: zoneId
                         )
                     )
                 case .failure(let error):
@@ -69,7 +70,7 @@ struct VideoView: View {
 
     @ViewBuilder var videoListView: some View {
         VStack(alignment: .leading, spacing: 20) {
-            ForEach(videoManager.videos(for: storyInformation.storyId), id: \.wrappedValue.id) { videoBinding in
+            ForEach(videoManager.videos(for: storyId), id: \.wrappedValue.id) { videoBinding in
                 if let avPlayer = videoBinding.wrappedValue.avPlayer {
                     VStack {
                         VideoPlayer(player: avPlayer)

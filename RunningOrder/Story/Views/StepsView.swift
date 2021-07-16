@@ -9,12 +9,18 @@
 import SwiftUI
 
 struct StepsView: View {
-    @Binding var storyInformation: StoryInformation
+    let storyId: Story.ID
+    let zoneId: CloudKit.CKRecordZone.ID
+
+    @Binding var steps: [String]
     @State private var selectedMode = DisplayMode.video
 
-    init(storyInformation: Binding<StoryInformation>) {
-        _storyInformation = storyInformation
-        _selectedMode = State(initialValue: storyInformation.wrappedValue.steps.isEmpty ? .video : .steps)
+    init(steps: Binding<[String]>, storyId: Story.ID, zoneId: CloudKit.CKRecordZone.ID) {
+        _steps = steps
+        _selectedMode = State(initialValue: steps.wrappedValue.isEmpty ? .video : .steps)
+
+        self.storyId = storyId
+        self.zoneId = zoneId
     }
 
     var body: some View {
@@ -31,10 +37,17 @@ struct StepsView: View {
 
                 switch selectedMode {
                 case .steps:
-                    InlineEditableList(title: "Steps", placeholder: "A step to follow", values: self.$storyInformation.steps)
+                    InlineEditableList(
+                        title: "Steps",
+                        placeholder: "A step to follow",
+                        values: self.$steps
+                    )
 
                 case .video:
-                    VideoView(storyInformation: storyInformation)
+                    VideoView(
+                        storyId: storyId,
+                        zoneId: zoneId
+                    )
                 }
                 Spacer()
             }
@@ -49,6 +62,10 @@ private enum DisplayMode: LocalizedStringKey, CaseIterable {
 
 struct ConfigurationView_Previews: PreviewProvider {
     static var previews: some View {
-        StepsView(storyInformation: .constant(StoryInformation(storyId: "", zoneId: CKRecordZone.ID())))
+        StepsView(
+            steps: .constant(["step 1", "step 2"]),
+            storyId: "",
+            zoneId: CloudKit.CKRecordZone.ID()
+        )
     }
 }
