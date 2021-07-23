@@ -313,6 +313,7 @@
 				18E6F2B8269DBD67009A7AB1 /* Video.swift */,
 				18E6F2BA269DCD19009A7AB1 /* VideoManager.swift */,
 				18E6F2BC269DD7C3009A7AB1 /* VideoService.swift */,
+				1837185625DFF35500A3E3F9 /* VideoView.swift */,
 			);
 			path = Video;
 			sourceTree = "<group>";
@@ -491,7 +492,6 @@
 				1837185125DFF2CC00A3E3F9 /* StoryList+Logic.swift */,
 				E8A2649E24F4FD58006B94EA /* ConfigurationView.swift */,
 				E8A264A024F4FE3D006B94EA /* StepsView.swift */,
-				1837185625DFF35500A3E3F9 /* VideoView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
