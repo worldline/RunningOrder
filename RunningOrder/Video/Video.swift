@@ -9,6 +9,7 @@
 import Foundation
 import UniformTypeIdentifiers
 import AVFoundation
+import CloudKit
 
 struct Video {
     let id: String
@@ -96,8 +97,6 @@ extension Video {
         }
     }
 }
-
-import CloudKit
 
 extension Video: CKRecordable {
     init(from record: CKRecord) throws {
