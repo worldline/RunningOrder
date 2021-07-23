@@ -11,8 +11,15 @@ import Combine
 import CloudKit
 
 extension SpaceService {
-    enum Error: Swift.Error {
+    enum Error: LocalizedError {
         case noShareFound
+
+        var failureReason: String? {
+            switch self {
+            case .noShareFound:
+                return "No share found in the provided `CKRecord`."
+            }
+        }
     }
 }
 

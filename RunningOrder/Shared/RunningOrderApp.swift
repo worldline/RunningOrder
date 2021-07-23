@@ -176,6 +176,14 @@ struct RunningOrderApp: App {
                 CloudKitContainer.shared.test()
             }
 
+            Menu("Debug Error Reporting") {
+                ForEach(ErrorLine.errorLines) { errorLine in
+                    Button("\(errorLine.error)" as String) {
+                        appStateManager.reportError(errorLine.error)
+                    }
+                }
+            }
+
             Menu("Features") {
                 ForEach(FeatureFlag.allCases, id: \.rawValue) { feature in
                     Button(feature.rawValue) {
@@ -204,6 +212,19 @@ struct RunningOrderApp: App {
         }
         ToolbarCommands()
         SidebarCommands()
+    }
+}
+
+extension RunningOrderApp {
+    struct ErrorLine: Identifiable {
+        let error: Error
+        let id = UUID()
+
+        static let errorLines = [
+            ErrorLine(error: BasicError.noValue),
+            ErrorLine(error: CKError(.notAuthenticated)),
+            ErrorLine(error: StoreError.fileNotCreated(URL(string: "https://google.com")!))
+        ]
     }
 }
 

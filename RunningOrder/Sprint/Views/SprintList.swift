@@ -15,25 +15,42 @@ extension SprintList {
     fileprivate struct InternalView: View {
         @EnvironmentObject var sprintManager: SprintManager
         @EnvironmentObject var storyManager: StoryManager
-        @EnvironmentObject var appStateManager: AppStateManager
         @ObservedObject var logic: Logic
         let space: Space
         @State private var toBeDeletedSprint: Sprint?
 
         var body: some View {
-            List {
-                Section(header: Text("Active Sprints")) {
-                    ForEach(logic.activeSprints(for: space.id), id: \.self) { sprint in
-                        SprintRow(sprintToDelete: $toBeDeletedSprint, sprint: sprint)
+            VStack {
+                List {
+                    Section(header: Text("Active Sprints")) {
+                        ForEach(logic.activeSprints(for: space.id), id: \.self) { sprint in
+                            SprintRow(sprintToDelete: $toBeDeletedSprint, sprint: sprint)
+                        }
+                    }
+                    Section(header: Text("Closed Sprints")) {
+                        ForEach(logic.closedSprints(for: space.id), id: \.self) { sprint in
+                            SprintRow(sprintToDelete: $toBeDeletedSprint, sprint: sprint)
+                        }
                     }
                 }
-                Section(header: Text("Closed Sprints")) {
-                    ForEach(logic.closedSprints(for: space.id), id: \.self) { sprint in
-                        SprintRow(sprintToDelete: $toBeDeletedSprint, sprint: sprint)
-                    }
-                }
+
+                footer
             }
-            .overlay(HStack {
+            .sheet(isPresented: $logic.isNewSprintModalPresented) {
+                NewSprintView(space: space, createdSprint: self.logic.createdSprintBinding)
+            }
+            .alert(item: $toBeDeletedSprint) { sprint in
+                Alert(
+                    title: Text("Delete the sprint \"\(sprint.name) - \(sprint.number)\" ?"),
+                    message: Text("You can't undo this action."),
+                    primaryButton: .destructive(Text("Yes"), action: { logic.deleteSprint(sprint) }),
+                    secondaryButton: .cancel()
+                )
+            }
+        }
+
+        @ViewBuilder var footer: some View {
+            HStack {
                 Button(action: self.logic.showNewSprintModal) {
                     HStack { // sprintListFooter
                         Image(nsImageName: NSImage.addTemplateName)
@@ -47,31 +64,14 @@ extension SprintList {
                     }
                 }
                 .keyboardShortcut(KeyEquivalent("n"), modifiers: .command)
-                .padding(.all, 10)
                 .buttonStyle(PlainButtonStyle())
 
-                if appStateManager.currentLoading != nil {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle())
-                        .scaleEffect(0.4)
-                        .padding(-8)
-                } else {
-                    Circle()
-                        .fill(Color.green)
-                        .frame(width: 10, height: 10)
-                }
-            }, alignment: .bottom)
-            .sheet(isPresented: $logic.isNewSprintModalPresented) {
-                NewSprintView(space: space, createdSprint: self.logic.createdSprintBinding)
+                Spacer()
+
+                AppStateIndicator()
             }
-            .alert(item: $toBeDeletedSprint) { sprint in
-                Alert(
-                    title: Text("Delete the sprint \"\(sprint.name) - \(sprint.number)\" ?"),
-                    message: Text("You can't undo this action."),
-                    primaryButton: .destructive(Text("Yes"), action: { logic.deleteSprint(sprint) }),
-                    secondaryButton: .cancel()
-                )
-            }
+            .padding([.horizontal, .bottom])
+            .padding(.top, 4)
         }
     }
 }

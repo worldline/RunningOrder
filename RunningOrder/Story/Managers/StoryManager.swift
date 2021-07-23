@@ -123,7 +123,7 @@ final class StoryManager: ObservableObject {
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
                 case .failure(let error):
-                    Logger.error.log(error) // TODO: error Handling
+                    NotificationCenter.default.postError(error)
                 case .finished:
                     self?.stories[sprintId]?.remove(at: index)
                     if self?.stories[sprintId]?.isEmpty ?? false {

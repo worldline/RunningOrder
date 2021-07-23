@@ -20,16 +20,60 @@ extension AppStateManager {
     }
 }
 
-extension AppStateManager {
-    enum Error: Swift.Error {
-        case unexistingError // in the mapError I need a concrete error to return, but I don't want to use an existing one in order to identify a potential bug if this error is really thrown
-        case fetchTimeout
+struct ErrorTrace {
+    struct Location: CustomDebugStringConvertible {
+        let file: String
+        let line: Int
+        let function: String
+
+        static func collect(file: String = #fileID, line: Int = #line, function: String = #function) -> Location {
+            self.init(file: file, line: line, function: function)
+        }
+
+        var debugDescription: String {
+            "\(file):\(line) in `\(function)`"
+        }
+    }
+
+    let error: Error
+    let location: Location
+    let date = Date()
+
+    var inlineDescription: String {
+        return error.localizedDescription
+    }
+
+    var fullDescription: String {
+        return """
+        Error at \(location.debugDescription).
+        \(error.localizedDescription) -- \(error)
+        """
+    }
+}
+
+extension NotificationCenter {
+    func postError(_ error: Error, file: String = #fileID, line: Int = #line, function: String = #function) {
+        self.post(
+            name: AppStateManager.errorReportingNotification,
+            object: nil,
+            userInfo: [
+                "trace": ErrorTrace(
+                    error: error,
+                    location: ErrorTrace.Location(
+                        file: file,
+                        line: line,
+                        function: function
+                    )
+                )
+            ]
+        )
     }
 }
 
 final class AppStateManager: ObservableObject {
     @Published var currentState: State = .idle
     @Published var currentLoading: Progress?
+    @Published var errors: [ErrorTrace] = []
 
     @Published var enabledFeatures: [FeatureFlag] = []
 
@@ -38,6 +82,9 @@ final class AppStateManager: ObservableObject {
     private unowned var changesService: CloudKitChangesService
 
     private var spaceNameCancellable: AnyCancellable?
+    private var errorReportingCancellable: AnyCancellable?
+
+    static let errorReportingNotification: Notification.Name = Notification.Name("errorReporting")
 
     init(changesService: CloudKitChangesService) {
         self.changesService = changesService
@@ -70,7 +117,19 @@ final class AppStateManager: ObservableObject {
                 }
             }
             .assign(to: \.storedSpaceName, onStrong: self)
+
+        errorReportingCancellable = NotificationCenter.default.publisher(for: Self.errorReportingNotification)
+            .map(\.userInfo)
+            .sink(receiveValue: { userInfo in
+                if let trace = userInfo?["trace"] as? ErrorTrace {
+                    self.reportErrorTrace(trace)
+                } else if let error = userInfo?["error"] as? Error {
+                    self.reportError(error)
+                }
+            })
     }
+
+    // MARK: - Refreshing
 
     func refreshAll() {
         currentLoading = changesService.refreshAll(qos: .userInitiated)
@@ -116,8 +175,35 @@ final class AppStateManager: ObservableObject {
             }
             .assign(to: &$currentState)
     }
+
+    // MARK: - Error Reporting
+
+    func reportError(_ error: Error, file: String = #fileID, line: Int = #line, function: String = #function) {
+        let trace = ErrorTrace(
+            error: error,
+            location: ErrorTrace.Location(
+                file: file,
+                line: line,
+                function: function
+            )
+        )
+
+        self.reportErrorTrace(trace)
+    }
+
+    func reportErrorTrace(_ trace: ErrorTrace) {
+        Logger.error.log(trace.fullDescription)
+
+        self.errors.append(trace)
+    }
 }
 
 extension AppStateManager {
-    static let preview = AppStateManager(changesService: CloudKitChangesService(container: CloudKitContainer.shared))
+    static func preview(currentLoading: Progress? = nil, currentState: State = .idle) -> AppStateManager {
+        let manager = AppStateManager(changesService: CloudKitChangesService(container: CloudKitContainer.shared))
+        manager.currentState = currentState
+        manager.currentLoading = currentLoading
+
+        return manager
+    }
 }
