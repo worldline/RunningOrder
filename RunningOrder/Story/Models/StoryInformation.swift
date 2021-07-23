@@ -17,13 +17,16 @@ struct StoryInformation {
 
     var steps: [String]
 
+    var comment: String
+
     var zoneId: CKRecordZone.ID
 
-    init(storyId: Story.ID, zoneId: CKRecordZone.ID, configuration: Configuration = Configuration(), links: [Link] = [], steps: [String] = []) {
+    init(storyId: Story.ID, zoneId: CKRecordZone.ID, configuration: Configuration = Configuration(), links: [Link] = [], steps: [String] = [], comment: String = "") {
         self.storyId = storyId
         self.configuration = configuration
         self.links = links
         self.steps = steps
+        self.comment = comment
         self.zoneId = zoneId
     }
 }
@@ -49,9 +52,17 @@ extension StoryInformation: CKRecordable {
         let linksData: Data = try record.property("links")
         self.links = try JSONDecoder.default.decode([Link].self, from: linksData)
 
+        self.comment = (try? record.property("comment")) ?? ""
+
         self.zoneId = record.recordID.zoneID
 
-        self.configuration = .init(environments: environments, mocks: mocks, features: features, indicators: indicators, identifiers: identifiers)
+        self.configuration = .init(
+            environments: environments,
+            mocks: mocks,
+            features: features,
+            indicators: indicators,
+            identifiers: identifiers
+        )
     }
 
     func encode() -> CKRecord {
@@ -77,6 +88,8 @@ extension StoryInformation: CKRecordable {
             storyInformationRecord["links"] = try? JSONEncoder.default.encode([Link]())
             Logger.error.log(error)
         }
+
+        storyInformationRecord["comment"] = self.comment
 
         return storyInformationRecord
     }
