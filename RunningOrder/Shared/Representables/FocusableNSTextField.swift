@@ -33,6 +33,15 @@ struct FocusableTextField: NSViewRepresentable {
     func updateNSView(_ nsView: FocusableNSTextField, context: Context) {
         nsView.stringValue = value
         nsView.placeholderString = placeholder
+
+        // There are 2 ways to loose focus on the textfield :
+        // - We unfocus programmatically
+        // - The textfield unfocus itself
+        //
+        // Here we implement the unfocus programmatic, e.g. when isFocused binding is set to false
+        // We check the old status of isFocused, kept in memory by the coordinator, to not unfocus multiple times
+        // We may pass in `controlTextDidEndEditing` when textfield is unfocused by the system. but this way, the textfield is already unfocused itself, so we have to prevent to resign focus ouselves
+        // In case of unfocus by focusing another textfield, this would unfocus after the new textfield ar focused and so unfocus it...
         if !isFocused && context.coordinator.oldFocused == true {
             if context.coordinator.preventFocus {
                 context.coordinator.preventFocus = false
@@ -50,6 +59,7 @@ struct FocusableTextField: NSViewRepresentable {
 
     class Coordinator: NSObject, NSTextFieldDelegate {
         var parent: FocusableTextField
+        // We keep in memory the focus state to check it later. Useful to resign the first responder only once
         var oldFocused: Bool?
         var preventFocus = false
 
