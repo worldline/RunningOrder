@@ -29,16 +29,15 @@ extension AppStateManager {
 
 final class AppStateManager: ObservableObject {
     @Published var currentState: State = .idle
+    @Published var currentLoading: Progress?
+
+    @Published var enabledFeatures: [FeatureFlag] = []
 
     @AppStorage("currentSpaceName") private var storedSpaceName: String?
 
     private unowned var changesService: CloudKitChangesService
 
-    private var isFirstCall = true
-
     private var spaceNameCancellable: AnyCancellable?
-
-    @Published var currentLoading: Progress?
 
     init(changesService: CloudKitChangesService) {
         self.changesService = changesService
@@ -71,6 +70,10 @@ final class AppStateManager: ObservableObject {
                 }
             }
             .assign(to: \.storedSpaceName, onStrong: self)
+    }
+
+    func refreshAll() {
+        currentLoading = changesService.refreshAll(qos: .userInitiated)
     }
 
     func fetchFirstSpace(in spaceManager: SpaceManager, withProgress progress: Progress) {
