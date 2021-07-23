@@ -17,92 +17,19 @@ struct StoryInformation {
 
     var steps: [String]
 
-    var videoUrl: URL? {
-        didSet {
-            let fileManager = FileManager.default
-            if let newExtension = videoUrl?.pathExtension, !newExtension.isEmpty {
-                videoExtension = newExtension
-            } else if let oldUrl = oldValue,
-                      let currentExtension = videoExtension,
-                      videoUrl == nil,
-                      let symbolicUrl = try? Self.symbolicVideoUrl(videoUrl: oldUrl, videoExtension: currentExtension, fileManager: fileManager),
-                      fileManager.fileExists(atPath: symbolicUrl.path) {
-                try? fileManager.removeItem(at: symbolicUrl)
-                self.videoExtension = nil
-            }
-        }
-    }
-
-    private var videoExtension: String?
-
     var zoneId: CKRecordZone.ID
 
-    init(storyId: Story.ID, zoneId: CKRecordZone.ID, configuration: Configuration = Configuration(), links: [Link] = [], steps: [String] = [], videoUrl: URL? = nil) {
+    init(storyId: Story.ID, zoneId: CKRecordZone.ID, configuration: Configuration = Configuration(), links: [Link] = [], steps: [String] = []) {
         self.storyId = storyId
         self.configuration = configuration
         self.links = links
         self.steps = steps
-        self.videoUrl = videoUrl
         self.zoneId = zoneId
-        if let newExtension = videoUrl?.pathExtension, !newExtension.isEmpty {
-            self.videoExtension = videoUrl?.pathExtension
-        }
     }
 }
 
 extension StoryInformation: Equatable {}
 extension StoryInformation: Hashable {}
-
-extension StoryInformation {
-    static func symbolicVideoUrl(videoUrl: URL, videoExtension: String, fileManager: FileManager) throws -> URL {
-        var symbolicUrl = try fileManager.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-        symbolicUrl.appendPathComponent(videoUrl.lastPathComponent)
-        symbolicUrl.appendPathExtension(videoExtension)
-
-        return symbolicUrl
-    }
-
-    func createSymbolicVideoUrlIfNeeded(with fileManager: FileManager) -> URL? {
-        guard let videoUrl = videoUrl, let videoExtension = videoExtension else { return nil }
-
-        guard fileManager.fileExists(atPath: videoUrl.path) else {
-            if let symbolicUrl = try? Self.symbolicVideoUrl(videoUrl: videoUrl, videoExtension: videoExtension, fileManager: fileManager),
-               fileManager.isSymbolicFileExist(at: symbolicUrl.path) {
-                try? fileManager.removeItem(at: symbolicUrl)
-            }
-
-            return nil
-        }
-
-        // If the type corresponding to the pathExtension doesn't exist, it means it's a file from CKAsset,
-        // without extension, we then create a symbolic link with the extension
-        if UTType(filenameExtension: videoUrl.pathExtension, conformingTo: .movie)?.isDynamic ?? true {
-            do {
-                let symbolicUrl = try Self.symbolicVideoUrl(videoUrl: videoUrl, videoExtension: videoExtension, fileManager: fileManager)
-
-                if fileManager.fileExists(atPath: symbolicUrl.path) {
-                    Logger.debug.log("this symbolic link already exist, no creation")
-                } else {
-                    // Here, the file doesn't exist at the symbolic destination.
-                    // It could be either the symbolic link itself doesn't exist, or the file at the destination that doesn't exist anymore. in that case, we remove the link to recreate the link with the proper destination
-                    if fileManager.isSymbolicFileExist(at: symbolicUrl.path) {
-                        try fileManager.removeItem(at: symbolicUrl)
-                    }
-
-                    // then we create it anyway
-                    try fileManager.createSymbolicLink(at: symbolicUrl, withDestinationURL: videoUrl)
-                }
-
-                return symbolicUrl
-            } catch {
-                Logger.error.log(error)
-                return nil
-            }
-        } else {
-            return videoUrl
-        }
-    }
-}
 
 import CloudKit
 
@@ -121,10 +48,6 @@ extension StoryInformation: CKRecordable {
 
         let linksData: Data = try record.property("links")
         self.links = try JSONDecoder.default.decode([Link].self, from: linksData)
-
-        let videoAsset: CKAsset? = try? record.property("video")
-        self.videoUrl = videoAsset?.fileURL
-        self.videoExtension = try? record.property("videoExtension")
 
         self.zoneId = record.recordID.zoneID
 
@@ -153,15 +76,6 @@ extension StoryInformation: CKRecordable {
         } catch {
             storyInformationRecord["links"] = try? JSONEncoder.default.encode([Link]())
             Logger.error.log(error)
-        }
-
-        if let videoUrl = self.videoUrl {
-            storyInformationRecord["video"] = CKAsset(fileURL: videoUrl)
-            storyInformationRecord["videoExtension"] = self.videoExtension
-        } else {
-            storyInformationRecord["video"] = nil
-            storyInformationRecord["videoExtension"] = nil
-
         }
 
         return storyInformationRecord
