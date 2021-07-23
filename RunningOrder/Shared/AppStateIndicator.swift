@@ -59,7 +59,7 @@ struct AppStateIndicator: View {
                 .font(.headline)
             ForEach(appStateManager.errors, id: \.date) { trace in
                 HStack {
-                    Text(trace.lineDescription)
+                    Text(trace.inlineDescription)
 
                     Spacer()
 

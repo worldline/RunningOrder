@@ -39,7 +39,7 @@ struct ErrorTrace {
     let location: Location
     let date = Date()
 
-    var lineDescription: String {
+    var inlineDescription: String {
         return error.localizedDescription
     }
 
