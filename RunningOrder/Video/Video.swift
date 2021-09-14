@@ -21,6 +21,11 @@ struct Video {
     let zoneId: CKRecordZone.ID
 }
 
+enum VideoError: Error {
+    case fileAlreadyExist
+    case internalError(Error)
+}
+
 extension Video {
     init(id: UUID = UUID(), name: String, url: URL, storyId: Story.ID, zoneId: CKRecordZone.ID) {
         self.id = id.uuidString
@@ -38,6 +43,33 @@ extension Video {
         if fileManager.isSymbolicFileExist(at: symbolic.path) {
             try fileManager.removeItem(at: symbolic)
         }
+    }
+
+    func downloadUrl(fileManager: FileManager = .default) -> URL {
+        do {
+            let downloadFolder = try fileManager.url(for: .downloadsDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+
+            let fileName = name.hasSuffix(".\(extensionString)") ? name : "\(name).\(extensionString)"
+            return downloadFolder.appendingPathComponent(fileName)
+        } catch {
+            Logger.error.log(error)
+            return URL(string: "")!
+        }
+    }
+
+    func save(overridingExistingFile: Bool = false, fileManager: FileManager = .default) throws {
+        let fileUrl = downloadUrl(fileManager: fileManager)
+
+        switch (fileManager.fileExists(atPath: fileUrl.path), overridingExistingFile) {
+        case (true, true):
+            try fileManager.removeItem(at: fileUrl)
+        case (true, false):
+            throw VideoError.fileAlreadyExist
+        case (false, _):
+            break
+        }
+
+        try fileManager.copyItem(at: url, to: fileUrl)
     }
 
     var avPlayer: AVPlayer? {
