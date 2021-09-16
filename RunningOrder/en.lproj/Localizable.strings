@@ -12,6 +12,7 @@
 "Edit"   = "Edit";
 "Done"   = "Done";
 "Yes"    = "Yes";
+"Warning" = "Warning";
 
 // MARK: RunningOrderApp
 
@@ -77,6 +78,13 @@
 "Steps" = "Steps";
 "A step to follow" = "A step to follow";
 "Steps Mode" = "Steps Mode";
+
+// MARK: VideoView
+
+"Broken" = "Broken";
+"Add a video" = "Add a video";
+"A file already exists at this url \"%@\", do you want to override it ?" = "A file already exists at this url \"%@\", do you want to override it ?";
+"Error at saving : %@" = "Error at saving : %@";
 
 // MARK: WelcomeView
 

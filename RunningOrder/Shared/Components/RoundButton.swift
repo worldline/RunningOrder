@@ -20,6 +20,7 @@ struct RoundButton: View {
             GeometryReader(content: { geometry in
                 image
                     .resizable()
+                    .aspectRatio(contentMode: .fit)
                     .padding(geometry.size.width * 0.2)
                     .background(color)
                     .clipShape(Circle())
@@ -33,6 +34,11 @@ struct RoundButton: View {
 struct RoundButton_Previews: PreviewProvider {
     static var previews: some View {
         RoundButton(image: Image(nsImageName: NSImage.refreshTemplateName), color: Color.green, action: {})
+
+        RoundButton(image: Image(systemName: "trash"), color: Color.green, action: {})
+        RoundButton(image: Image(systemName: "trash"), color: Color.green, action: {})
             .frame(width: 40, height: 40)
+        RoundButton(image: Image(systemName: "trash"), color: Color.green, action: {})
+            .frame(width: 25, height: 25)
     }
 }

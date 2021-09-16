@@ -11,7 +11,25 @@ import UniformTypeIdentifiers
 import AVFoundation
 import AVKit
 
+extension VideoView.AlertConfiguration: Identifiable {
+    var id: String {
+        switch self {
+        case .videoConfirmation(let video):
+            return video.id
+        case .error(.fileAlreadyExist):
+            return "fileAlreadyExist"
+        case .error(.internalError(let error)):
+            return "\(error)"
+        }
+    }
+}
+
 struct VideoView: View {
+    enum AlertConfiguration {
+        case videoConfirmation(Video)
+        case error(VideoError)
+    }
+
     let storyId: Story.ID
     let zoneId: CloudKit.CKRecordZone.ID
 
@@ -19,6 +37,8 @@ struct VideoView: View {
 
     @State private var isVideoDropTargeted = false
     @State private var isFileImporterPresented = false
+    @State private var isFileExporterPresented = false
+    @State private var alertConfiguration: AlertConfiguration?
 
     var body: some View {
         videoListView
@@ -77,10 +97,26 @@ struct VideoView: View {
                             .frame(height: 600)
                             .padding(.horizontal, 8)
                             .overlay(
-                                RoundButton(image: Image(systemName: "trash"), color: .red) {
-                                    videoManager.delete(video: videoBinding.wrappedValue)
+                                VStack {
+                                    RoundButton(image: Image(systemName: "trash"), color: .red) {
+                                        videoManager.delete(video: videoBinding.wrappedValue)
+
+                                    }
+                                    .frame(width: 35, height: 35)
+
+                                    RoundButton(image: Image(systemName: "icloud.and.arrow.down"), color: .blue) {
+                                        // Download
+                                        do {
+                                            try videoBinding.wrappedValue.save()
+                                        } catch VideoError.fileAlreadyExist {
+                                            alertConfiguration = .videoConfirmation(videoBinding.wrappedValue)
+                                        } catch {
+                                            Logger.debug.log("error at saving : \(error)")
+                                            alertConfiguration = .error(.internalError(error))
+                                        }
+                                    }
+                                    .frame(width: 35, height: 35)
                                 }
-                                .frame(width: 25, height: 25)
                                 .padding(.trailing, 8)
                                 .padding([.trailing, .top]),
                                 alignment: .topTrailing
@@ -97,8 +133,18 @@ struct VideoView: View {
                         .frame(height: 600)
                         .foregroundColor(.black)
                         .overlay(
-                            Text("Broken"),
+                            Text("Broken")
+                                .foregroundColor(.white),
                             alignment: .center
+                        )
+                        .overlay(
+                            RoundButton(image: Image(systemName: "trash"), color: .red) {
+                                videoManager.delete(video: videoBinding.wrappedValue)
+                            }
+                            .frame(width: 25, height: 25)
+                            .padding(.trailing, 8)
+                            .padding([.trailing, .top]),
+                            alignment: .topTrailing
                         )
                 }
             }
@@ -113,7 +159,7 @@ struct VideoView: View {
                             .foregroundColor(.white)
                             .background(Color.accentColor)
                             .clipShape(Circle())
-                        Text("Ajouter une vidéo")
+                        Text("Add a video")
                             .foregroundColor(Color.accentColor)
                             .font(.system(size: 12))
                     }
@@ -125,5 +171,31 @@ struct VideoView: View {
             }
         }
         .padding(.horizontal, 15)
+        .alert(item: $alertConfiguration, content: { configuration in
+            switch configuration {
+            case .videoConfirmation(let video):
+                return Alert(
+                    title: Text("Warning"),
+                    message: Text("A file already exists at this url \"\(video.downloadUrl().path)\", do you want to override it ?"),
+                    primaryButton: .destructive(
+                        Text("Yes"),
+                        action: {
+                            do {
+                                try video.save()
+                            } catch {
+                                Logger.debug.log("Error at saving : \(error)")
+                                self.alertConfiguration = .error(.internalError(error))
+                            }
+                        }
+                    ),
+                    secondaryButton: .cancel()
+                )
+            case .error(let error):
+                return Alert(
+                    title: Text("Error"),
+                    message: Text("An error occurred : \(error.localizedDescription)")
+                )
+            }
+        })
     }
 }
